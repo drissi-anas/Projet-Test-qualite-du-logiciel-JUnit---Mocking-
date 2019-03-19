@@ -15,12 +15,12 @@ public class ProgrammePrincipal extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AdminService adminService = null;
+        AdminService adminService = null; ////
         BasiquesOffLineService basiquesOffLineService = null;
         ConnexionService connexionService = null;
 
         Controleur controleur = new Controleur(connexionService,adminService,basiquesOffLineService,primaryStage);
-        controleur.run();
+        controleur.run();//
     }
 
 
