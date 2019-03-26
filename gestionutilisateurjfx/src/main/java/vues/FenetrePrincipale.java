@@ -97,7 +97,7 @@ public class FenetrePrincipale {
         }
         FenetrePrincipale vue = fxmlLoader.getController();
         vue.setMonControleur(c);
-            vue.initialiserVues();
+        vue.initialiserVues();
         stage.setScene(new Scene(root,600,600));
         vue.setMonTheatre(stage);
         return vue;

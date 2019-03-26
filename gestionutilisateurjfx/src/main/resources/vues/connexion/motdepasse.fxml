@@ -14,6 +14,6 @@
          </font>
       </Label>
       <PasswordField fx:id="motDePasse"  />
-      <Button mnemonicParsing="false" text="Valider" onAction="#validerMotDePasse"/>
+      <Button fx:id="boutonValidermdp" mnemonicParsing="false" text="Valider" onAction="#validerMotDePasse"/>
    </children>
 </VBox>

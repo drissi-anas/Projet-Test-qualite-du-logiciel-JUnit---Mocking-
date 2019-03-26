@@ -19,7 +19,7 @@
          </font>
       </Label>
       <TextField fx:id="nom" />
-      <Button mnemonicParsing="false" onAction="#validerNom" text="Valider" />
+      <Button fx:id="boutonValider" mnemonicParsing="false" onAction="#validerNom" text="Valider" />
       <Hyperlink text="Demander inscription" onAction="#demanderInscription"/>
    </children>
 </VBox>
