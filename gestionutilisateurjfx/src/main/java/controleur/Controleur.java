@@ -45,14 +45,6 @@ public class Controleur implements Observateur {
     Stage stage;
 
 
-    public ConnexionService getConnexionService() {
-        return connexionService;
-    }
-
-    public FenetrePrincipale getMaFenetre() {
-        return maFenetre;
-    }
-
     public Controleur(ConnexionService connexionService, AdminService adminService, BasiquesOffLineService basiquesOffLineService, Stage stage){
 
         this.connexionService = connexionService;

@@ -29,6 +29,7 @@ public class TestAPI extends ApplicationTest {
     private ConnexionService connexionService;
     private FabriqueMock fabriqueMock;
     private Controleur controleur;
+    private Personne p;
 
 
 
@@ -41,7 +42,10 @@ public class TestAPI extends ApplicationTest {
         basiquesOffLineService=fabriqueMock.creerMockBOS();
         connexionService=fabriqueMock.creerMockConnexionServ();
 
+
     }
+
+
 
 
     @Test
@@ -95,16 +99,28 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void saisieMdpOK () throws CoupleUtilisateurMDPInconnuException {
-        Personne p =fabriqueMock.creerMockPersonne();
+    public void saisieMdpOKAdmin () throws CoupleUtilisateurMDPInconnuException {
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
         InscriptionPotentielle  ip= fabriqueMock.creerInscri();
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","bla")).andReturn(p);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
         Platform.runLater(new Runnable() {
@@ -123,7 +139,7 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
         clickOn("#motDePasse");
 
-        write("bla");
+        write("123");
         sleepBetweenActions();
         clickOn("#boutonValidermdp");
         sleepBetweenActions();
@@ -131,6 +147,9 @@ public class TestAPI extends ApplicationTest {
 
 
     }
+
+
+
 
 
         private void sleepBetweenActions() {
