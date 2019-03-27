@@ -118,7 +118,6 @@ public class Controleur implements Observateur {
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_DEMANDE,pseudo+", votre demande a été soumise aux responsables !"));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.RESET_CHAMPS,""));
         this.maFenetre.goToConnexion();
-
     }
 
 

@@ -6,19 +6,26 @@ import facade.*;
 import facade.erreurs.CoupleUtilisateurMDPInconnuException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.application.Platform;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.control.ComboBoxMatchers;
 import vues.FenetrePrincipale;
 
 import javax.xml.soap.Node;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static facade.AdminService.ADMIN;
+import static facade.AdminService.BASIQUE;
+import static facade.AdminService.MODERATEUR;
+import static org.junit.Assert.assertTrue;
 import static org.testfx.matcher.control.MenuItemMatchers.hasText;
 
 public class TestAPI extends ApplicationTest {
@@ -32,6 +39,7 @@ public class TestAPI extends ApplicationTest {
     private Controleur controleur;
     private Personne p;
 
+    ComboBox<String> comboBox;
 
 
     @Override
@@ -505,7 +513,194 @@ public class TestAPI extends ApplicationTest {
 
 
 
+    @Test
+    public void demandeInscriptionModerateurTestOK() throws InterruptedException {
 
+
+        basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR);
+        EasyMock.expectLastCall();
+        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
+
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        write("123");
+        sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(MODERATEUR);
+        sleepBetweenActions();
+        clickOn("#valideruser");
+        sleepBetweenActions();
+
+
+    }
+
+    @Test
+    public void demandeInscriptionAdminTestOK() throws InterruptedException {
+
+
+        basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN);
+        EasyMock.expectLastCall();
+        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
+
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        write("123");
+        sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(ADMIN);
+        sleepBetweenActions();
+        clickOn("#valideruser");
+        sleepBetweenActions();
+
+
+    }
+
+    @Test
+    public void demandeInscriptionBasiqueTestOK() throws InterruptedException {
+
+        basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
+        EasyMock.expectLastCall();
+        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
+
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        write("123");
+        sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(BASIQUE);
+        sleepBetweenActions();
+        clickOn("#valideruser");
+        sleepBetweenActions();
+
+
+    }
+
+    @Test /// en cours
+    public void traiterDemandeOKAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+
+
+        basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
+        EasyMock.expectLastCall();
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        write("123");
+        sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(BASIQUE);
+        sleepBetweenActions();
+        clickOn("#valideruser");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        clickOn("#traiterDemandes");
+        sleepBetweenActions();
+        clickOn("#accepter");
+
+
+    }
 
 
 

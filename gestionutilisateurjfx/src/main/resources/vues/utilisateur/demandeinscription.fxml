@@ -35,7 +35,7 @@
 
       <HBox alignment="TOP_CENTER">
    <children>
-            <Button mnemonicParsing="false" onAction="#enregistrerNouvelUtilisateur" text="Valider" />
+            <Button fx:id="valideruser" mnemonicParsing="false" onAction="#enregistrerNouvelUtilisateur" text="Valider" />
             <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
    </children></HBox>
 

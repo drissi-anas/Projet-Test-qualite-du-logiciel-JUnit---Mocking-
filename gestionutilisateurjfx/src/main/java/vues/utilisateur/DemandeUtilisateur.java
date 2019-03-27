@@ -32,6 +32,9 @@ public class DemandeUtilisateur implements Sujet {
     @FXML
     ComboBox<String> roles;
 
+    @FXML
+    Button valideruser;
+
     public VBox getNode() {
         return node;
     }

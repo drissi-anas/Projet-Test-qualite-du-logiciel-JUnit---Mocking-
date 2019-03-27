@@ -20,6 +20,6 @@
       </Label>
       <TextField fx:id="nom" />
       <Button fx:id="boutonValider" mnemonicParsing="false" onAction="#validerNom" text="Valider" />
-      <Hyperlink text="Demander inscription" onAction="#demanderInscription"/>
+      <Hyperlink fx:id="demanderInscription" text="Demander inscription" onAction="#demanderInscription" />
    </children>
 </VBox>
