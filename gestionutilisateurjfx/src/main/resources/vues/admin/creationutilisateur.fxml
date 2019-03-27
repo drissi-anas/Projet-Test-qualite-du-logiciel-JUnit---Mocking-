@@ -28,6 +28,6 @@
       </Label>
       <PasswordField fx:id="confirmationMotDePasse" />
 
-      <Button mnemonicParsing="false" onAction="#enregistrerNouvelUtilisateur" text="Valider" />
+      <Button mnemonicParsing="false" onAction="#enregistrerNouvelUtilisateur" text="Valider" fx:id="enregistreUser" />
    </children>
 </VBox>

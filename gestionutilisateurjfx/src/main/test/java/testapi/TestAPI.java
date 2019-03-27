@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.erreurs.PseudoInexistantJFXException;
 import facade.*;
 import facade.erreurs.CoupleUtilisateurMDPInconnuException;
+import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -22,7 +23,7 @@ import static org.testfx.matcher.control.MenuItemMatchers.hasText;
 
 public class TestAPI extends ApplicationTest {
 
-    private static final long SLEEP_TIME = 2000;
+    private static final long SLEEP_TIME = 1000;
     private Stage stage;
     private AdminService adminService;
     private BasiquesOffLineService basiquesOffLineService;
@@ -345,6 +346,189 @@ public class TestAPI extends ApplicationTest {
             }
 
         }
+
+
+
+
+    @Test
+    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getNom()).andReturn("Hajar");
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#ajouterUtilisateur");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Hajar");
+
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        sleepBetweenActions();
+        write("111");
+
+        sleepBetweenActions();
+        clickOn("#confirmationMotDePasse");
+        sleepBetweenActions();
+        write("111");
+
+        sleepBetweenActions();
+        clickOn("#enregistreUser");
+        sleepBetweenActions();
+
+    }
+
+
+
+    @Test
+    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
+
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andThrow(e.fillInStackTrace());
+       EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#ajouterUtilisateur");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#nom");
+        sleepBetweenActions();
+        write("Hajar");
+
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        sleepBetweenActions();
+        write("111");
+
+        sleepBetweenActions();
+        clickOn("#confirmationMotDePasse");
+        sleepBetweenActions();
+        write("111");
+
+        sleepBetweenActions();
+        clickOn("#enregistreUser");
+        sleepBetweenActions();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /* Just a shortcut to retrieve widgets in the GUI. */
     public <T extends Node> T find(final String query) {
         /** TestFX provides many operations to retrieve elements from the loaded GUI. */
