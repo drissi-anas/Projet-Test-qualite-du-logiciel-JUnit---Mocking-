@@ -107,7 +107,6 @@ public class TestAPI extends ApplicationTest {
         Collection<Personne> personnes= new ArrayList<>();
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
@@ -157,7 +156,6 @@ public class TestAPI extends ApplicationTest {
         Collection<Personne> personnes= new ArrayList<>();
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
@@ -207,7 +205,6 @@ public class TestAPI extends ApplicationTest {
         Collection<Personne> personnes= new ArrayList<>();
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
@@ -257,7 +254,6 @@ public class TestAPI extends ApplicationTest {
         Collection<Personne> personnes= new ArrayList<>();
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
@@ -297,6 +293,44 @@ public class TestAPI extends ApplicationTest {
 
 
     }
+
+    @Test
+      public void saisieMdpKO() throws CoupleUtilisateurMDPInconnuException {
+        long l = 1;
+        CoupleUtilisateurMDPInconnuException e= new CoupleUtilisateurMDPInconnuException();
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andThrow(e.fillInStackTrace());
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+
+
+    }
+
 
 
 

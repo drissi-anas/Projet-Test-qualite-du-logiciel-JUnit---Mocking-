@@ -17,6 +17,7 @@
       <module name="gestionutilisateurmodeleapi" target="1.8" />
       <module name="gestionutilisateurmodeleimpl" target="1.8" />
       <module name="groupe7" target="1.8" />
+      <module name="groupe7.2" target="1.8" />
       <module name="groupe71" target="1.8" />
     </bytecodeTargetLevel>
   </component>
