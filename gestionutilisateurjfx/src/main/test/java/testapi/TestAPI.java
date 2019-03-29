@@ -54,11 +54,35 @@ public class TestAPI extends ApplicationTest {
 
     }
 
+    @Test
+    public void saisieNomTestOK() { /*l'utilisateur saisie un nom valide */
+
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+
+    }
+
 
 
 
     @Test
-    public void saisieNomTestKO() throws InterruptedException {
+    public void saisieNomTestKO()  { /*l'utilisateur saisie un nom déjà existant */
 
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(false);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
@@ -82,34 +106,11 @@ public class TestAPI extends ApplicationTest {
     }
 
 
-    @Test
-    public void saisieNomTestOK() throws InterruptedException {
-
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService);
-
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controleur.run();
-            }
-        });
-
-        sleepBetweenActions();
-        clickOn("#nom");
-
-        write("Yohan");
-        sleepBetweenActions();
-        clickOn("#boutonValider");
-        sleepBetweenActions();
-
-    }
 
 
 
         @Test
-    public void saisieMdpOKAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
+    public void saisieMdpOKAdminAndMod () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -157,7 +158,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpKOAdminKOMod () throws CoupleUtilisateurMDPInconnuException {
+    public void saisieMdpNonModNonAdmin () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur basique se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -206,7 +207,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
+    public void saisieMdpModNonAdmin () throws CoupleUtilisateurMDPInconnuException {/*Un moderateur se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -255,7 +256,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpOKAdminKOMod () throws CoupleUtilisateurMDPInconnuException {
+    public void saisieMdpAdminNonMod () throws CoupleUtilisateurMDPInconnuException { /*Un admin (non moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -304,7 +305,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-      public void saisieMdpKO() throws CoupleUtilisateurMDPInconnuException {
+      public void saisieMdpKO() throws CoupleUtilisateurMDPInconnuException { /*Un utilisateurse connecte avec un  couple login/mdp invalide */
         long l = 1;
         CoupleUtilisateurMDPInconnuException e= new CoupleUtilisateurMDPInconnuException();
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -359,7 +360,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -439,7 +440,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*Un admin ajoute un utilisateur déjà existant */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -518,7 +519,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException {
+    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException { /* un admin se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -574,7 +575,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void modQuitter () throws CoupleUtilisateurMDPInconnuException {
+    public void modQuitter () throws CoupleUtilisateurMDPInconnuException { /* un moderateur se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -630,7 +631,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException {
+    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException { /* un utilisateur basique se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -695,7 +696,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void demandeInscriptionModerateurTestOK() throws InterruptedException {
+    public void demandeInscriptionModerateurTestOK()  { /* un utilisateur fait une demande d'inscription en tant que moderateur */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR);
@@ -736,40 +737,8 @@ public class TestAPI extends ApplicationTest {
 
 
 
-
-
-
     @Test
-    public void demandeInscriptionAnnuler() throws InterruptedException {
-
-        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
-
-        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controleur.run();
-            }
-        });
-
-
-
-        sleepBetweenActions();
-        clickOn("#demanderInscription");
-        sleepBetweenActions();
-        clickOn("#annulerInscrip");
-        sleepBetweenActions();
-
-    }
-
-
-
-
-
-
-
-    @Test
-    public void demandeInscriptionAdminTestOK() throws InterruptedException {
+    public void demandeInscriptionAdminTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'admin */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN);
@@ -805,7 +774,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void demandeInscriptionBasiqueTestOK() throws InterruptedException {
+    public void demandeInscriptionBasiqueTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
         EasyMock.expectLastCall();
@@ -839,8 +808,30 @@ public class TestAPI extends ApplicationTest {
 
     }
 
-    @Test /// en cours
-    public void traiterDemandeOKAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
+    @Test
+    public void demandeInscriptionAnnuler()  { /*un utlisateur veut faire une demande d'inscription puis annule sa demande */
+
+        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
+
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+        clickOn("#annulerInscrip");
+        sleepBetweenActions();
+
+    }
+
+  /*  @Test /// en cours
+    public void traiterDemandeAdminEtMod () throws CoupleUtilisateurMDPInconnuException {
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -882,30 +873,11 @@ public class TestAPI extends ApplicationTest {
         });
 
         sleepBetweenActions();
-        clickOn("#demanderInscription");
-        sleepBetweenActions();
-
-        clickOn("#nom");
-        sleepBetweenActions();
-        write("Yohan");
-        sleepBetweenActions();
-        clickOn("#motDePasse");
-        write("123");
-        sleepBetweenActions();
-        clickOn("#roles");
-        sleepBetweenActions();
-        clickOn(BASIQUE);
-        sleepBetweenActions();
-        clickOn("#valideruser");
-        sleepBetweenActions();
-
-        sleepBetweenActions();
         clickOn("#nom");
 
         write("Yohan");
         sleepBetweenActions();
         clickOn("#boutonValider");
-
         sleepBetweenActions();
         clickOn("#motDePasse");
 
@@ -914,18 +886,19 @@ public class TestAPI extends ApplicationTest {
         clickOn("#boutonValidermdp");
         sleepBetweenActions();
 
+
+        write("123");
+        sleepBetweenActions();
         clickOn("#traiterDemandes");
         sleepBetweenActions();
-        clickOn("#accepter");
 
-
-    }
+    } */
 
 
 
 
 
-  /*  @Test
+   /* @Test
     public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
        p =fabriqueMock.creerMockPersonne();
 
@@ -993,29 +966,6 @@ public class TestAPI extends ApplicationTest {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* Just a shortcut to retrieve widgets in the GUI. */
-    public <T extends Node> T find(final String query) {
-        /** TestFX provides many operations to retrieve elements from the loaded GUI. */
-        return (T) lookup(query).query();
-    }
 
 
     }
