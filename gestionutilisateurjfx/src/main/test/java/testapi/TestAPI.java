@@ -513,6 +513,187 @@ public class TestAPI extends ApplicationTest {
 
 
 
+
+
+
+
+    @Test
+    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException {
+        UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
+
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+       connexionService.deconnexion(1);
+       EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#quitter");
+        sleepBetweenActions();
+
+
+    }
+
+
+    @Test
+    public void modQuitter () throws CoupleUtilisateurMDPInconnuException {
+        UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
+
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        connexionService.deconnexion(1);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#quitter");
+        sleepBetweenActions();
+
+
+    }
+
+
+    @Test
+    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException {
+        UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
+
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        connexionService.deconnexion(1);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+        clickOn("#quitter");
+        sleepBetweenActions();
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     @Test
     public void demandeInscriptionModerateurTestOK() throws InterruptedException {
 
@@ -560,8 +741,6 @@ public class TestAPI extends ApplicationTest {
 
     @Test
     public void demandeInscriptionAnnuler() throws InterruptedException {
-
-
 
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
@@ -746,65 +925,71 @@ public class TestAPI extends ApplicationTest {
 
 
 
-//    @Test
-//    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
-//        p =fabriqueMock.creerMockPersonne();
-//        long l = 1;
-//
-//        Collection<InscriptionPotentielle> ips = new ArrayList<>();
-//        Collection<Personne> personnes= new ArrayList<>();
-//        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-//        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-//        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//
-//        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-//        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-//
-//
-//
-//        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
-//
-//        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                controleur.run();
-//            }
-//        });
-//
-//        sleepBetweenActions();
-//        clickOn("#nom");
-//
-//        write("Yohan");
-//        sleepBetweenActions();
-//        clickOn("#boutonValider");
-//        sleepBetweenActions();
-//        clickOn("#motDePasse");
-//
-//        write("123");
-//        sleepBetweenActions();
-//        clickOn("#boutonValidermdp");
-//        sleepBetweenActions();
-//
-//
-//        write("123");
-//        sleepBetweenActions();
-//        clickOn("#traiterDemandes");
-//        sleepBetweenActions();
-//
-//    }
+  /*  @Test
+    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException {
+       p =fabriqueMock.creerMockPersonne();
+
+
+        long l = 1;
+
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+
+
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+           @Override
+           public void run() {
+               controleur.run();
+           }
+       });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+         write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+         sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#traiterDemandes");
+        sleepBetweenActions();
+
+    }*/
 
 
 

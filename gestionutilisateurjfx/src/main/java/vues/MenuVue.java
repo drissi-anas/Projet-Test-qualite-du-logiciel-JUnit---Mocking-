@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -21,6 +22,8 @@ import java.net.URL;
  */
 public class MenuVue {
 
+    @FXML
+    Button quitter;
     Controleur monControleur;
 
 

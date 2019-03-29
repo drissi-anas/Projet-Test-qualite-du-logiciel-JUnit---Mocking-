@@ -25,6 +25,6 @@
           </TitledPane>
         </panes>
       </Accordion>
-     <Button text="Quitter" onAction="#quitter"/>
+     <Button fx:id="quitter" text="Quitter" onAction="#quitter"/>
    </children>
 </VBox>
