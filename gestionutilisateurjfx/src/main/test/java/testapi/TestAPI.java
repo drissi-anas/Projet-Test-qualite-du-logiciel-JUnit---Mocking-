@@ -30,7 +30,7 @@ import static org.testfx.matcher.control.MenuItemMatchers.hasText;
 
 public class TestAPI extends ApplicationTest {
 
-    private static final long SLEEP_TIME = 1000;
+    private static final long SLEEP_TIME = 2000;
     private Stage stage;
     private AdminService adminService;
     private BasiquesOffLineService basiquesOffLineService;
@@ -528,6 +528,8 @@ public class TestAPI extends ApplicationTest {
                 controleur.run();
             }
         });
+
+
         sleepBetweenActions();
         clickOn("#demanderInscription");
         sleepBetweenActions();
@@ -548,6 +550,44 @@ public class TestAPI extends ApplicationTest {
 
 
     }
+
+
+
+
+
+
+
+
+    @Test
+    public void demandeInscriptionAnnuler() throws InterruptedException {
+
+
+
+        EasyMock.replay(adminService, basiquesOffLineService, connexionService);
+
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+
+        sleepBetweenActions();
+        clickOn("#demanderInscription");
+        sleepBetweenActions();
+        clickOn("#annulerInscrip");
+        sleepBetweenActions();
+
+    }
+
+
+
+
+
+
 
     @Test
     public void demandeInscriptionAdminTestOK() throws InterruptedException {

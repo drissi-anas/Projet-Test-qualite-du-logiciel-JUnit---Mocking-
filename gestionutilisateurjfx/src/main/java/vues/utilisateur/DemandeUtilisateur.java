@@ -19,6 +19,8 @@ import java.util.Collection;
  */
 public class DemandeUtilisateur implements Sujet {
 
+     @FXML
+     Button annulerInscrip;
     @FXML
     VBox node;
 
