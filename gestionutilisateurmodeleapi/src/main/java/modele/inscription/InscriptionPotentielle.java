@@ -1,6 +1,7 @@
 package modele.inscription;
 
 public interface InscriptionPotentielle {
+
     String getRoleDemande();
 
     void setRoleDemande(String roleDemande);
