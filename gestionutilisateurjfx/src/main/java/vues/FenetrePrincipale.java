@@ -30,6 +30,7 @@ public class FenetrePrincipale {
     private SupprimerUtilisateur supprimerUtilisateur;
     private TraiterDemandes traiterDemandes;
 
+
     public Controleur getMonControleur() {
         return monControleur;
     }
@@ -52,6 +53,7 @@ public class FenetrePrincipale {
         traiterDemandes = TraiterDemandes.creerVue(monControleur);
         supprimerUtilisateur = SupprimerUtilisateur.creerVue(monControleur);
         menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes);
+        listeThemes = ListeThemes.creerVue(monControleur);
 
         //menuVue..setContent();
 
@@ -84,6 +86,7 @@ public class FenetrePrincipale {
     ConnexionVue connexionVue;
     MotDePasseVue motDePasseVue;
     DemandeUtilisateur demandeUtilisateur;
+    ListeThemes listeThemes;
 
 
     public static FenetrePrincipale creerVue(Controleur c, Stage stage) {

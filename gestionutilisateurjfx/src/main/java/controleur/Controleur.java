@@ -14,11 +14,13 @@ import facade.erreurs.CoupleUtilisateurMDPInconnuException;
 import facade.erreurs.RoleDejaAttribueException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.stage.Stage;
+import modele.forum.Theme;
 import modele.inscription.InscriptionPotentielle;
 
 import modele.personnes.Personne;
 
 import vues.FenetrePrincipale;
+import vues.ThemeVue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -194,5 +196,14 @@ public class Controleur implements Observateur {
         for (Sujet sujet : sujets) {
             sujet.notifier(notification);
         }
+    }
+
+    public void gototheme(Theme theme) {
+
+        ThemeVue themeVue = ThemeVue.creerVue(this);
+
+        themeVue.majTheme(theme);
+
+
     }
 }
