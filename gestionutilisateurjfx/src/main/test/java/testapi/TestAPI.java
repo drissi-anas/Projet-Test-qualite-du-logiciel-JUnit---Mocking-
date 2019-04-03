@@ -87,7 +87,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieNomTestCV() { /*l'utilisateur saisie un nom valide */
+    public void saisieNomTestCV() { /*l'utilisateur laisse un champ vide */
 
         EasyMock.expect(connexionService.estUnUtilisateurConnu("")).andReturn(true);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
@@ -100,9 +100,10 @@ public class TestAPI extends ApplicationTest {
             }
         });
 
+
         sleepBetweenActions();
         clickOn("#nom");
-
+        sleepBetweenActions();
         write("");
         sleepBetweenActions();
         clickOn("#boutonValider");
@@ -112,7 +113,50 @@ public class TestAPI extends ApplicationTest {
     }
 
 
+    @Test
+    public void saisieMdpOKAdminAndModCV () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+        p =fabriqueMock.creerMockPersonne();
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
 
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+
+
+
+    }
 
 
     @Test

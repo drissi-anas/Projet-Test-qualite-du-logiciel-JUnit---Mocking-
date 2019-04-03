@@ -20,7 +20,7 @@ public class ThemeVue {
     Controleur monControleur;
 
     public static ThemeVue creerVue(Controleur c) {
-        URL location = ConnexionVue.class.getResource("/vues/connexion/connexion.fxml");
+        URL location = ThemeVue.class.getResource("/vues/new/theme.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {

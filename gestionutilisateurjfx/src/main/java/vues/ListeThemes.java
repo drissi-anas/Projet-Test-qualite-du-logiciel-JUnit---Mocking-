@@ -31,7 +31,7 @@ public class ListeThemes {
 
 
     public static ListeThemes creerVue(Controleur c) {
-        URL location = ConnexionVue.class.getResource("/vues/connexion/connexion.fxml");
+        URL location = ListeThemes.class.getResource("/vues/new/listeThemes.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {
