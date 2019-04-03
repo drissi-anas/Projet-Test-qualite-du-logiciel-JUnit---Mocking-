@@ -869,7 +869,7 @@ public class TestAPI extends ApplicationTest {
 
         //SupprimerUSer
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
         adminService.supprimerUtilisateur(1,2);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
