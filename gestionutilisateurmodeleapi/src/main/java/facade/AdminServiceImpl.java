@@ -1,6 +1,9 @@
-package facade.erreurs;
+package facade;
 
 import facade.AdminService;
+import facade.erreurs.IndividuNonConnecteException;
+import facade.erreurs.RoleDejaAttribueException;
+import facade.erreurs.UtilisateurDejaExistantException;
 import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 
@@ -10,7 +13,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException {
-        throw null;
+        return null;
     }
 
     @Override
