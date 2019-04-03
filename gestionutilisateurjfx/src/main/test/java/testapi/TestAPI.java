@@ -7,6 +7,7 @@ import facade.erreurs.CoupleUtilisateurMDPInconnuException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.application.Platform;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 import org.easymock.EasyMock;
 import org.junit.Test;
+import org.loadui.testfx.GuiTest;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.control.ComboBoxMatchers;
 import vues.FenetrePrincipale;
@@ -38,6 +40,7 @@ public class TestAPI extends ApplicationTest {
     private FabriqueMock fabriqueMock;
     private Controleur controleur;
     private Personne p;
+    private Personne p2;
 
     ComboBox<String> comboBox;
 
@@ -829,8 +832,96 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
 
     }
+    @Test
+    public void supprimerUser() throws CoupleUtilisateurMDPInconnuException {
+        p =fabriqueMock.creerMockPersonne();
+         p2= fabriqueMock.creerMockPersonne();
+        long l = 1;
+        long l2=2;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes= new ArrayList<>();
 
-  /*  @Test /// en cours
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        //Recupère la liste et ajoute des Users
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getNom()).andReturn("Yohan");
+        EasyMock.expect(p.getNom()).andReturn("Yohan");
+
+        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+        EasyMock.expect(p2.getNom()).andReturn("Sema");
+        EasyMock.expect(p2.getNom()).andReturn("Sema");
+        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+
+        //SupprimerUSer
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        adminService.supprimerUtilisateur(1,2);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
+
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#supprimerUtilisateur");
+
+        ListView<Personne> liste = (ListView<Personne>) GuiTest.find("#listeUtilisateurs");
+        liste.getItems().add(p);
+        liste.getItems().add(p2);
+        sleepBetweenActions();
+        liste.getSelectionModel().selectIndices(1);
+        sleepBetweenActions();
+        clickOn("#supprimeruser");
+        sleepBetweenActions();
+
+
+
+    }
+
+
+
+
+
+  /* @Test /// en cours
     public void traiterDemandeAdminEtMod () throws CoupleUtilisateurMDPInconnuException {
         p =fabriqueMock.creerMockPersonne();
         long l = 1;

@@ -11,6 +11,6 @@
 <VBox fx:id="node" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.admin.SupprimerUtilisateur">
    <children>
      <ListView fx:id="listeUtilisateurs" onMouseClicked="#click"/>
-       <Button text="supprimer" onAction="#supprimer"/>
+       <Button fx:id="supprimeruser" text="supprimer" onAction="#supprimer"/>
    </children>
 </VBox>

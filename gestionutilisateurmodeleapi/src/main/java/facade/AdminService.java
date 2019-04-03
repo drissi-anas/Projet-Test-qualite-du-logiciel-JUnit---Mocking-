@@ -14,7 +14,10 @@ public interface AdminService {
 
 
     Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException;
+
+
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException;
+
     void supprimerClient(long u, long utilisateurConcerne) throws IndividuNonConnecteException;
     Collection<Personne> getListeUtilisateur(long idDemandeur)throws IndividuNonConnecteException;
 

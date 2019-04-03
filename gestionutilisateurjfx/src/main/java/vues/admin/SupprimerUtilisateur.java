@@ -24,6 +24,7 @@ import java.util.Objects;
  */
 public class SupprimerUtilisateur implements Sujet {
 
+    @FXML Button supprimeruser;
     @FXML
     VBox node;
 
