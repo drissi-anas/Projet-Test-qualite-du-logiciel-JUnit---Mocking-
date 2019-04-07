@@ -120,4 +120,8 @@ public class MenuVue {
     public void chargerDemandes(MouseEvent mouseEvent) {
         this.traitDemandes.setListeDemandes(monControleur.getDemandes());
     }
+
+    public void listeThemes(ActionEvent event) {
+        monControleur.gotoListeThemes();
+    }
 }

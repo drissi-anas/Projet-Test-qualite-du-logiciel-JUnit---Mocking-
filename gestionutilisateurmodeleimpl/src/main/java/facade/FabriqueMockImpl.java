@@ -38,4 +38,10 @@ public class FabriqueMockImpl implements FabriqueMock {
         InscriptionPotentielle inscriptionPotentielle = EasyMock.createMock(InscriptionPotentielle.class);
         return inscriptionPotentielle;
     }
+
+    @Override
+    public ForumService creerMockForum() {
+        ForumService forumService = EasyMock.createMock(ForumService.class);
+        return forumService;
+    }
 }

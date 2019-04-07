@@ -10,4 +10,5 @@ public interface FabriqueMock {
     ConnexionService creerMockConnexionServ();
     Personne creerMockPersonne();
     InscriptionPotentielle creerInscri();
+    ForumService creerMockForum();
 }

@@ -36,11 +36,13 @@ import static org.testfx.matcher.control.MenuItemMatchers.hasText;
 
 public class TestAPI extends ApplicationTest {
 
+
     private static final long SLEEP_TIME = 2000;
     private Stage stage;
     private AdminService adminService;
     private BasiquesOffLineService basiquesOffLineService;
     private ConnexionService connexionService;
+    private ForumService forumService;
     private FabriqueMock fabriqueMock;
     private Controleur controleur;
     private Personne p;
@@ -57,7 +59,7 @@ public class TestAPI extends ApplicationTest {
         adminService=fabriqueMock.creerMockAdminService();
         basiquesOffLineService=fabriqueMock.creerMockBOS();
         connexionService=fabriqueMock.creerMockConnexionServ();
-
+        forumService=fabriqueMock.creerMockForum();
 
     }
 
@@ -943,6 +945,10 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
         clickOn("#boutonValider");
         sleepBetweenActions();
+        sleepBetweenActions();
+        sleepBetweenActions();
+        sleepBetweenActions();
+
         clickOn("#motDePasse");
 
         write("123");
@@ -1139,7 +1145,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        ;
+
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
 

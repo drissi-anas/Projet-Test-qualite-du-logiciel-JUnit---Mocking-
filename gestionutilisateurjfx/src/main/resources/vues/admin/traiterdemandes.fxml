@@ -15,9 +15,9 @@
 
      <HBox>
          <children>
-             <Button text="Accepter" onAction="#accepter"/>
+             <Button fx:id="accept" text="Accepter" onAction="#accepter"/>
 
-             <Button text="supprimer" onAction="#refuser"/>
+             <Button fx:id="decline" text="supprimer" onAction="#refuser"/>
 
          </children>
 

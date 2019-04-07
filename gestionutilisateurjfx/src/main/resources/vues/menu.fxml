@@ -26,5 +26,8 @@
         </panes>
       </Accordion>
      <Button fx:id="quitter" text="Quitter" onAction="#quitter"/>
+
+           <Button fx:id="boutonValider" mnemonicParsing="false" onAction="#listeThemes" text="Acceder à la liste des thèmes" />
+
    </children>
 </VBox>

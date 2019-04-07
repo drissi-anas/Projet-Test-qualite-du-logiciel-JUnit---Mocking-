@@ -20,4 +20,5 @@ public interface Personne {
 
 
     boolean hasRole(String role);
+
 }

@@ -9,18 +9,19 @@ import controleur.notifications.update.UpdateRolesImpl;
 import facade.AdminService;
 import facade.BasiquesOffLineService;
 import facade.ConnexionService;
-import facade.erreurs.AccesRefuseException;
-import facade.erreurs.CoupleUtilisateurMDPInconnuException;
-import facade.erreurs.RoleDejaAttribueException;
-import facade.erreurs.UtilisateurDejaExistantException;
+import facade.ForumService;
+import facade.erreurs.*;
 import javafx.stage.Stage;
 import modele.forum.Theme;
+import modele.forum.Topic;
 import modele.inscription.InscriptionPotentielle;
 
 import modele.personnes.Personne;
 
+import vues.CreationTopic;
 import vues.FenetrePrincipale;
 import vues.ThemeVue;
+import vues.TopicVue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class Controleur implements Observateur {
     ConnexionService connexionService;
     AdminService adminService;
     BasiquesOffLineService basiquesOffLineService;
+    ForumService forumService;
 
     FenetrePrincipale maFenetre;
 
@@ -46,9 +48,19 @@ public class Controleur implements Observateur {
 
     Stage stage;
 
-
     public Controleur(ConnexionService connexionService, AdminService adminService, BasiquesOffLineService basiquesOffLineService, Stage stage){
 
+
+        this.connexionService = connexionService;
+        this.adminService = adminService;
+        this.basiquesOffLineService = basiquesOffLineService;
+        this.stage = stage;
+        this.sujets = new ArrayList<>();
+    }
+
+    public Controleur(ConnexionService connexionService, AdminService adminService, BasiquesOffLineService basiquesOffLineService, Stage stage,ForumService forumService){
+
+        this.forumService=forumService;
         this.connexionService = connexionService;
         this.adminService = adminService;
         this.basiquesOffLineService = basiquesOffLineService;
@@ -95,10 +107,11 @@ public class Controleur implements Observateur {
 
 
     public void run() {
-        this.maFenetre = FenetrePrincipale.creerVue(this,stage);
 
+        this.maFenetre = FenetrePrincipale.creerVue(this,stage);
         this.maFenetre.goToConnexion();
         this.maFenetre.show();
+
     }
 
 
@@ -174,7 +187,6 @@ public class Controleur implements Observateur {
     }
 
 
-
     public void refuserDemandes(InscriptionPotentielle inscriptionPotentielle) {
         this.adminService.refuserInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
         this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
@@ -198,12 +210,48 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void gototheme(Theme theme) {
+    //// Methodes ajoutées
 
+    public void gototheme(String nomTheme) {
         ThemeVue themeVue = ThemeVue.creerVue(this);
+        themeVue.majTheme(nomTheme);
+        Theme theme=forumService.récupererTheme(nomTheme);
+        themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
+    }
 
-        themeVue.majTheme(theme);
+    public void gototopic(Topic topic) {
+        TopicVue topicVue = TopicVue.creerVue(this);
+        topicVue.majTopic(topic);
+        topicVue.setListeMessages(forumService.getListeMessagePourUnTopic(topic));
+    }
 
+    public void ajouterMessage(String nomDuTopic, String texteMessage) {
+        Topic topic = forumService.récupererTopic(nomDuTopic);
+        this.forumService.ajouterMessage(topic,texteMessage);
+    }
 
+    public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) {
+        Theme theme = forumService.récupererTheme(themeDuTopic);
+        Topic nouveauTopic = null;
+        try {
+            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,messageDuTopicText,identifiant);
+            gototopic(nouveauTopic);
+        } catch (NomTopicDejaExistantException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goToCreerEquipe(String nomDuTheme) {
+        CreationTopic topicVue = CreationTopic.creerVue(this);
+        topicVue.majTheme(nomDuTheme);
+
+    }
+
+    public Collection<Theme> getThemes() {
+        return forumService.getListeTheme();
+    }
+
+    public void gotoListeThemes() {
+        this.maFenetre.gotoListetheme();
     }
 }

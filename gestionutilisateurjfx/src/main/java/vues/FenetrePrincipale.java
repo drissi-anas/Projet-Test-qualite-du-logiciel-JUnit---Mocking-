@@ -1,12 +1,14 @@
 package vues;
 
 import controleur.Controleur;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import modele.forum.Theme;
 import vues.admin.CreationUtilisateur;
 import vues.admin.SupprimerUtilisateur;
 import vues.admin.TraiterDemandes;
@@ -29,6 +31,12 @@ public class FenetrePrincipale {
     private Stage monTheatre;
     private SupprimerUtilisateur supprimerUtilisateur;
     private TraiterDemandes traiterDemandes;
+    MenuVue menuVue;
+    ConnexionVue connexionVue;
+    MotDePasseVue motDePasseVue;
+    DemandeUtilisateur demandeUtilisateur;
+    ListeThemes listeThemes;
+
 
 
     public Controleur getMonControleur() {
@@ -46,6 +54,7 @@ public class FenetrePrincipale {
 
 
     private void initialiserVues() {
+
         connexionVue = ConnexionVue.creerVue(monControleur);
         motDePasseVue = MotDePasseVue.creerVue(monControleur);
         creationUtilisateurVue = CreationUtilisateur.creerVue(monControleur);
@@ -54,6 +63,7 @@ public class FenetrePrincipale {
         supprimerUtilisateur = SupprimerUtilisateur.creerVue(monControleur);
         menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes);
         listeThemes = ListeThemes.creerVue(monControleur);
+//        listeThemes.setListeThemes(monControleur.getThemes());
 
         //menuVue..setContent();
 
@@ -67,6 +77,10 @@ public class FenetrePrincipale {
     }
 
 
+    public void gotoListetheme() {
+        this.maFenetre.setCenter(this.listeThemes.getNode());
+    }
+
 
     public void goToSaisieMotDePasse() {
 
@@ -75,18 +89,12 @@ public class FenetrePrincipale {
 
     }
 
-
     public void goToMenu() {
 
         this.menuVue.checkVisibility();
         this.maFenetre.setCenter(this.menuVue.getNode());
     }
 
-    MenuVue menuVue;
-    ConnexionVue connexionVue;
-    MotDePasseVue motDePasseVue;
-    DemandeUtilisateur demandeUtilisateur;
-    ListeThemes listeThemes;
 
 
     public static FenetrePrincipale creerVue(Controleur c, Stage stage) {
@@ -119,10 +127,10 @@ public class FenetrePrincipale {
     }
 
 
+
     public void show() {
         this.monTheatre.show();
     }
-
 
 
 
