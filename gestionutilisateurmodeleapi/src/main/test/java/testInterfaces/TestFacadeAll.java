@@ -294,4 +294,64 @@ public abstract class TestFacadeAll {
             Assert.fail();
         }
         }
+    @Test(expected = CoupleUtilisateurMDPInconnuException.class)
+    public void connexionTestKOCoupleUtilisateurMDPInconnu() throws  UtilisateurDejaExistantException {
+        try {
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
+            connexionService.connexion(p2.getNom(), p2.getMdp());
+        } catch (CoupleUtilisateurMDPInconnuException e){
+            Assert.fail();
+        }
     }
+
+
+    @Test
+    public void deconnexionTestOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur3","utilisateur3");
+            connexionService.connexion(p2.getNom(), p2.getMdp());
+            connexionService.deconnexion(p2.getIdentifiant());
+            Assert.assertTrue(true);
+    }
+
+    @Test
+    public void estUnUtilisateurConnuTestOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur4","utilisateur4");
+        connexionService.connexion(p2.getNom(), p2.getMdp());
+        connexionService.estUnUtilisateurConnu(p2.getNom());
+        Assert.assertTrue(true);
+    }
+
+
+
+    @Test
+    public void estUnAdminTestOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur5","utilisateur5");
+        connexionService.connexion(p2.getNom(), p2.getMdp());
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
+        connexionService.estUnAdmin(p2.getIdentifiant());
+        Assert.assertTrue(true);
+    }
+
+
+
+    @Test
+    public void estUnModerateurTestOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur6","utilisateur6");
+        connexionService.connexion(p2.getNom(), p2.getMdp());
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        connexionService.estUnModerateur(p2.getIdentifiant());
+        Assert.assertTrue(true);
+    }
+
+    /**
+     *     -------------------------------------------------------   Test de l'interface    -------------------------------------------------------
+     */
+}
+
+
+
