@@ -10,12 +10,15 @@ public interface Personne {
     void setNom(String nom);
 
     long getIdentifiant();
+
     void supprimerRole(String role);
 
     Collection<String> getRoles();
+
     void addRole(String role) throws RoleDejaAttribueException;
 
     void setMdp(String mdp);
+
     String getMdp();
 
 
