@@ -88,21 +88,19 @@ public abstract class TestFacadeAll {
         public void  associerRoleUtilisateurTestKOIndividuNonConnecte() throws IndividuNonConnecteException, RoleDejaAttribueException {
             try {
                 adminService.associerRoleUtilisateur(2L, 1L,BASIQUE);
-                Assert.assertTrue(true);
             } catch (IndividuNonConnecteException e1) {
-                Assert.fail();
+                e1.printStackTrace();
             }
         }
         @Test (expected = RoleDejaAttribueException.class)
         public void  associerRoleUtilisateurTestKORoleDejaAttribue() throws IndividuNonConnecteException, RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException {
+            Personne p = connexionService.connexion("admin", "aaa");
             try {
-                Personne p = connexionService.connexion("admin", "aaa");
                 adminService.associerRoleUtilisateur(p.getIdentifiant(), 1L,BASIQUE);
-                Assert.assertTrue(true);
             } catch (RoleDejaAttribueException e1) {
-                Assert.fail();
+                e1.printStackTrace();
             }
-            adminService.associerRoleUtilisateur(1L, 1L,BASIQUE);
+                adminService.associerRoleUtilisateur(p.getIdentifiant(), 1L,BASIQUE);
         }
 
 
@@ -119,22 +117,24 @@ public abstract class TestFacadeAll {
             Assert.assertTrue(true);
 
         } catch (UtilisateurDejaExistantException e) {
-            e.printStackTrace();
+            Assert.fail();
         }
         }   catch (IndividuNonConnecteException e) {
             Assert.fail();
         }
         }
         @Test(expected = IndividuNonConnecteException.class)
-        public void supprimerClientTestKOIndividuNonConnecte() throws IndividuNonConnecteException, UtilisateurDejaExistantException {
+        public void supprimerClientTestKOIndividuNonConnecte() throws UtilisateurDejaExistantException,CoupleUtilisateurMDPInconnuException {
         try {
-            Personne p = adminService.creerUtilisateur(2L,"aaa","bbb");
-            adminService.supprimerClient(1L, p.getIdentifiant());
-            Assert.assertTrue(true);
-        }   catch (IndividuNonConnecteException e) {
-            Assert.fail();
+            Personne p = connexionService.connexion("admin", "admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"a","a");
+            connexionService.deconnexion(p.getIdentifiant());
+            adminService.supprimerClient(p.getIdentifiant(), p2.getIdentifiant());
+
+        } catch (IndividuNonConnecteException e) {
+            e.printStackTrace();
         }
-        }
+    }
 
 
 
@@ -147,15 +147,15 @@ public abstract class TestFacadeAll {
         }   catch (IndividuNonConnecteException e){
             Assert.fail();
         }
-        adminService.getListeUtilisateur(1L);
         }
+
         @Test (expected = IndividuNonConnecteException.class)
-        public void getListeUtilisateurKO() throws IndividuNonConnecteException {
+        public void getListeUtilisateurKO()  {
         try{
             adminService.getListeUtilisateur(1L);
             Assert.assertTrue(true);
         }   catch (IndividuNonConnecteException e){
-            Assert.fail();
+            e.printStackTrace();
         }
         }
 
@@ -164,20 +164,23 @@ public abstract class TestFacadeAll {
 
 
         @Test
-        public void getUserByIdTest(){
-        adminService.getUserById(1L,2L);
-        Assert.assertTrue(true);
-        }
-
-
-
-
-        @Test
-        public void supprimerRoleUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        public void getUserByIdTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
             Personne p = connexionService.connexion("admin", "admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
-            adminService.supprimerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur","utilisateur");
+            adminService.getUserById(p.getIdentifiant(),p2.getIdentifiant());
             Assert.assertTrue(true);
+        }
+
+
+
+
+        @Test
+        public void supprimerRoleUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin", "admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        adminService.supprimerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        Assert.assertTrue(true);
         }
 
 
@@ -186,11 +189,9 @@ public abstract class TestFacadeAll {
         public void changerMotDePasseUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
             Personne p = connexionService.connexion("admin", "admin");
             Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
-
             adminService.changerMotDePasseUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),"123456");
             Assert.assertTrue(true);
         }
-
 
 
 
@@ -219,45 +220,50 @@ public abstract class TestFacadeAll {
                Assert.fail();
            }
         }
-        @Test(expected = UtilisateurDejaExistantException.class)
-        public void validerInscriptionTestKOUtilisateurDejaExistant() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException {
-        try {
-            Personne p = connexionService.connexion("admin", "admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur", "utilisateur");
-            adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
-            adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant()); /** A verifier  **/
-        } catch (UtilisateurDejaExistantException e) {
-            Assert.fail();
-        }
+    @Test(expected = UtilisateurDejaExistantException.class)
+    public void validerInscriptionTestKOUtilisateurDejaExistant() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        Personne p = connexionService.connexion("admin", "admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur", "utilisateur");
 
-        }
-        @Test(expected = RoleDejaAttribueException.class)
-        public void validerInscriptionTestKORoleDejaAttribueException() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
-            Personne p = connexionService.connexion("admin", "admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur2", "utilisateur2");
+            adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
+
+        } catch (UtilisateurDejaExistantException e) {
+            e.printStackTrace();
+        }
+        adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
+    }
+
+    @Test(expected = RoleDejaAttribueException.class)
+    public void validerInscriptionTestKORoleDejaAttribueException() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        Personne p = connexionService.connexion("admin", "admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur2", "utilisateur2");
+        try {
+
             adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
             adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
         } catch (RoleDejaAttribueException e) {
-            Assert.fail();
+            e.printStackTrace();
         }
-            adminService.associerRoleUtilisateur(1L,1L,MODERATEUR);
-        }
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+    }
 
 
         @Test
         public void TestgetListeDesDemandesNonTraitees () throws CoupleUtilisateurMDPInconnuException {
         Personne p = connexionService.connexion("admin", "admin");
-        adminService.getListeUtilisateur(p.getIdentifiant());
+        adminService.getListeDesDemandesNonTraitees(p.getIdentifiant());
         Assert.assertTrue(true);
         }
 
+        /**
         @Test
         public void refuserInscriptionTestAdmin() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
-            Personne p = connexionService.connexion("admin", "admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur3", "utilisateur3");
-            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
-            adminService.refuserInscription(p.getIdentifiant(),p2.getIdentifiant());
+            basiquesOffLineService.posterDemandeInscription("utiladmin","aaaaa",ADMIN);
+            Personne p1 = connexionService.connexion("admin", "admin");
+            adminService.getListeDesDemandesNonTraitees(p1.getIdentifiant());
+            Personne p2 =  adminService.creerUtilisateur(p1.getIdentifiant(),"utiladmin","aaaaa");
+            adminService.refuserInscription(p1.getIdentifiant(),p2.getIdentifiant());
             Assert.assertTrue(true);
         }
         @Test
@@ -277,6 +283,7 @@ public abstract class TestFacadeAll {
         Assert.assertTrue(true);
         }
 
+        **/
 
     /**
      *     -------------------------------------------------------   Test de l'interface Connexion Service   -------------------------------------------------------
@@ -301,7 +308,7 @@ public abstract class TestFacadeAll {
             Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
             connexionService.connexion(p2.getNom(), p2.getMdp());
         } catch (CoupleUtilisateurMDPInconnuException e){
-            Assert.fail();
+            e.printStackTrace();
         }
     }
 
@@ -349,8 +356,28 @@ public abstract class TestFacadeAll {
     }
 
     /**
-     *     -------------------------------------------------------   Test de l'interface    -------------------------------------------------------
+     *     -------------------------------------------------------   Test de l'interface BasiquesOffLineService    -------------------------------------------------------
      */
+
+    @Test
+    public void posterDemandeInscriptionBasiqueTestOK()  {
+        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur",BASIQUE);
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void posterDemandeInscriptionModerateurTestOK()  {
+        basiquesOffLineService.posterDemandeInscription("moderateur1","moderateur1",MODERATEUR);
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void posterDemandeInscriptionAdminTestOK()  {
+        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur",ADMIN);
+        Assert.assertTrue(true);
+    }
+
+
 }
 
 

@@ -19,6 +19,7 @@ public interface AdminService {
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException;
 
     void supprimerClient(long u, long utilisateurConcerne) throws IndividuNonConnecteException;
+
     Collection<Personne> getListeUtilisateur(long idDemandeur)throws IndividuNonConnecteException;
 
     Personne getUserById(long identifiant, long identifiant1);
