@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sound.sampled.Line;
 
 import static facade.AdminService.*;
 
@@ -419,6 +418,7 @@ public abstract class TestFacadeAll {
      *     -------------------------------------------------------   Test de l'interface BasiquesOffLineService    -------------------------------------------------------
      */
 
+
     @Test
     public void posterDemandeInscriptionBasiqueTestOK()  {
         basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur",BASIQUE);
@@ -518,46 +518,156 @@ public abstract class TestFacadeAll {
      *     -------------------------------------------------------   Test de l'interface Personne    -------------------------------------------------------
      */
 
+
     @Test
-    public void supprimerRoleModerateur() {
-        personne.supprimerRole(MODERATEUR);
+    public void supprimerRoleModerateur() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+        connexionService.connexion(p2.getNom(),p2.getMdp());
+        p2.getRoles(); /** Récupere la liste des Roles de l'utilisateur **/
+        p2.hasRole(MODERATEUR);
+        p2.supprimerRole(MODERATEUR); /** Supprime le role MODERATEUR **/
     }
     @Test
-    public void supprimerRoleBasique() {
-        personne.supprimerRole(BASIQUE);
+    public void supprimerRoleBasique() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+        connexionService.connexion(p2.getNom(),p2.getMdp());
+        p2.getRoles();
+        p2.hasRole(BASIQUE);
+        p2.supprimerRole(BASIQUE);
+        Assert.assertTrue(true);
     }
     @Test
-    public void supprimerRoleAdmin() {
+    public void supprimerRoleAdmin() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"admin2","admin2");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
+        adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+        connexionService.connexion(p2.getNom(),p2.getMdp());
+        p2.getRoles();
+        p2.hasRole(ADMIN);
         personne.supprimerRole(ADMIN);
+        Assert.assertTrue(true);
     }
 
 
+
+
     @Test
-    public void addRoleModerateur() {
+    public void addRoleModerateurOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
-            personne.addRole(MODERATEUR);
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur234");
+            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+            adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+            connexionService.deconnexion(p.getIdentifiant());
+            connexionService.connexion(p2.getNom(),p2.getMdp());
+
+            /**  p2.getRoles();
+             if (p.hasRole(MODERATEUR) == false) **/
+
+            p2.addRole(MODERATEUR);
+            Assert.assertTrue(true);
         } catch (RoleDejaAttribueException e) {
             e.printStackTrace();
         }
     }
-    @Test
-    public void addRoleBasique() {
+    @Test(expected = RoleDejaAttribueException.class)
+    public void addRoleModerateurKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
-            personne.addRole(BASIQUE);
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur234");
+            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+            adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+            connexionService.deconnexion(p.getIdentifiant());
+            connexionService.connexion(p2.getNom(),p2.getMdp());
+
+             p2.getRoles();
+             p2.hasRole(MODERATEUR);
+             p2.addRole(MODERATEUR);
+        } catch (RoleDejaAttribueException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Test
+    public void addRoleBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException{
+        try {
+        Personne p = connexionService.connexion("admin","admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur132");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+        connexionService.deconnexion(p.getIdentifiant());
+        connexionService.connexion(p2.getNom(),p2.getMdp());
+        p2.addRole(BASIQUE);
+        Assert.assertTrue(true);
+        } catch (RoleDejaAttribueException e) {
+            Assert.fail();
+        }
+    }@Test (expected = RoleDejaAttribueException.class)
+    public void addRoleBasiqueKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException{
+        try {
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur345");
+            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+            adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+            connexionService.deconnexion(p.getIdentifiant());
+            connexionService.connexion(p2.getNom(),p2.getMdp());
+
+            p2.getRoles();
+            p2.hasRole(BASIQUE);
+            p2.addRole(BASIQUE);
+        } catch (RoleDejaAttribueException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Test
+    public void addRoleAdminOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        try {
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique789");
+            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+            adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+            connexionService.deconnexion(p.getIdentifiant());
+            connexionService.connexion(p2.getNom(),p2.getMdp());
+
+            p2.getRoles();
+            p2.hasRole(ADMIN);
+            p2.addRole(ADMIN);
             Assert.assertTrue(true);
         } catch (RoleDejaAttribueException e) {
             Assert.fail();
         }
     }
-    @Test
-    public void addRoleAdmin() {
+    @Test (expected = RoleDejaAttribueException.class)
+    public void addRoleAdminKORoleDejaAttribueException() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
-            personne.addRole(ADMIN);
-            Assert.assertTrue(true);
+            Personne p = connexionService.connexion("admin","admin");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"admin","admin1234");
+            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
+            adminService.validerInscription(p.getIdentifiant(),p2.getIdentifiant());
+            connexionService.deconnexion(p.getIdentifiant());
+            connexionService.connexion(p2.getNom(),p2.getMdp());
+
+            p2.getRoles();
+            p2.hasRole(ADMIN);
+            p2.addRole(ADMIN);
         } catch (RoleDejaAttribueException e) {
-            Assert.fail();
+            e.printStackTrace();
         }
     }
+
+
 
 
 }
