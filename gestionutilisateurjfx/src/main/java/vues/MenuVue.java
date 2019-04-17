@@ -56,7 +56,7 @@ public class MenuVue {
         this.listeThemes = listeThemes;
     }
 
-    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes,ListeThemes listeTheme) {
+    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes, ListeThemes listeTheme, ThemeVue listeTopic, CreationTopic creerTopic, TopicVue topic) {
         URL location = MenuVue.class.getResource("/vues/menu.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import modele.forum.Theme;
+import modele.forum.Topic;
 import vues.admin.CreationUtilisateur;
 import vues.admin.SupprimerUtilisateur;
 import vues.admin.TraiterDemandes;
@@ -18,6 +19,7 @@ import vues.utilisateur.DemandeUtilisateur;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 
 /**
  * Created by YohanBoichut on 04/12/2016.
@@ -37,7 +39,8 @@ public class FenetrePrincipale {
     DemandeUtilisateur demandeUtilisateur;
     ListeThemes listeThemes;
     ThemeVue listeTopic;
-
+    CreationTopic creerTopic;
+    TopicVue topic;
 
     public Controleur getMonControleur() {
         return monControleur;
@@ -62,7 +65,10 @@ public class FenetrePrincipale {
         traiterDemandes = TraiterDemandes.creerVue(monControleur);
         supprimerUtilisateur = SupprimerUtilisateur.creerVue(monControleur);
         listeThemes = ListeThemes.creerVue(monControleur);
-        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes,listeThemes);
+        listeTopic= ThemeVue.creerVue(monControleur);
+        creerTopic=CreationTopic.creerVue(monControleur);
+        topic=TopicVue.creerVue(monControleur);
+        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes,listeThemes,listeTopic,creerTopic,topic);
 
 //        listeThemes.setListeThemes(monControleur.getThemes());
 
@@ -83,9 +89,14 @@ public class FenetrePrincipale {
     }
 
 
-    public void gotoListeTopic(){
+    public void gotoListeTopic(String nom){
 
         this.maFenetre.setCenter(this.listeTopic.getNode());
+        listeTopic.majTheme(nom);
+        Collection<Topic>topics=monControleur.getTopicByTheme(nom);
+        listeTopic.setListeTopics(topics);
+
+
     }
     public void goToSaisieMotDePasse() {
 
@@ -138,6 +149,15 @@ public class FenetrePrincipale {
     }
 
 
+    public void gotoCreerTopic(String nomDuTheme) {
+        this.maFenetre.setCenter(this.creerTopic.getNode());
+        this.creerTopic.majTheme(nomDuTheme);
 
+    }
 
+    public void gotoTopic(Topic topic) {
+        this.maFenetre.setCenter(this.topic.getNode());
+        this.topic.majTopic(topic);
+        this.topic.setListeMessages(this.monControleur.getMessageByTopic(topic));
+    }
 }

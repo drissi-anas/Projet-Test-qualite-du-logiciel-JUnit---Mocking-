@@ -12,6 +12,7 @@ import facade.ConnexionService;
 import facade.ForumService;
 import facade.erreurs.*;
 import javafx.stage.Stage;
+import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
 import modele.inscription.InscriptionPotentielle;
@@ -212,9 +213,8 @@ public class Controleur implements Observateur {
     }*/
 
     public void gototopic(Topic topic) {
-        TopicVue topicVue = TopicVue.creerVue(this);
-        topicVue.majTopic(topic);
-        topicVue.setListeMessages(forumService.getListeMessagePourUnTopic(topic));
+        this.maFenetre.gotoTopic(topic);
+
     }
 
     public void ajouterMessage(String nomDuTopic, String texteMessage) {
@@ -233,9 +233,8 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void goToCreerEquipe(String nomDuTheme) {
-        CreationTopic topicVue = CreationTopic.creerVue(this);
-        topicVue.majTheme(nomDuTheme);
+    public void gotoCreerTopic(String nomDuTheme) {
+        this.maFenetre.gotoCreerTopic(nomDuTheme);
 
     }
 
@@ -248,6 +247,17 @@ public class Controleur implements Observateur {
     }
 
     public void gototheme(String nom){
-        this.maFenetre.gotoListeTopic();
+        this.maFenetre.gotoListeTopic(nom);
+
+    }
+
+    public Collection<Topic> getTopicByTheme(String nomTheme){
+        Theme t= forumService.récupererTheme(nomTheme);
+        return forumService.getListeTopicPourUnTheme(t);
+
+    }
+
+    public Collection<Message> getMessageByTopic(Topic t){
+        return forumService.getListeMessagePourUnTopic(t);
     }
 }

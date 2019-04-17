@@ -4,12 +4,11 @@ import controleur.Controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import modele.forum.Message;
 import modele.forum.Theme;
@@ -24,13 +23,27 @@ import java.util.Collection;
  */
 public class TopicVue {
 
+    @FXML
+    private ListView listeMessage;
+
+    @FXML
+    private Label nomDuTheme;
+
+    @FXML
+    private Button retour;
+
+    @FXML
+    private Button validerMessage;
+
+    @FXML
+    private AnchorPane node;
+
     Controleur monControleur;
 
     @FXML
     Label nomDuTopic;
 
-    @FXML
-    ListView<Message> listeMessages;
+
 
     @FXML
     TextArea zoneTexte;
@@ -64,15 +77,15 @@ public class TopicVue {
     }
 
     public void setListeMessages(Collection<Message> messages) {
-        this.listeMessages.getItems().setAll(messages);
-        this.listeMessages.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
+        this.listeMessage.getItems().setAll(messages);
+        this.listeMessage.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
             public ListCell<Message> call(ListView<Message> param) {
                 ListCell<Message> cell = new ListCell<Message>(){
                     @Override
                     protected void updateItem(Message t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
-                            setText(t.getIdentifiant() + " - " + t.getNom());
+                            setText(t.getAuteur() + " - " + t.getText());
                         }
                     }
                 };
@@ -86,4 +99,7 @@ public class TopicVue {
     }
 
 
+    public Node getNode() {
+        return node;
+    }
 }

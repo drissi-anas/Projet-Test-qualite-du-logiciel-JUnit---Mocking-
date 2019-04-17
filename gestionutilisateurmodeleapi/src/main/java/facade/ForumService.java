@@ -15,11 +15,16 @@ import java.util.Collection;
 public interface ForumService {
 
     Collection<Theme> getListeTheme();
+
     Collection<Topic> getListeTopicPourUnTheme(Theme theme);
-    ArrayList<Message> getListeMessagePourUnTopic(Topic topic);
-    void ajouterMessage(Topic topic,String string);
-    Topic récupererTopic(String nomTopic);
     Theme récupererTheme(String nomTheme);
+
+    Collection<Message> getListeMessagePourUnTopic(Topic topic);
+    Topic récupererTopic(String nomTopic);
+
+    void ajouterMessage(Topic topic,String string);
+
+
     void creerTheme(String nomTheme, long id);
     Topic creerTopic(String nomTopic, Theme theme,String Message, Personne personne)throws NomTopicDejaExistantException;
 

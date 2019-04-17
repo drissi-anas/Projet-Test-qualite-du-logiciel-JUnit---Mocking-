@@ -4,10 +4,13 @@ import controleur.Controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import modele.forum.Theme;
 
 import java.io.IOException;
@@ -18,6 +21,14 @@ import java.net.URL;
  */
 public class CreationTopic {
 
+
+    @FXML
+    private AnchorPane node;
+    @FXML
+    private Button validerTopic;
+
+    @FXML
+    private Button annulerTopic;
     Controleur monControleur;
     @FXML
     TextField nomTopic;
@@ -29,7 +40,7 @@ public class CreationTopic {
     private Label nomDuTheme;
 
     public static CreationTopic creerVue(Controleur c) {
-        URL location = CreationTopic.class.getResource("/vues/new/theme.fxml");
+        URL location = CreationTopic.class.getResource("/vues/new/creationTopic.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {
@@ -53,5 +64,14 @@ public class CreationTopic {
 
     public void enregistrerNouveauTopic(ActionEvent event) {
         monControleur.creerTopic(nomTopic.getText(),nomDuTheme.getText(),messageDuTopic.getText());
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+
+
+    public void annulerTopic(ActionEvent actionEvent) {
     }
 }

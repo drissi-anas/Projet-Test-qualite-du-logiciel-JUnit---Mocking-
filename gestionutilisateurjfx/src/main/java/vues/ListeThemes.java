@@ -38,6 +38,8 @@ public class ListeThemes implements Sujet {
 
     @FXML
     private AnchorPane node;
+
+
     public Node getNode() {
         return node;
     }

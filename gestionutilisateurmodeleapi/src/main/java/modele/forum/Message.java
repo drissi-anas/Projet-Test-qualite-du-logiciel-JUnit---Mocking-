@@ -10,12 +10,11 @@ import java.util.Date;
 public interface Message {
 
 
-    String getNom();
     Topic getTopic();
     long getIdentifiant();
-    Personne getAuteur();
+    String getAuteur();
     Date getDate();
     void setText(String texte);
-    void getText();
+    String getText();
 
 }

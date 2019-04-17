@@ -4,42 +4,25 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="maFenetre" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.TopicVue">
-    <top>
-        <Label fx:id="nomDuTopic" text="" BorderPane.alignment="CENTER">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
-    </top>
 
-<center>
-        <VBox fx:id="node" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1">
-        <children>
-            <ListView fx:id="listeMessages" onMouseClicked="#click" prefHeight="230.0" prefWidth="600.0" />
-
-        </children>
-         </VBox>
-    
-</center>
-<bottom>
-
-        <HBox>
-            <children>
-                <TextArea fx:id="zoneTexte" prefHeight="111.0" prefWidth="478.0">   </TextArea>
-                <Button onAction="#ajouterMessage" text="Ajouter Message" />
-            </children>
-        </HBox>
-
-</bottom>
-
-
-
-
-
-</BorderPane>
+<AnchorPane fx:id="node" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.TopicVue">
+   <children>
+      <Label fx:id="nomDuTheme" layoutX="215.0" layoutY="14.0" prefHeight="30.0" prefWidth="171.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ListView fx:id="listeMessage" layoutX="8.0" layoutY="78.0" prefHeight="168.0" prefWidth="581.0" />
+      <TextArea fx:id="votreMessage" layoutX="8.0" layoutY="254.0" prefHeight="95.0" prefWidth="524.0" />
+      <Button fx:id="validerMessage" layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#ajouterMessage" text="Envoyer" />
+      <Button fx:id="retour" layoutX="470.0" layoutY="360.0" mnemonicParsing="false" text="Retour" />
+      <Label fx:id="nomDuTopic" layoutX="240.0" layoutY="44.0" prefHeight="16.0" prefWidth="110.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
