@@ -38,7 +38,7 @@ public class MenuVue {
     private CreationUtilisateur creationUtilisateur;
     private SupprimerUtilisateur supprUtilisateur;
     private TraiterDemandes traitDemandes;
-
+    private ListeThemes listeThemes;
 
     public void setCreationUtilisateur(CreationUtilisateur creationUtilisateur) {
         this.creationUtilisateur = creationUtilisateur;
@@ -52,7 +52,11 @@ public class MenuVue {
         this.traitDemandes = traitDemandes;
     }
 
-    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes) {
+    public void setListeThemes(ListeThemes listeThemes) {
+        this.listeThemes = listeThemes;
+    }
+
+    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes,ListeThemes listeTheme) {
         URL location = MenuVue.class.getResource("/vues/menu.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
@@ -69,6 +73,7 @@ public class MenuVue {
         vue.setCreationUtilisateur(creationUtilisateur);
         vue.setSupprUtilisateur(supprimerUtilisateur);
         vue.setTraitDemandes(traiterDemandes);
+        vue.setListeThemes(listeTheme);
         vue.checkVisibility();
         return vue;
     }
@@ -121,7 +126,9 @@ public class MenuVue {
         this.traitDemandes.setListeDemandes(monControleur.getDemandes());
     }
 
-    public void listeThemes(ActionEvent event) {
+    //charger liste des themes
+    public void chargerlisteThemes(ActionEvent event) {
         monControleur.gotoListeThemes();
+        this.listeThemes.setListeThemes(monControleur.getThemes());
     }
 }

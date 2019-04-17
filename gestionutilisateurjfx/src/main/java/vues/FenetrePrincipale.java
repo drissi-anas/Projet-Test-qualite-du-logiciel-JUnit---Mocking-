@@ -36,7 +36,7 @@ public class FenetrePrincipale {
     MotDePasseVue motDePasseVue;
     DemandeUtilisateur demandeUtilisateur;
     ListeThemes listeThemes;
-
+    ThemeVue listeTopic;
 
 
     public Controleur getMonControleur() {
@@ -61,8 +61,9 @@ public class FenetrePrincipale {
         demandeUtilisateur = DemandeUtilisateur.creerVue(monControleur);
         traiterDemandes = TraiterDemandes.creerVue(monControleur);
         supprimerUtilisateur = SupprimerUtilisateur.creerVue(monControleur);
-        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes);
         listeThemes = ListeThemes.creerVue(monControleur);
+        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes,listeThemes);
+
 //        listeThemes.setListeThemes(monControleur.getThemes());
 
         //menuVue..setContent();
@@ -82,6 +83,10 @@ public class FenetrePrincipale {
     }
 
 
+    public void gotoListeTopic(){
+
+        this.maFenetre.setCenter(this.listeTopic.getNode());
+    }
     public void goToSaisieMotDePasse() {
 
         this.maFenetre.setCenter(this.motDePasseVue.getNode());

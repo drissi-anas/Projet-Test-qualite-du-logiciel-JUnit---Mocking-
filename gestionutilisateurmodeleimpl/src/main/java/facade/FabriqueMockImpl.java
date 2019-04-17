@@ -1,5 +1,6 @@
 package facade;
 
+import modele.forum.Theme;
 import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 import org.easymock.EasyMock;
@@ -43,5 +44,12 @@ public class FabriqueMockImpl implements FabriqueMock {
     public ForumService creerMockForum() {
         ForumService forumService = EasyMock.createMock(ForumService.class);
         return forumService;
+    }
+
+    @Override
+    public Theme creerThemeForum() {
+        Theme theme= EasyMock.createMock(Theme.class);
+
+        return theme;
     }
 }

@@ -48,15 +48,7 @@ public class Controleur implements Observateur {
 
     Stage stage;
 
-    public Controleur(ConnexionService connexionService, AdminService adminService, BasiquesOffLineService basiquesOffLineService, Stage stage){
 
-
-        this.connexionService = connexionService;
-        this.adminService = adminService;
-        this.basiquesOffLineService = basiquesOffLineService;
-        this.stage = stage;
-        this.sujets = new ArrayList<>();
-    }
 
     public Controleur(ConnexionService connexionService, AdminService adminService, BasiquesOffLineService basiquesOffLineService, Stage stage,ForumService forumService){
 
@@ -212,12 +204,12 @@ public class Controleur implements Observateur {
 
     //// Methodes ajoutées
 
-    public void gototheme(String nomTheme) {
+   /* public void gototheme(String nomTheme) {
         ThemeVue themeVue = ThemeVue.creerVue(this);
         themeVue.majTheme(nomTheme);
         Theme theme=forumService.récupererTheme(nomTheme);
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
-    }
+    }*/
 
     public void gototopic(Topic topic) {
         TopicVue topicVue = TopicVue.creerVue(this);
@@ -253,5 +245,9 @@ public class Controleur implements Observateur {
 
     public void gotoListeThemes() {
         this.maFenetre.gotoListetheme();
+    }
+
+    public void gototheme(String nom){
+        this.maFenetre.gotoListeTopic();
     }
 }

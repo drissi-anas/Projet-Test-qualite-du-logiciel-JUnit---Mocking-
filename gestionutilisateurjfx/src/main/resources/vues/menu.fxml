@@ -8,26 +8,26 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="node" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.MenuVue">
-   <children>
-      <Accordion>
-        <panes>
-          <TitledPane fx:id="ajouterUtilisateur" animated="false" contentDisplay="CENTER" text="Ajouter un utilisateur" textAlignment="CENTER">
-            <content>
-            </content>
-          </TitledPane>
-          <TitledPane fx:id="supprimerUtilisateur" animated="false" text="Supprimer utilisateur" onMouseClicked="#chargerUtilisateur">
-            <content>
-            </content>
-          </TitledPane>
-          <TitledPane fx:id="traiterDemandes" animated="false" text="Traiter les demandes" onMouseClicked="#chargerDemandes">
-            <content>
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
-     <Button fx:id="quitter" text="Quitter" onAction="#quitter"/>
+    <children>
+        <Accordion>
+            <panes>
+                <TitledPane fx:id="ajouterUtilisateur" animated="false" contentDisplay="CENTER" text="Ajouter un utilisateur" textAlignment="CENTER">
+                    <content>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="supprimerUtilisateur" animated="false" text="Supprimer utilisateur" onMouseClicked="#chargerUtilisateur">
+                    <content>
+                    </content>
+                </TitledPane>
+                <TitledPane fx:id="traiterDemandes" animated="false" text="Traiter les demandes" onMouseClicked="#chargerDemandes">
+                    <content>
+                    </content>
+                </TitledPane>
+            </panes>
+        </Accordion>
+        <Button fx:id="quitter" text="Quitter" onAction="#quitter"/>
 
-           <Button fx:id="boutonValider" mnemonicParsing="false" onAction="#listeThemes" text="Acceder à la liste des thèmes" />
+        <Button fx:id="chargerListe" mnemonicParsing="false" onAction="#chargerlisteThemes" text="Acceder à la liste des thèmes" />
 
-   </children>
+    </children>
 </VBox>

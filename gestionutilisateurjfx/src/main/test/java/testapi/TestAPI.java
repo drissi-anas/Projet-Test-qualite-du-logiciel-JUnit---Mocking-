@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import modele.forum.Theme;
+import modele.forum.Topic;
 import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 import org.easymock.EasyMock;
@@ -69,7 +71,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -94,7 +96,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(connexionService.estUnUtilisateurConnu("")).andReturn(true);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -134,7 +136,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -167,7 +169,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(false);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -212,7 +214,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -261,7 +263,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -310,7 +312,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -359,7 +361,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -408,7 +410,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -445,7 +447,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -521,7 +523,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -596,7 +598,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -675,7 +677,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -747,7 +749,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -818,7 +820,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -874,7 +876,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -930,7 +932,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -970,7 +972,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expectLastCall();
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
-        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -1013,7 +1015,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expectLastCall();
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
-        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -1049,7 +1051,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expectLastCall();
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
-        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -1083,7 +1085,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
-        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage);
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -1149,7 +1151,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
 
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -1196,7 +1198,7 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
@@ -1278,7 +1280,7 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
@@ -1360,7 +1362,7 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
@@ -1441,7 +1443,7 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage);
+        controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
@@ -1514,6 +1516,76 @@ public class TestAPI extends ApplicationTest {
 
     }
 
+    //affichage liste
+    @Test
+    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+
+        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+
+
+    }
+
+
+
+
 
 
     @After
@@ -1521,6 +1593,8 @@ public class TestAPI extends ApplicationTest {
         FxToolkit.hideStage();
         release(new KeyCode[]{});
         release(new MouseButton[]{});
+
+
     }
 
 

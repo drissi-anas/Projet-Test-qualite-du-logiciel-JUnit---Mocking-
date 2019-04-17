@@ -1,5 +1,6 @@
 package facade;
 
+import modele.forum.Theme;
 import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
 
@@ -11,4 +12,5 @@ public interface FabriqueMock {
     Personne creerMockPersonne();
     InscriptionPotentielle creerInscri();
     ForumService creerMockForum();
+    Theme creerThemeForum();
 }

@@ -4,6 +4,7 @@ import controleur.Controleur;
 import facade.AdminService;
 import facade.BasiquesOffLineService;
 import facade.ConnexionService;
+import facade.ForumService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,8 +19,9 @@ public class ProgrammePrincipal extends Application{
         AdminService adminService = null; ////
         BasiquesOffLineService basiquesOffLineService = null;
         ConnexionService connexionService = null;
+        ForumService forumService=null;
 
-        Controleur controleur = new Controleur(connexionService,adminService,basiquesOffLineService,primaryStage);
+        Controleur controleur = new Controleur(connexionService,adminService,basiquesOffLineService,primaryStage,forumService);
         controleur.run();//
     }
 

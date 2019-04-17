@@ -3,36 +3,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="maFenetre" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.ListeThemes">
-    <top>
-        <Label text="Liste des thèmes" BorderPane.alignment="CENTER">
+
+<AnchorPane fx:id="node" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.ListeThemes">
+    <children>
+        <Label layoutX="182.0" layoutY="31.0" text="Liste des Themes">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-    </top>
-<center>
-    <VBox fx:id="node" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1">
-        <children>
-            <ListView fx:id="listeThemes" onMouseClicked="#click" />
-
-        </children>
-
-
-    </VBox>
-</center>
-    <bottom>
-        <HBox>
-        <children>
-            <Button onAction="#choisir" text="Choisir" />
-
-        </children>
-
-    </HBox></bottom>
-
-</BorderPane>
+        <ListView fx:id="listeTheme" onMouseClicked="#click" layoutX="1.0" layoutY="77.0" prefHeight="246.0" prefWidth="600.0" />
+        <Button fx:id="choisirTheme" layoutX="256.0" layoutY="340.0" mnemonicParsing="false" text="Valider" onAction="#choisir"/>
+    </children>
+</AnchorPane>
