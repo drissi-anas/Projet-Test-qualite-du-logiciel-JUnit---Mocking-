@@ -23,6 +23,9 @@ import java.util.Collection;
  */
 public class TopicVue {
 
+
+    @FXML
+    private TextArea votreMessage;
     @FXML
     private ListView listeMessage;
 
@@ -45,9 +48,6 @@ public class TopicVue {
 
 
 
-    @FXML
-    TextArea zoneTexte;
-
     public static TopicVue creerVue(Controleur c) {
         URL location = TopicVue.class.getResource("/vues/new/topic.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
@@ -69,6 +69,7 @@ public class TopicVue {
 
     public void majTopic(Topic topic){
         nomDuTopic.setText(topic.getNom());
+        nomDuTheme.setText(topic.getTheme().getNom());
     }
 
 
@@ -95,7 +96,7 @@ public class TopicVue {
     }
 
     public void ajouterMessage(ActionEvent event) {
-        monControleur.ajouterMessage(nomDuTopic.getText(),zoneTexte.getText());
+        monControleur.ajouterMessage(nomDuTopic.getText(),votreMessage.getText());
     }
 
 

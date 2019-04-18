@@ -220,13 +220,14 @@ public class Controleur implements Observateur {
     public void ajouterMessage(String nomDuTopic, String texteMessage) {
         Topic topic = forumService.récupererTopic(nomDuTopic);
         this.forumService.ajouterMessage(topic,texteMessage);
+        gototopic(topic);
     }
 
     public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) {
         Theme theme = forumService.récupererTheme(themeDuTopic);
         Topic nouveauTopic = null;
         try {
-            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,messageDuTopicText,identifiant);
+            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,messageDuTopicText,identifiant.getNom());
             gototopic(nouveauTopic);
         } catch (NomTopicDejaExistantException e) {
             e.printStackTrace();

@@ -7,10 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="node" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.TopicVue">
    <children>
-      <Label fx:id="nomDuTheme" layoutX="215.0" layoutY="14.0" prefHeight="30.0" prefWidth="171.0">
+      <Label fx:id="nomDuTheme" layoutX="233.0" layoutY="14.0" prefHeight="30.0" prefWidth="171.0">
          <font>
             <Font size="24.0" />
          </font>

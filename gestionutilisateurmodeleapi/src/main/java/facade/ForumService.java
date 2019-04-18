@@ -26,6 +26,6 @@ public interface ForumService {
 
 
     void creerTheme(String nomTheme, long id);
-    Topic creerTopic(String nomTopic, Theme theme,String Message, Personne personne)throws NomTopicDejaExistantException;
+    Topic creerTopic(String nomTopic, Theme theme,String Message, String auteur)throws NomTopicDejaExistantException;
 
 }

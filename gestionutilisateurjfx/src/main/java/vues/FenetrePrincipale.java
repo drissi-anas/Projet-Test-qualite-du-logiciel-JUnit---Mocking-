@@ -156,8 +156,8 @@ public class FenetrePrincipale {
     }
 
     public void gotoTopic(Topic topic) {
-        this.maFenetre.setCenter(this.topic.getNode());
         this.topic.majTopic(topic);
+        this.maFenetre.setCenter(this.topic.getNode());
         this.topic.setListeMessages(this.monControleur.getMessageByTopic(topic));
     }
 }

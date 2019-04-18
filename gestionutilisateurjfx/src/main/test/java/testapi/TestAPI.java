@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.erreurs.PseudoInexistantJFXException;
 import facade.*;
 import facade.erreurs.CoupleUtilisateurMDPInconnuException;
+import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.RoleDejaAttribueException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.application.Platform;
@@ -1781,6 +1782,8 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
 
+        EasyMock.expect(topic.getTheme()).andReturn(t);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
         EasyMock.expect(message.getAuteur()).andReturn("Sema");
         EasyMock.expect(message.getAuteur()).andReturn("Sema");
@@ -1831,6 +1834,234 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
 
     }
+
+    @Test
+    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Collection<Message> lesMessages=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Topic topic1 = fabriqueMock.creerTopic();
+        Message message=fabriqueMock.creerMessage();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+
+        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+
+        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(p.getNom()).andReturn("Yohan");
+        EasyMock.expect(forumService.creerTopic("Allergie",t ,"Que faire contre le pollen ?","Yohan")).andReturn(topic1);
+
+        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
+        EasyMock.expect(topic1.getNom()).andReturn("Allergie");
+        EasyMock.expect(topic1.getTheme()).andReturn(t);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+
+
+        EasyMock.expect(message.getAuteur()).andReturn("Yohan");
+        EasyMock.expect(message.getAuteur()).andReturn("Yohan");
+        EasyMock.expect(message.getText()).andReturn("Que faire contre le pollen ?");
+        EasyMock.expect(message.getText()).andReturn("Que faire contre le pollen ?");
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,topic1,message);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().add(topic);
+        sleepBetweenActions();
+        clickOn("#creerTopic");
+        sleepBetweenActions();
+        clickOn("#nomTopic");
+        write("Allergie");
+        sleepBetweenActions();
+        clickOn("#messageDuTopic");
+        write("Que faire contre le pollen ?");
+        sleepBetweenActions();
+        clickOn("#validerTopic");
+        ListView<Message> listeMessage=(ListView<Message>)GuiTest.find("#listeMessage");
+        listeMessage.getItems().add(message);
+        sleepBetweenActions();
+
+
+
+    }
+
+    @Test
+    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Collection<Message> lesMessages=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Message message=fabriqueMock.creerMessage();
+        Message m1=fabriqueMock.creerMessage();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
+        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+
+        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getTheme()).andReturn(t);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        EasyMock.expect(message.getAuteur()).andReturn("Sema");
+        EasyMock.expect(message.getAuteur()).andReturn("Sema");
+        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+
+        EasyMock.expect(forumService.récupererTopic("Maladie")).andReturn(topic);
+        forumService.ajouterMessage(topic,"3 euros !");
+        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        EasyMock.expect(topic.getTheme()).andReturn(t);
+        EasyMock.expect(t.getNom()).andReturn("Santé");
+        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        EasyMock.expect(message.getAuteur()).andReturn("Sema");
+        EasyMock.expect(message.getAuteur()).andReturn("Sema");
+        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        EasyMock.expect(m1.getAuteur()).andReturn("Yohan");
+        EasyMock.expect(m1.getAuteur()).andReturn("Yohan");
+        EasyMock.expect(m1.getText()).andReturn("3 euros !");
+        EasyMock.expect(m1.getText()).andReturn("3 euros !");
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,message,m1);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().add(topic);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTopics");
+        ListView<Message> listMessage=(ListView<Message>)GuiTest.find("#listeMessage");
+        listMessage.getItems().add(message);
+        sleepBetweenActions();
+        clickOn("#votreMessage");
+        sleepBetweenActions();
+        write("3 euros !");
+        clickOn("#validerMessage");
+
+        ListView<Message> listMessage2=(ListView<Message>)GuiTest.find("#listeMessage");
+        listMessage2.getItems().addAll(message,m1);
+        sleepBetweenActions();
+
+
+    }
+
+
 
 
 

@@ -63,7 +63,8 @@ public class CreationTopic {
     }
 
     public void enregistrerNouveauTopic(ActionEvent event) {
-        monControleur.creerTopic(nomTopic.getText(),nomDuTheme.getText(),messageDuTopic.getText());
+
+        monControleur.creerTopic(nomTopic.getText(),messageDuTopic.getText(),nomDuTheme.getText());
     }
 
     public Node getNode() {
