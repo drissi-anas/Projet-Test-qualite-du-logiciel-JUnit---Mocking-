@@ -8,20 +8,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 
 /**
  * Created by YohanBoichut on 05/12/2016.
  */
 public class CreationUtilisateur implements Sujet {
-
+    @FXML
+    private ComboBox roles;
     @FXML
     VBox node;
 
@@ -86,6 +85,7 @@ public class CreationUtilisateur implements Sujet {
         String confirmation = confirmationMotDePasse.getText();
 
         String pseudo = nom.getText();
+        String role= roles.getValue().toString();
 
 
         if (pseudo == null || mot == null || confirmation == null || mot.length() == 0 || confirmation.length() == 0 || pseudo.length() ==0) {
@@ -127,6 +127,10 @@ public class CreationUtilisateur implements Sujet {
 
     }
 
+    public void setRoles(Collection<String> roles) {
+        this.roles.getItems().setAll(roles);
+    }
+
     @Override
     public void notifier(Notification notification) {
         switch (notification.getTypeNotification()) {
@@ -139,6 +143,10 @@ public class CreationUtilisateur implements Sujet {
             case CONFIRMATION_CREATION: {
                 this.informerUtilisateur(notification.getMessage());
                 return;
+            }
+
+            case UPDATE_COLLECTION: {
+                notification.visit(this);
             }
         }
     }

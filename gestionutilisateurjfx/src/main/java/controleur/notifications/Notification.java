@@ -3,6 +3,7 @@ package controleur.notifications;
 import controleur.notifications.update.UpdateDemandesImpl;
 import controleur.notifications.update.UpdateRolesImpl;
 import controleur.notifications.update.UpdateUtilisateursImpl;
+import controleur.notifications.update.UpdatesCreationImpl;
 import modele.inscription.InscriptionPotentielle;
 
 import modele.personnes.Personne;
@@ -29,6 +30,10 @@ public interface Notification extends Visiteur{
 
     static Notification creerUpdateRoles(Collection<String> roles) {
         return new UpdateRolesImpl(roles);
+    }
+
+    static Notification creerUpdateCreation(Collection<String> roles) {
+        return new UpdatesCreationImpl(roles);
     }
 
 

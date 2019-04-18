@@ -27,4 +27,6 @@ public class UpdateRolesImpl extends NotificationImpl {
     public void visit(DemandeUtilisateur traiterDemandes) {
         traiterDemandes.setRoles(roles);
     }
+
+
 }

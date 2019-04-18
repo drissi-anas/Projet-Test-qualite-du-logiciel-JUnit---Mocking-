@@ -6,6 +6,7 @@ import controleur.erreurs.UtilisateurDejaExistantJFXException;
 import controleur.notifications.*;
 import controleur.notifications.update.UpdateDemandesImpl;
 import controleur.notifications.update.UpdateRolesImpl;
+import controleur.notifications.update.UpdatesCreationImpl;
 import facade.AdminService;
 import facade.BasiquesOffLineService;
 import facade.ConnexionService;
@@ -80,7 +81,7 @@ public class Controleur implements Observateur {
 
             this.broadcastNotification(Notification.creerUpdateUtilisateur(this.adminService.getListeUtilisateur(identifiant.getIdentifiant())));
             this.broadcastNotification(new UpdateDemandesImpl(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
-
+            this.broadcastNotification(new UpdatesCreationImpl(AdminService.getRoles()));
             this.maFenetre.goToMenu();
         } catch (CoupleUtilisateurMDPInconnuException e) {
             throw new MotDePasseIncorrectJFXException();
@@ -89,6 +90,7 @@ public class Controleur implements Observateur {
         catch (AccesRefuseException e) {
             this.broadcastNotification(Notification.creerUpdateUtilisateur(new ArrayList<>()));
             this.broadcastNotification(new UpdateDemandesImpl(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
+            this.broadcastNotification(new UpdatesCreationImpl(AdminService.getRoles()));
             this.maFenetre.goToMenu();
         }
     }

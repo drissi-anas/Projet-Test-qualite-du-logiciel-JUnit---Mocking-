@@ -566,6 +566,10 @@ public class TestAPI extends ApplicationTest {
         write("111");
 
         sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(MODERATEUR);
+        sleepBetweenActions();
         clickOn("#enregistreUser");
         sleepBetweenActions();
         press(KeyCode.ENTER);
