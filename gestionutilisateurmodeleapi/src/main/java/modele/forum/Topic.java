@@ -14,7 +14,7 @@ public interface Topic {
     long getIdentifiant();
     Personne getCreateur();
     Collection<Message> getListeMessages();
-    void ajouterMessage(Message message);
+    boolean ajouterMessage(Message message);
 
 
 }

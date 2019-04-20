@@ -5,33 +5,48 @@ import facade.BasiquesOffLineService;
 import facade.ConnexionService;
 import facade.FabriqueFacade;
 import facade.erreurs.*;
+import modele.forum.Message;
+import modele.forum.Topic;
 import modele.personnes.Personne;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import static facade.AdminService.*;
 
-public abstract class TestFacadeAll {
+public class TestFacadeAll {
 
         AdminService adminService;
         BasiquesOffLineService basiquesOffLineService;
         ConnexionService connexionService;
         FabriqueFacade fabriqueFacade;
         Personne personne;
+        Message message;
+        Topic topic;
 
-        public TestFacadeAll(FabriqueFacade fabriqueFacade) {
-            this.fabriqueFacade = fabriqueFacade;
-        }
+
+
+    public TestFacadeAll() {
+    }
+
+
+    /**
+    public TestFacadeAll(FabriqueFacade fabriqueFacade) {
+        this.fabriqueFacade = fabriqueFacade;
+    }
+     **/
 
 
         @Before
         public void initialisationModele(){
+        FabriqueFacade fabriqueFacade = EasyMock.createMock(FabriqueFacade.class);
         adminService = fabriqueFacade.getAdminService();
         basiquesOffLineService = fabriqueFacade.getBasiquesOffLineService();
         connexionService = fabriqueFacade.getConnexionService();
         personne = fabriqueFacade.getPersonne();
+        message = fabriqueFacade.getMessage();
+        topic = fabriqueFacade.getTopic();
         }
     /**
      *     -------------------------------------------------------   Test de l'interface AdminService   -------------------------------------------------------
@@ -77,10 +92,22 @@ public abstract class TestFacadeAll {
         Personne p = connexionService.connexion("admin","admin");
         adminService.creerUtilisateur(p.getIdentifiant(),"aaa",null);
         }
+        @Test(expected =InformationManquanteException.class)
+        public void creerUtilisateurKONomVide() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        Personne p = connexionService.connexion("admin","admin");
+        adminService.creerUtilisateur(p.getIdentifiant(),"","bbb");
+        }
+        @Test(expected =InformationManquanteException.class)
+        public void creerUtilisateurKOMdpVide() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
+        Personne p = connexionService.connexion("admin","admin");
+        adminService.creerUtilisateur(p.getIdentifiant(),"aaa","");
+    }
 
 
 
-        @Test
+
+
+    @Test
         public void  associerRoleUtilisateurTestOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
             try {
                 Personne p = connexionService.connexion("admin", "aaa");
@@ -598,7 +625,7 @@ public abstract class TestFacadeAll {
 
 
     @Test
-    public void addRoleBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException{
+    public void addRoleBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur132");
@@ -612,7 +639,7 @@ public abstract class TestFacadeAll {
             Assert.fail();
         }
     }@Test (expected = RoleDejaAttribueException.class)
-    public void addRoleBasiqueKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException{
+    public void addRoleBasiqueKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
         try {
             Personne p = connexionService.connexion("admin","admin");
             Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur345");
@@ -628,7 +655,6 @@ public abstract class TestFacadeAll {
             e.printStackTrace();
         }
     }
-
 
 
     @Test
@@ -666,6 +692,30 @@ public abstract class TestFacadeAll {
             e.printStackTrace();
         }
     }
+
+    /********************************     Tests de l'Interface Topic ********************************/
+
+    @Test
+    public void ajouterMessage_Test_OK() {
+        Message message = EasyMock.createMock(Message.class);
+        Topic topic = EasyMock.createMock(Topic.class);
+        topic.ajouterMessage(message);
+        EasyMock.expect(topic.ajouterMessage(message)).andReturn(true);
+        EasyMock.replay(message,topic);
+
+        boolean res = topic.ajouterMessage(message);
+
+        Assert.assertTrue(res);
+    }
+
+    /**
+     * Ajouter une exception à la méthode ajouterMessage() dans l'interface Topic.java
+     */
+    @Test
+    public void ajouterMessage_Test_KO(){
+
+    }
+
 
 
 

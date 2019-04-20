@@ -2066,12 +2066,6 @@ public class TestAPI extends ApplicationTest {
     }
 
 
-
-
-
-
-
-
     @After
     public void tearDown () throws Exception {
         FxToolkit.hideStage();
