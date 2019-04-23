@@ -495,9 +495,10 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
+        p2=fabriqueMock.creerMockPersonne();
         long l = 1;
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -506,24 +507,28 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
+
         EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
         EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p);
+
+        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p2);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getNom()).andReturn("Hajar");
+        this.adminService.associerRoleUtilisateur(1,1,MODERATEUR);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(1L);
+        EasyMock.expect(p2.getNom()).andReturn("Hajar");
+        EasyMock.expect(this.connexionService.estUnAdmin(l)).andReturn(true);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
+        EasyMock.expect(this.connexionService.estUnModerateur(l)).andReturn(false);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
 
 
 
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
 
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
         Platform.runLater(new Runnable() {
@@ -646,6 +651,11 @@ public class TestAPI extends ApplicationTest {
         write("111");
 
         sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(MODERATEUR);
+
+        sleepBetweenActions();
         clickOn("#enregistreUser");
         sleepBetweenActions();
         press(KeyCode.ENTER);
@@ -716,6 +726,11 @@ public class TestAPI extends ApplicationTest {
         write("");
         clickOn("#confirmationMotDePasse");
         write("");
+
+        sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(MODERATEUR);
 
         sleepBetweenActions();
         clickOn("#enregistreUser");
@@ -790,6 +805,11 @@ public class TestAPI extends ApplicationTest {
         write("000");
 
         sleepBetweenActions();
+        clickOn("#roles");
+        sleepBetweenActions();
+        clickOn(MODERATEUR);
+        sleepBetweenActions();
+
         clickOn("#enregistreUser");
         sleepBetweenActions();
         press(KeyCode.ENTER);
@@ -1154,6 +1174,13 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
 
+        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        EasyMock.expect(p.getNom()).andReturn("Yohan");
+        EasyMock.expect(p.getNom()).andReturn("Yohan");
+
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
 
@@ -1192,13 +1219,26 @@ public class TestAPI extends ApplicationTest {
 
         sleepBetweenActions();
         press(KeyCode.ENTER);
+
+        ListView<Personne> liste2 = (ListView<Personne>) GuiTest.find("#listeUtilisateurs");
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                liste2.getItems().add(p);
+            }
+        });
+
         sleepBetweenActions();
+        sleepBetweenActions();
+
 
     }
 
     @Test
     public void traiterDemandeAdminEtModAccept () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
         p =fabriqueMock.creerMockPersonne();
+        p2=fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
         InscriptionPotentielle i2=fabriqueMock.creerInscri();
         long l = 1;
@@ -1227,6 +1267,15 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
         EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
 
+        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+
+
         //accept
         adminService.validerInscription(l,1L);
         EasyMock.expect(p.getIdentifiant()).andReturn(l);
@@ -1236,9 +1285,16 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(i.getIdentifiant()).andReturn(1L);
         EasyMock.expect(i.getNom()).andReturn("Hajar");
 
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
 
-
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i);
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i,p2,i2);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -1268,12 +1324,23 @@ public class TestAPI extends ApplicationTest {
         clickOn("#traiterDemandes");
         ListView<InscriptionPotentielle> liste = (ListView<InscriptionPotentielle>) GuiTest.find("#listeDemandes");
         liste.getItems().add(i);
+        liste.getItems().add(i2);
         sleepBetweenActions();
         liste.getSelectionModel().selectIndices(0);
         sleepBetweenActions();
         clickOn("#accept");
         sleepBetweenActions();
         press(KeyCode.ENTER);
+        ListView<InscriptionPotentielle> liste2 = (ListView<InscriptionPotentielle>) GuiTest.find("#listeDemandes");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                liste2.getItems().add(i2
+                );
+            }
+        });
+        sleepBetweenActions();
+        sleepBetweenActions();
 
     }
 
@@ -1281,6 +1348,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
         p =fabriqueMock.creerMockPersonne();
+        p2=fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
         InscriptionPotentielle i2=fabriqueMock.creerInscri();
         long l = 1;
@@ -1308,6 +1376,13 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(i.getNom()).andReturn("Hajar");
         EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
         EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
 
         //accept
         adminService.validerInscription(l,1L);
@@ -1318,9 +1393,15 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(i.getIdentifiant()).andReturn(1L);
         EasyMock.expect(i.getNom()).andReturn("Hajar");
 
-
-
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i);
+        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getNom()).andReturn("Yohan");
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i,p2,i2);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -1356,6 +1437,14 @@ public class TestAPI extends ApplicationTest {
         clickOn("#accept");
         sleepBetweenActions();
         press(KeyCode.ENTER);
+        ListView<InscriptionPotentielle> liste2 = (ListView<InscriptionPotentielle>) GuiTest.find("#listeDemandes");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        liste.getItems().add(i);
 
 
     }
@@ -2059,7 +2148,14 @@ public class TestAPI extends ApplicationTest {
         clickOn("#validerMessage");
 
         ListView<Message> listMessage2=(ListView<Message>)GuiTest.find("#listeMessage");
-        listMessage2.getItems().addAll(message,m1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listMessage2.getItems().addAll(message,m1);
+            }
+        });
+        sleepBetweenActions();
+
         sleepBetweenActions();
 
 

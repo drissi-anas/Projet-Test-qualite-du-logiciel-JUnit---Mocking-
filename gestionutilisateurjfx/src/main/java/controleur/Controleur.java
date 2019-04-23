@@ -111,9 +111,10 @@ public class Controleur implements Observateur {
 
 
 
-    public void enregistrerNouvelUtilisateur(String pseudo, String mot) throws UtilisateurDejaExistantJFXException {
+    public void enregistrerNouvelUtilisateur(String pseudo, String mot, String role) throws UtilisateurDejaExistantJFXException, RoleDejaAttribueException {
         try {
             Personne p = this.adminService.creerUtilisateur(this.identifiant.getIdentifiant(),pseudo,mot);
+            this.adminService.associerRoleUtilisateur(identifiant.getIdentifiant(),p.getIdentifiant(),role);
             this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_CREATION,"L'utilisateur "+p.getNom() + " a bien été créé"));
             this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.RESET_CHAMPS,""));
             this.maFenetre.goToMenu();

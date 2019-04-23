@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.erreurs.UtilisateurDejaExistantJFXException;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.RoleDejaAttribueException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,7 +79,7 @@ public class CreationUtilisateur implements Sujet {
     }
 
 
-    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) {
+    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) throws RoleDejaAttribueException {
 
         String mot = motDePasse.getText();
 
@@ -98,7 +99,7 @@ public class CreationUtilisateur implements Sujet {
         else {
             try {
                 if (confirmation.equals(mot)) {
-                    this.monControleur.enregistrerNouvelUtilisateur(pseudo, mot);
+                    this.monControleur.enregistrerNouvelUtilisateur(pseudo, mot,role);
                 }
                 else {
                     Alert nomInexistant = new Alert(Alert.AlertType.ERROR);
