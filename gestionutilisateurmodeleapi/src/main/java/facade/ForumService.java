@@ -1,12 +1,12 @@
 package facade;
 
 import facade.erreurs.NomTopicDejaExistantException;
+import facade.erreurs.ThemeInexistantException;
+import facade.erreurs.TopicInexistantexception;
 import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
-import modele.personnes.Personne;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -16,16 +16,17 @@ public interface ForumService {
 
     Collection<Theme> getListeTheme();
 
-    Collection<Topic> getListeTopicPourUnTheme(Theme theme);
-    Theme récupererTheme(String nomTheme);
+    Collection<Topic> getListeTopicPourUnTheme(Theme theme) throws ThemeInexistantException;
+    Theme recupererTheme(String nomTheme) throws ThemeInexistantException;
 
-    Collection<Message> getListeMessagePourUnTopic(Topic topic);
-    Topic récupererTopic(String nomTopic);
-
-    void ajouterMessage(Topic topic,String string);
+    Collection<Message> getListeMessagePourUnTopic(Topic topic)throws TopicInexistantexception;
 
 
-    void creerTheme(String nomTheme, long id);
+    Topic recupererTopic(Theme theme,String nomTopic) throws TopicInexistantexception;
+    void ajouterMessage(Theme theme,Topic topic,String string);
+
+
+    void creerTheme(String nomTheme);
     Topic creerTopic(String nomTopic, Theme theme,String Message, String auteur)throws NomTopicDejaExistantException;
 
 }

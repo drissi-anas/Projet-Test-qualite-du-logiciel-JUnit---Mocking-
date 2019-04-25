@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="node" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.ListeThemes">
     <children>
         <Label layoutX="182.0" layoutY="31.0" text="Liste des Themes">
@@ -14,7 +13,8 @@
                 <Font size="24.0" />
             </font>
         </Label>
-        <ListView fx:id="listeTheme" onMouseClicked="#click" layoutX="1.0" layoutY="77.0" prefHeight="246.0" prefWidth="600.0" />
-        <Button fx:id="choisirTheme" layoutX="256.0" layoutY="340.0" mnemonicParsing="false" text="Valider" onAction="#choisir"/>
+        <ListView fx:id="listeTheme" layoutX="1.0" layoutY="77.0" onMouseClicked="#click" prefHeight="246.0" prefWidth="600.0" />
+        <Button fx:id="choisirTheme" layoutX="256.0" layoutY="340.0" mnemonicParsing="false" onAction="#choisir" text="Valider" />
+      <Button fx:id="creerTheme" onAction="#creerTheme" layoutX="475.0" layoutY="340.0" mnemonicParsing="false" text="Creer Theme" />
     </children>
 </AnchorPane>

@@ -12,6 +12,7 @@ import facade.BasiquesOffLineService;
 import facade.ConnexionService;
 import facade.ForumService;
 import facade.erreurs.*;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import modele.forum.Message;
 import modele.forum.Theme;
@@ -20,10 +21,7 @@ import modele.inscription.InscriptionPotentielle;
 
 import modele.personnes.Personne;
 
-import vues.CreationTopic;
 import vues.FenetrePrincipale;
-import vues.ThemeVue;
-import vues.TopicVue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -211,23 +209,24 @@ public class Controleur implements Observateur {
    /* public void gototheme(String nomTheme) {
         ThemeVue themeVue = ThemeVue.creerVue(this);
         themeVue.majTheme(nomTheme);
-        Theme theme=forumService.récupererTheme(nomTheme);
+        Theme theme=forumService.recupererTheme(nomTheme);
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
     }*/
 
-    public void gototopic(Topic topic) {
+    public void gototopic(Topic topic) throws TopicInexistantexception {
         this.maFenetre.gotoTopic(topic);
 
     }
 
-    public void ajouterMessage(String nomDuTopic, String texteMessage) {
-        Topic topic = forumService.récupererTopic(nomDuTopic);
-        this.forumService.ajouterMessage(topic,texteMessage);
+    public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException,TopicInexistantexception{
+        Theme t = forumService.recupererTheme(nomDuTheme);
+        Topic topic = forumService.recupererTopic(t,nomDuTopic);
+        this.forumService.ajouterMessage(t,topic,texteMessage);
         gototopic(topic);
     }
 
-    public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) {
-        Theme theme = forumService.récupererTheme(themeDuTopic);
+    public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) throws ThemeInexistantException, TopicInexistantexception {
+        Theme theme = forumService.recupererTheme(themeDuTopic);
         Topic nouveauTopic = null;
         try {
             nouveauTopic = forumService.creerTopic(nomDuTopic,theme,messageDuTopicText,identifiant.getNom());
@@ -250,18 +249,26 @@ public class Controleur implements Observateur {
         this.maFenetre.gotoListetheme();
     }
 
-    public void gototheme(String nom){
+    public void gototheme(String nom) throws ThemeInexistantException {
         this.maFenetre.gotoListeTopic(nom);
 
     }
 
-    public Collection<Topic> getTopicByTheme(String nomTheme){
-        Theme t= forumService.récupererTheme(nomTheme);
+    public Collection<Topic> getTopicByTheme(String nomTheme) throws ThemeInexistantException{
+        Theme t= forumService.recupererTheme(nomTheme);
         return forumService.getListeTopicPourUnTheme(t);
 
     }
 
-    public Collection<Message> getMessageByTopic(Topic t){
+    public Collection<Message> getMessageByTopic(Topic t) throws TopicInexistantexception{
         return forumService.getListeMessagePourUnTopic(t);
+    }
+
+    public void gotoCreerTheme() {
+        this.maFenetre.gotoCreerTheme();
+    }
+
+    public void validerTheme(String text) {
+        forumService.creerTheme(text);
     }
 }

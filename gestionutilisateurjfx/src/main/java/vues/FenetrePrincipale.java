@@ -1,6 +1,8 @@
 package vues;
 
 import controleur.Controleur;
+import facade.erreurs.ThemeInexistantException;
+import facade.erreurs.TopicInexistantexception;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +43,7 @@ public class FenetrePrincipale {
     ThemeVue listeTopic;
     CreationTopic creerTopic;
     TopicVue topic;
+    CreationTheme creationTheme;
 
     public Controleur getMonControleur() {
         return monControleur;
@@ -68,7 +71,8 @@ public class FenetrePrincipale {
         listeTopic= ThemeVue.creerVue(monControleur);
         creerTopic=CreationTopic.creerVue(monControleur);
         topic=TopicVue.creerVue(monControleur);
-        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes,listeThemes,listeTopic,creerTopic,topic);
+        creationTheme=CreationTheme.creerVue(monControleur);
+        menuVue = MenuVue.creerVue(monControleur,creationUtilisateurVue,supprimerUtilisateur,traiterDemandes,listeThemes,listeTopic,creerTopic,topic,creationTheme);
 
 //        listeThemes.setListeThemes(monControleur.getThemes());
 
@@ -89,7 +93,7 @@ public class FenetrePrincipale {
     }
 
 
-    public void gotoListeTopic(String nom){
+    public void gotoListeTopic(String nom) throws ThemeInexistantException {
 
         this.maFenetre.setCenter(this.listeTopic.getNode());
         listeTopic.majTheme(nom);
@@ -155,9 +159,16 @@ public class FenetrePrincipale {
 
     }
 
-    public void gotoTopic(Topic topic) {
+    public void gotoTopic(Topic topic) throws TopicInexistantexception {
         this.topic.majTopic(topic);
         this.maFenetre.setCenter(this.topic.getNode());
         this.topic.setListeMessages(this.monControleur.getMessageByTopic(topic));
     }
+
+    public void gotoCreerTheme() {
+        this.maFenetre.setCenter(creationTheme.getNode());
+    }
+
+
+
 }

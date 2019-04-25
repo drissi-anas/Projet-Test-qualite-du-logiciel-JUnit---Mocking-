@@ -3,6 +3,7 @@ package vues;
 import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.TopicInexistantexception;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +78,7 @@ public class ThemeVue implements Sujet {
             }
         });
     }
-    public void choisirTopic(ActionEvent actionEvent) {
+    public void choisirTopic(ActionEvent actionEvent) throws TopicInexistantexception {
 
         Topic topic = listeTopics.getSelectionModel().getSelectedItem();
 
