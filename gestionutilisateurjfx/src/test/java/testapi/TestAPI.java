@@ -29,6 +29,7 @@ import java.util.Collection;
 import static facade.AdminService.ADMIN;
 import static facade.AdminService.BASIQUE;
 import static facade.AdminService.MODERATEUR;
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertTrue;
 import static org.testfx.matcher.control.MenuItemMatchers.hasText;
 
@@ -64,7 +65,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void saisieNomTestOK() { /*l'utilisateur saisie un nom valide */
 
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
@@ -89,7 +90,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void saisieNomTestCV() { /*l'utilisateur laisse un champ vide */
 
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("")).andReturn(true);
+        expect(connexionService.estUnUtilisateurConnu("")).andReturn(true);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
@@ -119,16 +120,16 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
 
@@ -162,7 +163,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void saisieNomTestKO()  { /*l'utilisateur saisie un nom déjà existant */
 
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(false);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(false);
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
@@ -194,16 +195,16 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -243,16 +244,16 @@ public class TestAPI extends ApplicationTest {
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -292,16 +293,16 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -341,16 +342,16 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -390,16 +391,16 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -438,8 +439,8 @@ public class TestAPI extends ApplicationTest {
         CoupleUtilisateurMDPInconnuException e= new CoupleUtilisateurMDPInconnuException();
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andThrow(e.fillInStackTrace());
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andThrow(e.fillInStackTrace());
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService);
 
@@ -497,28 +498,28 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p2);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p2);
+        expect(p.getIdentifiant()).andReturn(l);
         this.adminService.associerRoleUtilisateur(1,1,MODERATEUR);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(p2.getNom()).andReturn("Hajar");
-        EasyMock.expect(this.connexionService.estUnAdmin(l)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(this.connexionService.estUnModerateur(l)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p2.getIdentifiant()).andReturn(1L);
+        expect(p2.getNom()).andReturn("Hajar");
+        expect(this.connexionService.estUnAdmin(l)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(this.connexionService.estUnModerateur(l)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -586,19 +587,19 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(adminService.creerUtilisateur(1,"Hajar","111")).andThrow(e.fillInStackTrace());
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.creerUtilisateur(1,"Hajar","111")).andThrow(e.fillInStackTrace());
+        expect(p.getIdentifiant()).andReturn(l);
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p);
@@ -664,24 +665,24 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.creerUtilisateur(1,"","")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getNom()).andReturn("");
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.creerUtilisateur(1,"","")).andReturn(p);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getNom()).andReturn("");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -741,24 +742,24 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.creerUtilisateur(1,"","000")).andReturn(p);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getNom()).andReturn("");
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.creerUtilisateur(1,"","000")).andReturn(p);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getNom()).andReturn("");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -823,18 +824,18 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
         connexionService.deconnexion(1);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -879,18 +880,18 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
         connexionService.deconnexion(1);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -935,18 +936,18 @@ public class TestAPI extends ApplicationTest {
 
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
         connexionService.deconnexion(1);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
 
@@ -988,8 +989,10 @@ public class TestAPI extends ApplicationTest {
     public void demandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant que moderateur */
 
 
-        basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR);
+        expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR)).andReturn(1L);
         EasyMock.expectLastCall();
+
+
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
@@ -1031,7 +1034,7 @@ public class TestAPI extends ApplicationTest {
     public void demandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'admin */
 
 
-        basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN);
+        expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN)).andReturn(1L);
         EasyMock.expectLastCall();
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
@@ -1067,7 +1070,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void demandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
 
-        basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
+        expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE)).andReturn(1L);
         EasyMock.expectLastCall();
         EasyMock.replay(adminService, basiquesOffLineService, connexionService);
 
@@ -1131,49 +1134,49 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
 
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
         //Recupère la liste et ajoute des Users
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getNom()).andReturn("Yohan");
-        EasyMock.expect(p.getNom()).andReturn("Yohan");
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getNom()).andReturn("Yohan");
+        expect(p.getNom()).andReturn("Yohan");
 
 
 
-        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
-        EasyMock.expect(p2.getNom()).andReturn("Sema");
-        EasyMock.expect(p2.getNom()).andReturn("Sema");
-        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+        expect(p2.getIdentifiant()).andReturn(l2);
+        expect(p2.getIdentifiant()).andReturn(l2);
+        expect(p2.getIdentifiant()).andReturn(l2);
+        expect(p2.getNom()).andReturn("Sema");
+        expect(p2.getNom()).andReturn("Sema");
+        expect(p2.getIdentifiant()).andReturn(l2);
 
 
         //SupprimerUSer
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(l2);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p2.getIdentifiant()).andReturn(l2);
         adminService.supprimerUtilisateur(1,2);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(p.getNom()).andReturn("Yohan");
-        EasyMock.expect(p.getNom()).andReturn("Yohan");
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getNom()).andReturn("Yohan");
+        expect(p.getNom()).andReturn("Yohan");
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,p2);
@@ -1239,54 +1242,54 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
         //Recupère liste des demandes
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
 
-        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(p2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
 
 
         //accept
         adminService.validerInscription(l,1L);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
 
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i,p2,i2);
 
@@ -1342,6 +1345,7 @@ public class TestAPI extends ApplicationTest {
     @Test
     public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
         p =fabriqueMock.creerMockPersonne();
+
         p2=fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
         InscriptionPotentielle i2=fabriqueMock.creerInscri();
@@ -1349,53 +1353,55 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
         //Recupère liste des demandes
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(1L);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(p.getIdentifiant()).andReturn(1L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
 
         //accept
         adminService.validerInscription(l,1L);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
 
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getIdentifiant()).andReturn(2L);
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getNom()).andReturn("Yohan");
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i2.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i,p2,i2);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(1L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getIdentifiant()).andReturn(2L);
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getNom()).andReturn("Yohan");
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
+        expect(i2.getRoleDemande()).andReturn(BASIQUE);
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,i,i2);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -1424,7 +1430,7 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
         clickOn("#traiterDemandes");
         ListView<InscriptionPotentielle> liste = (ListView<InscriptionPotentielle>) GuiTest.find("#listeDemandes");
-        liste.getItems().add(i);
+        liste.getItems().addAll(i,i2);
         sleepBetweenActions();
         liste.getSelectionModel().selectIndices(0);
         sleepBetweenActions();
@@ -1435,10 +1441,14 @@ public class TestAPI extends ApplicationTest {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
+                liste2.getItems().add(i2);
             }
         });
-        liste.getItems().add(i);
+
+        sleepBetweenActions();
+        sleepBetweenActions();
+
+
 
 
     }
@@ -1452,36 +1462,36 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
         //Recupère liste des demandes
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
 
         //accept
         adminService.refuserInscription(l,1L);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
 
 
 
@@ -1533,36 +1543,36 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes= new ArrayList<>();
         controleur= new Controleur(connexionService,adminService,basiquesOffLineService,stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan","123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan","123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
 
         //Recupère liste des demandes
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
-        EasyMock.expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getNom()).andReturn("Hajar");
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
+        expect(i.getRoleDemande()).andReturn(BASIQUE);
 
         //accept
         adminService.refuserInscription(l,1L);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(i.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(i.getNom()).andReturn("Hajar");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(adminService.getListeDesDemandesNonTraitees(l)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(i.getIdentifiant()).andReturn(1L);
+        expect(i.getNom()).andReturn("Hajar");
 
 
 
@@ -1617,26 +1627,26 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t);
@@ -1685,30 +1695,30 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic);
@@ -1750,7 +1760,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void creerTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
+    public void affihcerCreationTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1761,30 +1771,30 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
 
 
 
@@ -1843,39 +1853,39 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
 
-        EasyMock.expect(topic.getTheme()).andReturn(t);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
 
 
 
@@ -1937,46 +1947,47 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(p.getNom()).andReturn("Yohan");
-        EasyMock.expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getNom()).andReturn("Yohan");
+        expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
+        expect(forumService.creerMessage(topic1,"Que faire contre le pollen ?")).andReturn(message);
+        forumService.ajouterMessage(topic1,t,message);
+        expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
+        expect(topic1.getNom()).andReturn("Allergie");
+        expect(topic1.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
-        EasyMock.expect(topic1.getNom()).andReturn("Allergie");
-        EasyMock.expect(topic1.getTheme()).andReturn(t);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
 
-
-        EasyMock.expect(message.getAuteur()).andReturn("Yohan");
-        EasyMock.expect(message.getAuteur()).andReturn("Yohan");
-        EasyMock.expect(message.getText()).andReturn("Que faire contre le pollen ?");
-        EasyMock.expect(message.getText()).andReturn("Que faire contre le pollen ?");
+        expect(message.getAuteur()).andReturn("Yohan");
+        expect(message.getAuteur()).andReturn("Yohan");
+        expect(message.getText()).andReturn("Que faire contre le pollen ?");
+        expect(message.getText()).andReturn("Que faire contre le pollen ?");
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,topic1,message);
@@ -2045,55 +2056,56 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
-        EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getTheme()).andReturn(t);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
 
-        EasyMock.expect(forumService.recupererTopic("Maladie","Santé")).andReturn(topic);
+        //valider message
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.recupererTopic("Maladie","Santé")).andReturn(topic);
+        expect(forumService.creerMessage(topic,"3 euros !")).andReturn(m1);
         forumService.ajouterMessage(topic,t,m1);
-        EasyMock.expect(topic.getNom()).andReturn("Maladie");
-        EasyMock.expect(topic.getTheme()).andReturn(t);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getAuteur()).andReturn("Sema");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
-        EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
-        EasyMock.expect(m1.getAuteur()).andReturn("Yohan");
-        EasyMock.expect(m1.getAuteur()).andReturn("Yohan");
-        EasyMock.expect(m1.getText()).andReturn("3 euros !");
-        EasyMock.expect(m1.getText()).andReturn("3 euros !");
-
-
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+       expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
 
 
         EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,message,m1);
@@ -2126,7 +2138,6 @@ public class TestAPI extends ApplicationTest {
         listeTheme.getSelectionModel().selectIndices(0);
         sleepBetweenActions();
         clickOn("#choisirTheme");
-
         ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
         listTopic.getItems().add(topic);
         sleepBetweenActions();
@@ -2167,23 +2178,23 @@ public class TestAPI extends ApplicationTest {
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
         Collection<Personne> personnes = new ArrayList<>();
         controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
-        EasyMock.expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
-        EasyMock.expect(connexionService.connexion("Yohan", "123")).andReturn(p);
-        EasyMock.expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnAdmin(1)).andReturn(true);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
-        EasyMock.expect(connexionService.estUnModerateur(1)).andReturn(false);
-        EasyMock.expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
 
-        EasyMock.expect(forumService.getListeTheme()).andReturn(lesthemes);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getIdentifiant()).andReturn(1L);
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
-        EasyMock.expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
 
 
 

@@ -212,7 +212,7 @@ public class Controleur implements Observateur {
 
     public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException, TopicInexistantException {
         Theme t = forumService.recupererTheme(nomDuTheme);
-        Topic topic = forumService.recupererTopic(nomDuTheme,nomDuTopic);
+        Topic topic = forumService.recupererTopic(nomDuTopic,nomDuTheme);
         Message m= forumService.creerMessage(topic,texteMessage);
         this.forumService.ajouterMessage(topic,t,m);
         gototopic(topic);

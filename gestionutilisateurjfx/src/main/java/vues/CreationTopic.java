@@ -2,7 +2,7 @@ package vues;
 
 import controleur.Controleur;
 import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantexception;
+import facade.erreurs.TopicInexistantException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +64,7 @@ public class CreationTopic {
         nomDuTheme.setText(nomTheme);
     }
 
-    public void enregistrerNouveauTopic(ActionEvent event) throws ThemeInexistantException, TopicInexistantexception {
+    public void enregistrerNouveauTopic(ActionEvent event) throws ThemeInexistantException, TopicInexistantException {
 
         monControleur.creerTopic(nomTopic.getText(),messageDuTopic.getText(),nomDuTheme.getText());
     }

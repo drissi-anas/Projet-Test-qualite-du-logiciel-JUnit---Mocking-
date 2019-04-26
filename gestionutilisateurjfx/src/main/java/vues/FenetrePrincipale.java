@@ -2,7 +2,7 @@ package vues;
 
 import controleur.Controleur;
 import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantexception;
+import facade.erreurs.TopicInexistantException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -159,7 +159,7 @@ public class FenetrePrincipale {
 
     }
 
-    public void gotoTopic(Topic topic) throws TopicInexistantexception {
+    public void gotoTopic(Topic topic) throws TopicInexistantException {
         this.topic.majTopic(topic);
         this.maFenetre.setCenter(this.topic.getNode());
         this.topic.setListeMessages(this.monControleur.getMessageByTopic(topic));
