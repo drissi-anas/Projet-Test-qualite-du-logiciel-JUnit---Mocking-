@@ -1,6 +1,8 @@
 package vues;
 
 import controleur.Controleur;
+import facade.erreurs.ThemeInexistantException;
+import facade.erreurs.TopicInexistantexception;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,8 +97,8 @@ public class TopicVue {
         });
     }
 
-    public void ajouterMessage(ActionEvent event) {
-        monControleur.ajouterMessage(nomDuTopic.getText(),votreMessage.getText());
+    public void ajouterMessage(ActionEvent event) throws ThemeInexistantException, TopicInexistantexception {
+        monControleur.ajouterMessage(nomDuTheme.getText(),nomDuTopic.getText(),votreMessage.getText());
     }
 
 

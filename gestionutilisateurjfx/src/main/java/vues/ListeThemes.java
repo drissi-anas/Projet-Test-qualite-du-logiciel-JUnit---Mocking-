@@ -3,6 +3,7 @@ package vues;
 import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.ThemeInexistantException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,8 @@ import java.util.Objects;
 
 public class ListeThemes implements Sujet {
 
-
+    @FXML
+    private Button creerTheme;
     @FXML  Button choisirTheme;
     Controleur monControleur;
 
@@ -57,13 +59,27 @@ public class ListeThemes implements Sujet {
         ListeThemes vue = fxmlLoader.getController();
         c.inscription(vue);
         vue.setMonControleur(c);
-
+        vue.checkVisibility();
         return vue;
     }
 
+   public void checkVisibility() {
 
 
-    public void setListeThemes(Collection<Theme> themes) {
+        if (monControleur.isAdmin()) {
+            creerTheme.setDisable(false);
+        }
+        if (monControleur.isModerateur()) {
+          creerTheme.setDisable(false);
+        }
+        else{
+            creerTheme.setDisable(true);
+        }
+
+
+    }
+
+        public void setListeThemes(Collection<Theme> themes) {
         this.listeTheme.getItems().setAll(themes);
         this.listeTheme.setCellFactory(new Callback<ListView<Theme>, ListCell<Theme>>() {
             public ListCell<Theme> call(ListView<Theme> param) {
@@ -92,7 +108,7 @@ public class ListeThemes implements Sujet {
 
     }
 
-    public void choisir(ActionEvent actionEvent) {
+    public void choisir(ActionEvent actionEvent) throws ThemeInexistantException {
 
         Theme theme = listeTheme.getSelectionModel().getSelectedItem();
 
@@ -109,5 +125,9 @@ public class ListeThemes implements Sujet {
     @Override
     public void notifier(Notification notification) {
 
+    }
+
+    public void creerTheme(ActionEvent actionEvent) {
+        monControleur.gotoCreerTheme();
     }
 }

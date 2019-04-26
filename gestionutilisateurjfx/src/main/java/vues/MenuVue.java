@@ -22,6 +22,7 @@ import java.net.URL;
  */
 public class MenuVue {
 
+
     @FXML
     Button quitter;
     Controleur monControleur;
@@ -56,7 +57,7 @@ public class MenuVue {
         this.listeThemes = listeThemes;
     }
 
-    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes, ListeThemes listeTheme, ThemeVue listeTopic, CreationTopic creerTopic, TopicVue topic) {
+    public static MenuVue creerVue(Controleur c, CreationUtilisateur creationUtilisateur, SupprimerUtilisateur supprimerUtilisateur, TraiterDemandes traiterDemandes, ListeThemes listeTheme, ThemeVue listeTopic, CreationTopic creerTopic, TopicVue topic, CreationTheme creationTheme) {
         URL location = MenuVue.class.getResource("/vues/menu.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
