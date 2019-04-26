@@ -131,7 +131,7 @@ public class FenetrePrincipale {
         vue.initialiserVues();
         stage.setScene(new Scene(root,600,600));
         vue.setMonTheatre(stage);
-        return vue;//
+        return vue;
     }
 
 
