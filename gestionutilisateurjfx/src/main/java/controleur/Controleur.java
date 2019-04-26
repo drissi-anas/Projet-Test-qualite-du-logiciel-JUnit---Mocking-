@@ -122,7 +122,7 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void demanderInscription(String pseudo, String mot, String role) {
+    public void demanderInscription(String pseudo, String mot, String role) throws UtilisateurDejaExistantException {
         this.basiquesOffLineService.posterDemandeInscription(pseudo,mot,role);
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_DEMANDE,pseudo+", votre demande a été soumise aux responsables !"));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.RESET_CHAMPS,""));
@@ -167,17 +167,9 @@ public class Controleur implements Observateur {
     }
 
     public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) {
-        try {
             this.adminService.validerInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
             this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
             this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_ACCEPTATION,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été validée"));
-        } catch (UtilisateurDejaExistantException e) {
-            this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.ERREUR_ACCEPTATION,"L'utilisateur existe déjà dans le SI donc le traitement ne peut aboutir"));
-
-        } catch (RoleDejaAttribueException e) {
-            this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.ERREUR_ACCEPTATION,"Le rôle existe déjà pour cet utilisateur"));
-
-        }
     }
 
 
