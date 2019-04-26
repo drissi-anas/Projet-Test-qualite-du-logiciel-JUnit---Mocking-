@@ -3,10 +3,7 @@ package testapi;
 import controleur.Controleur;
 import controleur.erreurs.PseudoInexistantJFXException;
 import facade.*;
-import facade.erreurs.CoupleUtilisateurMDPInconnuException;
-import facade.erreurs.NomTopicDejaExistantException;
-import facade.erreurs.RoleDejaAttribueException;
-import facade.erreurs.UtilisateurDejaExistantException;
+import facade.erreurs.*;
 import javafx.application.Platform;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -971,7 +968,7 @@ public class TestAPI extends ApplicationTest {
 
     }
     @Test
-    public void demandeInscriptionModerateurTestOK()  { /* un utilisateur fait une demande d'inscription en tant que moderateur */
+    public void demandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant que moderateur */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR);
@@ -1014,7 +1011,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void demandeInscriptionAdminTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'admin */
+    public void demandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'admin */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN);
@@ -1051,7 +1048,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void demandeInscriptionBasiqueTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
+    public void demandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
         EasyMock.expectLastCall();
@@ -1524,7 +1521,7 @@ public class TestAPI extends ApplicationTest {
 
     //affichage liste
     @Test
-    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1552,7 +1549,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
 
 
@@ -1591,7 +1588,7 @@ public class TestAPI extends ApplicationTest {
 
     //affichage des topics d'un theme
     @Test
-    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1620,7 +1617,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
@@ -1667,7 +1664,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void creerTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void creerTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1696,7 +1693,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
@@ -1747,7 +1744,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1778,7 +1775,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
@@ -1840,7 +1837,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1872,7 +1869,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
@@ -1880,9 +1877,9 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(p.getNom()).andReturn("Yohan");
-        EasyMock.expect(forumService.creerTopic("Allergie",t ,"Que faire contre le pollen ?","Yohan")).andReturn(topic1);
+      //  EasyMock.expect(forumService.creerTopic("Allergie",t ,"Que faire contre le pollen ?","Yohan")).andReturn(topic1);
 
         EasyMock.expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
         EasyMock.expect(topic1.getNom()).andReturn("Allergie");
@@ -1948,7 +1945,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1980,7 +1977,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(t.getNom()).andReturn("Santé");
         EasyMock.expect(t.getNom()).andReturn("Santé");
 
-        EasyMock.expect(forumService.récupererTheme("Santé")).andReturn(t);
+        EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
         EasyMock.expect(topic.getIdentifiant()).andReturn(1L);
@@ -1995,7 +1992,7 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
         EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
 
-        EasyMock.expect(forumService.récupererTopic("Maladie")).andReturn(topic);
+        EasyMock.expect(forumService.recupererTopic("Maladie")).andReturn(topic);
         forumService.ajouterMessage(topic,"3 euros !");
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
         EasyMock.expect(topic.getTheme()).andReturn(t);

@@ -12,7 +12,7 @@ public interface Topic {
     String getNom();
     Theme getTheme();
     long getIdentifiant();
-    Personne getCreateur();
+    String getCreateur();
     Collection<Message> getListeMessages();
     boolean ajouterMessage(Message message);
 

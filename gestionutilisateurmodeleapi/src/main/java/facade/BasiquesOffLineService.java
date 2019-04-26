@@ -1,5 +1,7 @@
 package facade;
 
+import facade.erreurs.UtilisateurDejaExistantException;
+
 /**
  * Created by YohanBoichut on 06/12/2016.
  */
@@ -12,6 +14,6 @@ public interface BasiquesOffLineService {
      * @param motDePasse : mot de passe demandé
      * @param roleDemande : rôle demandé
      */
-    public void posterDemandeInscription(String pseudo, String motDePasse,String roleDemande);
+     long posterDemandeInscription(String pseudo, String motDePasse,String roleDemande) throws UtilisateurDejaExistantException;
 
 }

@@ -17,8 +17,10 @@ public interface AdminService {
 
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException;
 
-    void supprimerClient(long u, long utilisateurConcerne) throws IndividuNonConnecteException;
 
+    /**
+     * Récupére la liste des utilisateur qui sont présents dans le Systéme
+     */
     Collection<Personne> getListeUtilisateur(long idDemandeur)throws IndividuNonConnecteException;
 
     Personne getUserById(long identifiant, long identifiant1);
@@ -29,7 +31,7 @@ public interface AdminService {
 
     void supprimerUtilisateur(long identifiant, long idUtilisateur);
 
-    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws UtilisateurDejaExistantException, RoleDejaAttribueException;
+    void validerInscription(long identifiantUtilisateur,long identifiantDemande);
 
 
     /**
