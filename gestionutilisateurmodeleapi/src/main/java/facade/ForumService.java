@@ -21,7 +21,7 @@ public interface ForumService {
     Collection<Topic> getListeTopicPourUnTheme(Theme theme) throws ThemeInexistantException;
     Theme recupererTheme(String nomTheme) throws ThemeInexistantException;
 
-    Collection<Message> getListeMessagePourUnTopic(Topic topic);
+    Collection<Message> getListeMessagePourUnTopic(Topic topic) throws TopicInexistantException;
 
 
     // J'ai jouté celle la psk il faut le Theme pour savoir ou chercher le topic
@@ -32,12 +32,13 @@ public interface ForumService {
     // J'ai jouté celle la psk il faut le Theme pour savoir ou ajouter le topic
     void ajouterMessage(Topic topic, Theme theme, Message message);
     // Donc celle on va surement la supp mais gardons la pour le moment
-    void ajouterMessage(Topic topic,String string);
+    Message creerMessage(Topic topic,String string);
 
 
     void creerTheme(String nomTheme);
 
     //j'ai changer la valeur de retour, c'eter Topic, j'ai mis void
-    Topic creerTopic(String nomTopic, Theme theme,Message Message, String auteur)throws NomTopicDejaExistantException;
+    Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException;
+
 
 }

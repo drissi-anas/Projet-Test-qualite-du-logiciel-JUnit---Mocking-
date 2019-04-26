@@ -985,7 +985,7 @@ public class TestAPI extends ApplicationTest {
 
     }
     @Test
-    public void demandeInscriptionModerateurTestOK()  { /* un utilisateur fait une demande d'inscription en tant que moderateur */
+    public void demandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant que moderateur */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR);
@@ -1028,7 +1028,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void demandeInscriptionAdminTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'admin */
+    public void demandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'admin */
 
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN);
@@ -1065,7 +1065,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void demandeInscriptionBasiqueTestOK()  { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
+    public void demandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
 
         basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE);
         EasyMock.expectLastCall();
@@ -1830,7 +1830,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, TopicInexistantexception, ThemeInexistantException {
+    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1923,7 +1923,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, TopicInexistantexception, ThemeInexistantException {
+    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException, ThemeInexistantException, TopicInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1965,7 +1965,7 @@ public class TestAPI extends ApplicationTest {
 
         EasyMock.expect(forumService.recupererTheme("Santé")).andReturn(t);
         EasyMock.expect(p.getNom()).andReturn("Yohan");
-        EasyMock.expect(forumService.creerTopic("Allergie",t ,"Que faire contre le pollen ?","Yohan")).andReturn(topic1);
+        EasyMock.expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
 
         EasyMock.expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
         EasyMock.expect(topic1.getNom()).andReturn("Allergie");
@@ -2031,7 +2031,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, TopicInexistantexception, ThemeInexistantException {
+    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException,ThemeInexistantException, TopicInexistantException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2078,8 +2078,8 @@ public class TestAPI extends ApplicationTest {
         EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
         EasyMock.expect(message.getText()).andReturn("Combien coute un doliprane ?");
 
-        EasyMock.expect(forumService.recupererTopic(t,"Maladie")).andReturn(topic);
-        forumService.ajouterMessage(t,topic,"3 euros !");
+        EasyMock.expect(forumService.recupererTopic("Maladie","Santé")).andReturn(topic);
+        forumService.ajouterMessage(topic,t,m1);
         EasyMock.expect(topic.getNom()).andReturn("Maladie");
         EasyMock.expect(topic.getTheme()).andReturn(t);
         EasyMock.expect(t.getNom()).andReturn("Santé");
