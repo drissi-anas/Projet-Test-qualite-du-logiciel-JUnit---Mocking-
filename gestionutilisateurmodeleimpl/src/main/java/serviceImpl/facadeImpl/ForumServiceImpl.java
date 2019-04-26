@@ -81,11 +81,7 @@ public class ForumServiceImpl implements ForumService {
         throw new TopicInexistantException();
     }
 
-    // je crois qu'on doit supprimer celle la
-    @Override
-    public void ajouterMessage(Topic topic, String string) {
 
-    }
 
     @Override
     public void ajouterMessage(Topic topic, Theme theme, Message message) {
@@ -103,12 +99,22 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
+    public Message creerMessage(Topic topic, String string) {
+        return null;
+    }
+
+    @Override
     public void creerTheme(String nomTheme) {
         Theme theme = new ThemeImpl(nomTheme);
         listeThemes.add(theme);
     }
 
     @Override
+    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException {
+        return null;
+    }
+
+    /*@Override
     public Topic creerTopic(String nomTopic, Theme theme, Message Message, String auteur) throws NomTopicDejaExistantException {
 
         Topic topic=null;
@@ -122,5 +128,5 @@ public class ForumServiceImpl implements ForumService {
             }
         }
         return topic;
-    }
+    }*/
 }

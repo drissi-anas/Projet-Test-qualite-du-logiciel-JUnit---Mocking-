@@ -167,9 +167,9 @@ public class Controleur implements Observateur {
     }
 
     public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) {
-            this.adminService.validerInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
-            this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
-            this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_ACCEPTATION,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été validée"));
+        this.adminService.validerInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
+        this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
+        this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_ACCEPTATION,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été validée"));
     }
 
 
@@ -205,23 +205,26 @@ public class Controleur implements Observateur {
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
     }*/
 
-    public void gototopic(Topic topic) throws TopicInexistantexception {
+    public void gototopic(Topic topic) throws TopicInexistantException {
         this.maFenetre.gotoTopic(topic);
 
     }
 
-    public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException,TopicInexistantexception{
+    public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException, TopicInexistantException {
         Theme t = forumService.recupererTheme(nomDuTheme);
-        Topic topic = forumService.recupererTopic(t,nomDuTopic);
-        this.forumService.ajouterMessage(t,topic,texteMessage);
+        Topic topic = forumService.recupererTopic(nomDuTheme,nomDuTopic);
+        Message m= forumService.creerMessage(topic,texteMessage);
+        this.forumService.ajouterMessage(topic,t,m);
         gototopic(topic);
     }
 
-    public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) throws ThemeInexistantException, TopicInexistantexception {
+    public void creerTopic(String nomDuTopic, String messageDuTopicText, String themeDuTopic) throws ThemeInexistantException, TopicInexistantException {
         Theme theme = forumService.recupererTheme(themeDuTopic);
         Topic nouveauTopic = null;
         try {
-            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,messageDuTopicText,identifiant.getNom());
+            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,identifiant.getNom());
+            Message m1=forumService.creerMessage(nouveauTopic,messageDuTopicText);
+            forumService.ajouterMessage(nouveauTopic,theme,m1);
             gototopic(nouveauTopic);
         } catch (NomTopicDejaExistantException e) {
             e.printStackTrace();
@@ -252,7 +255,7 @@ public class Controleur implements Observateur {
 
     }
 
-    public Collection<Message> getMessageByTopic(Topic t) throws TopicInexistantexception{
+    public Collection<Message> getMessageByTopic(Topic t) throws TopicInexistantException{
         return forumService.getListeMessagePourUnTopic(t);
     }
 
