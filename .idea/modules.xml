@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/gestionutilisateur.iml" filepath="$PROJECT_DIR$/gestionutilisateur.iml" />
       <module fileurl="file://$PROJECT_DIR$/gestionutilisateurjfx/gestionutilisateurjfx.iml" filepath="$PROJECT_DIR$/gestionutilisateurjfx/gestionutilisateurjfx.iml" />
       <module fileurl="file://$PROJECT_DIR$/gestionutilisateurmodeleapi/gestionutilisateurmodeleapi.iml" filepath="$PROJECT_DIR$/gestionutilisateurmodeleapi/gestionutilisateurmodeleapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/gestionutilisateurmodeleimpl/gestionutilisateurmodeleimpl.iml" filepath="$PROJECT_DIR$/gestionutilisateurmodeleimpl/gestionutilisateurmodeleimpl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/groupe7.2.iml" filepath="$PROJECT_DIR$/.idea/groupe7.2.iml" />
     </modules>
   </component>
 </project>

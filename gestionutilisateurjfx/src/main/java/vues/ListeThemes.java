@@ -59,21 +59,15 @@ public class ListeThemes implements Sujet {
         ListeThemes vue = fxmlLoader.getController();
         c.inscription(vue);
         vue.setMonControleur(c);
-        vue.checkVisibility();
         return vue;
     }
 
    public void checkVisibility() {
 
+        creerTheme.setDisable(true);
 
-        if (monControleur.isAdmin()) {
+        if (monControleur.isAdmin()==true) {
             creerTheme.setDisable(false);
-        }
-        if (monControleur.isModerateur()) {
-          creerTheme.setDisable(false);
-        }
-        else{
-            creerTheme.setDisable(true);
         }
 
 

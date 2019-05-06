@@ -269,5 +269,6 @@ public class Controleur implements Observateur {
 
     public void validerTheme(String text) {
         forumService.creerTheme(text);
+        this.maFenetre.gotoListetheme();
     }
 }

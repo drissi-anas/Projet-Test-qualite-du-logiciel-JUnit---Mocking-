@@ -2167,7 +2167,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void creerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
+    public void creerThemeUser () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2184,8 +2184,12 @@ public class TestAPI extends ApplicationTest {
         expect(p.getIdentifiant()).andReturn(l);
         expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
         expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(connexionService.estUnModerateur(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
 
@@ -2232,6 +2236,197 @@ public class TestAPI extends ApplicationTest {
     }
 
 
+    @Test
+    public void creerThemeAdmin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Theme t1=fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L).times(2);
+        expect(t.getNom()).andReturn("Santé").times(2);
+
+
+
+        forumService.creerTheme("Voiture");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes).times(2);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+        expect(t1.getIdentifiant()).andReturn(2L);
+        expect(t1.getIdentifiant()).andReturn(2L);
+        expect(t1.getNom()).andReturn("Voiture");
+        expect(t1.getNom()).andReturn("Voiture");
+
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,t1);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        clickOn("#creerTheme");
+        sleepBetweenActions();
+        clickOn("#labelTheme");
+        sleepBetweenActions();
+        write("Voiture");
+        sleepBetweenActions();
+        clickOn("#validerTheme");
+
+       ListView<Theme> list2=(ListView<Theme>)GuiTest.find("#listeTheme");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+         list2.getItems().addAll(t,t1);
+            }
+        });
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+
+    }
+
+    @Test
+    public void creerThemeModerateur () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes).times(2);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        clickOn("#creerTheme");
+        sleepBetweenActions();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @After
     public void tearDown () throws Exception {
         FxToolkit.hideStage();
@@ -2240,6 +2435,8 @@ public class TestAPI extends ApplicationTest {
 
 
     }
+
+
 
 
 

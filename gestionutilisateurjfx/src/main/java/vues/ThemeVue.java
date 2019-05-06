@@ -53,6 +53,10 @@ public class ThemeVue implements Sujet {
         return vue;
     }
 
+
+
+
+
     public void setMonControleur(Controleur monControleur) {
         this.monControleur = monControleur;
     }
@@ -111,4 +115,6 @@ public class ThemeVue implements Sujet {
     public void notifier(Notification notification) {
 
     }
+
+
 }
