@@ -10,15 +10,29 @@ public class ConnexionServiceImpl implements ConnexionService {
 
     Collection<Personne> listeUtilisateurs;
     Collection<Personne>personnesConnectes;
+
+    @Override
+    public Collection<Personne> getListeUtilisateurs() {
+        return listeUtilisateurs;
+    }
+
+    @Override
+    public Collection<Personne> getPersonnesConnectes() {
+        return personnesConnectes;
+    }
+
     public ConnexionServiceImpl(Collection<Personne> listeUtilisateurs, Collection<Personne> personnesConnectes) {
         this.listeUtilisateurs = listeUtilisateurs;
         this.personnesConnectes = personnesConnectes;
     }
+
+
     @Override
     public Personne connexion(String pseudo, String mdp) throws CoupleUtilisateurMDPInconnuException,InformationManquanteException {
         if(pseudo==null || mdp==null || pseudo.equals("") || mdp.equals("")){
             throw new InformationManquanteException();
         }
+
         Personne personne = null;
         for (Personne p : listeUtilisateurs) {
             if(p.getNom().equals(pseudo)&&p.getMdp().equals(mdp)){
@@ -28,8 +42,10 @@ public class ConnexionServiceImpl implements ConnexionService {
         }
         if(personne==null){
             throw new CoupleUtilisateurMDPInconnuException();
+        }else{
+            personnesConnectes.add(personne);
         }
-        personnesConnectes.add(personne);
+
         return personne;
     }
 

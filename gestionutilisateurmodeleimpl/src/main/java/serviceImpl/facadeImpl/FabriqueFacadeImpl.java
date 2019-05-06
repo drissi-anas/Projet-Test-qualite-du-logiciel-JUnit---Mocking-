@@ -1,6 +1,7 @@
 package serviceImpl.facadeImpl;
 
 import facade.*;
+import facade.erreurs.RoleDejaAttribueException;
 import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
@@ -12,16 +13,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class FabriqueFacadeImpl implements FabriqueFacade {
+import static facade.AdminService.ADMIN;
+import static facade.AdminService.BASIQUE;
+import static facade.AdminService.MODERATEUR;
 
-    Collection<Personne>listeUtilisateurs=new ArrayList<>();
-    Collection<Personne>utilisateursConnecte=new ArrayList<>();
+public class FabriqueFacadeImpl implements FabriqueFacade {
+    Collection<Personne>listeUtilisateurs;
+    Collection<Personne>personnesConnectes;
+
+    public FabriqueFacadeImpl(){
+        listeUtilisateurs=new ArrayList<>();
+        personnesConnectes=new ArrayList<>();
+    }
 
     @Override
-    public AdminService getAdminService() {
+    public void majListes() throws RoleDejaAttribueException {
 
-        return new AdminServiceImpl(listeUtilisateurs,utilisateursConnecte);
+        Personne personne = new PersonneImpl("admin", "admin");
+        personne.addRole(ADMIN);
+        Personne personne2 = new PersonneImpl("moderateur1", "moderateur1");
+        personne2.addRole(MODERATEUR);
+        Personne personne3 = new PersonneImpl("basique", "basique");
+        personne2.addRole(BASIQUE);
+
+        listeUtilisateurs.add(personne3);
+        listeUtilisateurs.add(personne);
+        listeUtilisateurs.add(personne2);
+
     }
+
+
+
 
     @Override
     public BasiquesOffLineService getBasiquesOffLineService() {
@@ -30,7 +52,13 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
 
     @Override
     public ConnexionService getConnexionService() {
-        return new ConnexionServiceImpl(listeUtilisateurs,utilisateursConnecte);
+        return new ConnexionServiceImpl(listeUtilisateurs,personnesConnectes);
+    }
+
+    @Override
+    public AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException {
+
+        return new AdminServiceImpl(connexionService);
     }
 
     @Override

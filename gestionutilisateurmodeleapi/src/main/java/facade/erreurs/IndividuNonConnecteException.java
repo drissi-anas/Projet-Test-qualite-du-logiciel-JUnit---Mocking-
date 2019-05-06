@@ -1,4 +1,4 @@
 package facade.erreurs;
 
-public class IndividuNonConnecteException extends RuntimeException {
+public class IndividuNonConnecteException extends Exception {
 }

@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.erreurs.UtilisateurDejaExistantJFXException;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.InformationManquanteException;
 import facade.erreurs.RoleDejaAttribueException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,7 +80,7 @@ public class CreationUtilisateur implements Sujet {
     }
 
 
-    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) throws RoleDejaAttribueException {
+    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) throws RoleDejaAttribueException, InformationManquanteException {
 
         String mot = motDePasse.getText();
 

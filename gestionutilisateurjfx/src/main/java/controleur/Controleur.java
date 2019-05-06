@@ -73,7 +73,7 @@ public class Controleur implements Observateur {
     }
 
 
-    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException {
+    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException, InformationManquanteException {
         try {
             identifiant = this.connexionService.connexion(nom,text);
 
@@ -109,7 +109,7 @@ public class Controleur implements Observateur {
 
 
 
-    public void enregistrerNouvelUtilisateur(String pseudo, String mot, String role) throws UtilisateurDejaExistantJFXException, RoleDejaAttribueException {
+    public void enregistrerNouvelUtilisateur(String pseudo, String mot, String role) throws UtilisateurDejaExistantJFXException, RoleDejaAttribueException, InformationManquanteException {
         try {
             Personne p = this.adminService.creerUtilisateur(this.identifiant.getIdentifiant(),pseudo,mot);
             this.adminService.associerRoleUtilisateur(identifiant.getIdentifiant(),p.getIdentifiant(),role);
@@ -122,7 +122,7 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void demanderInscription(String pseudo, String mot, String role) throws UtilisateurDejaExistantException {
+    public void demanderInscription(String pseudo, String mot, String role) throws UtilisateurDejaExistantException, InformationManquanteException {
         this.basiquesOffLineService.posterDemandeInscription(pseudo,mot,role);
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_DEMANDE,pseudo+", votre demande a été soumise aux responsables !"));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.RESET_CHAMPS,""));
@@ -205,7 +205,7 @@ public class Controleur implements Observateur {
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
     }*/
 
-    public void gototopic(Topic topic) {
+    public void gototopic(Topic topic) throws TopicInexistantException {
         this.maFenetre.gotoTopic(topic);
 
     }

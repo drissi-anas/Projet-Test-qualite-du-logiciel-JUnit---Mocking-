@@ -4,7 +4,13 @@ import facade.erreurs.CoupleUtilisateurMDPInconnuException;
 import facade.erreurs.InformationManquanteException;
 import modele.personnes.Personne;
 
+import java.util.Collection;
+
 public interface ConnexionService {
+
+    Collection<Personne> getListeUtilisateurs();
+
+    Collection<Personne> getPersonnesConnectes();
 
     /**
      * Permet de connecter une personne à l'application

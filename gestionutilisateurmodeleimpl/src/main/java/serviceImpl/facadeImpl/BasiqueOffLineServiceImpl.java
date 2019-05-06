@@ -24,6 +24,12 @@ public class BasiqueOffLineServiceImpl implements BasiquesOffLineService {
 
         InscriptionPotentielle inscriptionPotentielle = new InscriptionImpl(pseudo,motDePasse,roleDemande);
         listeDemandes.add(inscriptionPotentielle);
-        return 1;
+
+        return inscriptionPotentielle.getIdentifiant();
+    }
+
+    @Override
+    public Collection<InscriptionPotentielle> getListeDemandes() {
+        return listeDemandes;
     }
 }
