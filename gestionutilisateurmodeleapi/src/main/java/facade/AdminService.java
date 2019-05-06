@@ -1,6 +1,7 @@
 package facade;
 
 import facade.erreurs.IndividuNonConnecteException;
+import facade.erreurs.InformationManquanteException;
 import facade.erreurs.RoleDejaAttribueException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import modele.inscription.InscriptionPotentielle;
@@ -13,7 +14,7 @@ import java.util.Collection;
 public interface AdminService {
 
 
-    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException;
+    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException,InformationManquanteException;
 
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException;
 
@@ -27,7 +28,7 @@ public interface AdminService {
 
     void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role);
 
-    void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp);
+    void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp)throws InformationManquanteException;
 
     void supprimerUtilisateur(long identifiant, long idUtilisateur);
 

@@ -2,6 +2,7 @@ package serviceImpl.facadeImpl;
 
 import facade.ConnexionService;
 import facade.erreurs.CoupleUtilisateurMDPInconnuException;
+import facade.erreurs.InformationManquanteException;
 import modele.personnes.Personne;
 import java.util.Collection;
 
@@ -14,8 +15,10 @@ public class ConnexionServiceImpl implements ConnexionService {
         this.personnesConnectes = personnesConnectes;
     }
     @Override
-    public Personne connexion(String pseudo, String mdp) throws CoupleUtilisateurMDPInconnuException {
-
+    public Personne connexion(String pseudo, String mdp) throws CoupleUtilisateurMDPInconnuException,InformationManquanteException {
+        if(pseudo==null || mdp==null || pseudo.equals("") || mdp.equals("")){
+            throw new InformationManquanteException();
+        }
         Personne personne = null;
         for (Personne p : listeUtilisateurs) {
             if(p.getNom().equals(pseudo)&&p.getMdp().equals(mdp)){

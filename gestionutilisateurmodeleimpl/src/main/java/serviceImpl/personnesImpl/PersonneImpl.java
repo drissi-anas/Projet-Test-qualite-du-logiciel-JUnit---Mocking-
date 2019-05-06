@@ -49,11 +49,13 @@ public class PersonneImpl implements Personne {
 
     @Override
     public void supprimerRole(String role) {
+        String role1=null;
         for (String s: roles) {
             if(s.equals(role)){
-                roles.remove(s);
+                role1=s;
             }
         }
+        roles.remove(role1);
     }
 
     @Override

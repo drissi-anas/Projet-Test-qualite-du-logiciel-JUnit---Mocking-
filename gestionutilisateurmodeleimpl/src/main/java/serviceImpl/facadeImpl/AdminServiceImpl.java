@@ -2,6 +2,7 @@ package serviceImpl.facadeImpl;
 
 import facade.AdminService;
 import facade.erreurs.IndividuNonConnecteException;
+import facade.erreurs.InformationManquanteException;
 import facade.erreurs.RoleDejaAttribueException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import modele.inscription.InscriptionPotentielle;
@@ -26,7 +27,11 @@ public class AdminServiceImpl implements AdminService {
     Collection<InscriptionPotentielle>listeDemandesNonTRaitees = new ArrayList<>();
 
     @Override
-    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException {
+    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException {
+
+        if(nom==null || mdp==null || mdp.equals("") || nom.equals("")){
+            throw new InformationManquanteException();
+        }
         for (Personne p:listeUtilisateurs) {
             if(p.getNom().equals(nom)){
                 throw new UtilisateurDejaExistantException();
@@ -51,7 +56,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException {
-
         boolean adminOuModoConnecte =false;
         for (Personne p : personnesConnectes) {
             if(p.getIdentifiant()==u){
@@ -69,7 +73,6 @@ public class AdminServiceImpl implements AdminService {
                 p.addRole(role);
             }
         }
-
     }
 /**
     @Override
@@ -132,7 +135,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) {
+    public void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException {
+        if( mdp == null ||mdp.equals("")  ){
+            throw new InformationManquanteException();
+        }
         boolean adminOuModoConnecte =false;
         for (Personne p : personnesConnectes) {
             if(p.getIdentifiant()==identifiant){
@@ -201,7 +207,39 @@ public class AdminServiceImpl implements AdminService {
     //Pas sur, je sais pas quoi faire du parametre
     @Override
     public Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) {
-        return listeDemandesNonTRaitees;
+
+        boolean isAdmin= false;
+        boolean isModerateur= false;
+        for (Personne p:listeUtilisateurs) {
+            if(p.getIdentifiant()==identifiantUtilisateur){
+                for(String s:p.getRoles()){
+                    if(s.equals("ADMINISTRATEUR")){
+                        isAdmin=true;
+                    }else if(s.equals("MODERATEUR")){
+                        isModerateur=true;
+                    }
+                }
+            }
+        }
+        Collection<InscriptionPotentielle> listeARetourner=new ArrayList<>();
+
+        if(isAdmin){
+            return listeDemandesNonTRaitees;
+        }else if(isModerateur){
+
+            for (InscriptionPotentielle i:listeDemandesNonTRaitees){
+
+                if(!i.getRoleDemande().equals("ADMINISTRATEUR")){
+                    listeARetourner.add(i);
+                }
+
+            }
+            return listeDemandesNonTRaitees;
+
+        }
+
+        return  null;
+
     }
 
     //Pas sur, je sais pas quoi faire du parametre identifiantUTilisateur

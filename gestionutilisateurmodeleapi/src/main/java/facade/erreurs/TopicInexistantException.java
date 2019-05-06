@@ -1,4 +1,4 @@
 package facade.erreurs;
 
-public class TopicInexistantException extends Throwable {
+public class TopicInexistantException extends Exception {
 }

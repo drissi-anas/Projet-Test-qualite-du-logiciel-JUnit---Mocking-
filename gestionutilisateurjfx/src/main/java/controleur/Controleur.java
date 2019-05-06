@@ -205,7 +205,7 @@ public class Controleur implements Observateur {
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
     }*/
 
-    public void gototopic(Topic topic) throws TopicInexistantException {
+    public void gototopic(Topic topic) {
         this.maFenetre.gotoTopic(topic);
 
     }

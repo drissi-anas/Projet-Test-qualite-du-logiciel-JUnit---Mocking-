@@ -2,15 +2,13 @@ package vues;
 
 import controleur.Controleur;
 import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantexception;
-import javafx.event.ActionEvent;
+import facade.erreurs.TopicInexistantException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import modele.forum.Theme;
 import modele.forum.Topic;
 import vues.admin.CreationUtilisateur;
 import vues.admin.SupprimerUtilisateur;
@@ -159,7 +157,7 @@ public class FenetrePrincipale {
 
     }
 
-    public void gotoTopic(Topic topic) throws TopicInexistantexception {
+    public void gotoTopic(Topic topic) throws TopicInexistantException {
         this.topic.majTopic(topic);
         this.maFenetre.setCenter(this.topic.getNode());
         this.topic.setListeMessages(this.monControleur.getMessageByTopic(topic));

@@ -2,7 +2,6 @@ package vues;
 
 import controleur.Controleur;
 import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantexception;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import modele.forum.Message;
-import modele.forum.Theme;
 import modele.forum.Topic;
 
 import java.io.IOException;

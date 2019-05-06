@@ -1,6 +1,7 @@
 package facade;
 
 import facade.erreurs.CoupleUtilisateurMDPInconnuException;
+import facade.erreurs.InformationManquanteException;
 import modele.personnes.Personne;
 
 public interface ConnexionService {
@@ -13,7 +14,7 @@ public interface ConnexionService {
      * @throws CoupleUtilisateurMDPInconnuException
      */
 
-    Personne connexion(String pseudo, String mdp) throws CoupleUtilisateurMDPInconnuException;
+    Personne connexion(String pseudo, String mdp) throws InformationManquanteException,CoupleUtilisateurMDPInconnuException;
 
     /**
      * Permet de déconnecter une personne de l'application

@@ -1,6 +1,7 @@
 package serviceImpl.facadeImpl;
 
 import facade.BasiquesOffLineService;
+import facade.erreurs.InformationManquanteException;
 import serviceImpl.inscriptionImpl.InscriptionImpl;
 import modele.inscription.InscriptionPotentielle;
 
@@ -13,7 +14,14 @@ public class BasiqueOffLineServiceImpl implements BasiquesOffLineService {
     Collection<InscriptionPotentielle> listeDemandes= new ArrayList<>();
 
     @Override
-    public long posterDemandeInscription(String pseudo, String motDePasse, String roleDemande) {
+    public long posterDemandeInscription(String pseudo, String motDePasse, String roleDemande)throws InformationManquanteException {
+
+        if(pseudo==null || motDePasse==null || roleDemande==null || pseudo.equals("") || motDePasse.equals("") || roleDemande.equals("")){
+            throw new InformationManquanteException();
+        }
+
+
+
         InscriptionPotentielle inscriptionPotentielle = new InscriptionImpl(pseudo,motDePasse,roleDemande);
         listeDemandes.add(inscriptionPotentielle);
         return 1;
