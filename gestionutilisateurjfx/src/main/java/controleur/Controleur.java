@@ -90,6 +90,8 @@ public class Controleur implements Observateur {
             this.broadcastNotification(new UpdateDemandesImpl(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
             this.broadcastNotification(new UpdatesCreationImpl(AdminService.getRoles()));
             this.maFenetre.goToMenu();
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -119,6 +121,8 @@ public class Controleur implements Observateur {
 
         } catch (UtilisateurDejaExistantException e) {
             throw new UtilisateurDejaExistantJFXException();
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -265,5 +269,6 @@ public class Controleur implements Observateur {
 
     public void validerTheme(String text) {
         forumService.creerTheme(text);
+        this.maFenetre.gotoListetheme();
     }
 }

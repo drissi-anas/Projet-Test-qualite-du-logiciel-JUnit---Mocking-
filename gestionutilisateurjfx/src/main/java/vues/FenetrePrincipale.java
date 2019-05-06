@@ -89,6 +89,8 @@ public class FenetrePrincipale {
 
 
     public void gotoListetheme() {
+        this.listeThemes.checkVisibility();
+        this.listeThemes.setListeThemes(monControleur.getThemes());
         this.maFenetre.setCenter(this.listeThemes.getNode());
     }
 
@@ -166,6 +168,7 @@ public class FenetrePrincipale {
     }
 
     public void gotoCreerTheme() {
+
         this.maFenetre.setCenter(creationTheme.getNode());
     }
 
