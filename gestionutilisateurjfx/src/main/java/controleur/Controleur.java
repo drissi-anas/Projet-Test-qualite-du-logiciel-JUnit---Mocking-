@@ -90,6 +90,8 @@ public class Controleur implements Observateur {
             this.broadcastNotification(new UpdateDemandesImpl(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
             this.broadcastNotification(new UpdatesCreationImpl(AdminService.getRoles()));
             this.maFenetre.goToMenu();
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -119,10 +121,12 @@ public class Controleur implements Observateur {
 
         } catch (UtilisateurDejaExistantException e) {
             throw new UtilisateurDejaExistantJFXException();
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
         }
     }
 
-    public void demanderInscription(String pseudo, String mot, String role) throws UtilisateurDejaExistantException {
+    public void demanderInscription(String pseudo, String mot, String role) throws UtilisateurDejaExistantException, InformationManquanteException {
         this.basiquesOffLineService.posterDemandeInscription(pseudo,mot,role);
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_DEMANDE,pseudo+", votre demande a été soumise aux responsables !"));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.RESET_CHAMPS,""));
@@ -205,7 +209,7 @@ public class Controleur implements Observateur {
         themeVue.setListeTopics(forumService.getListeTopicPourUnTheme(theme));
     }*/
 
-    public void gototopic(Topic topic) {
+    public void gototopic(Topic topic) throws TopicInexistantException {
         this.maFenetre.gotoTopic(topic);
 
     }

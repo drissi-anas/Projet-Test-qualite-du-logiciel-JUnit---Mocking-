@@ -115,7 +115,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void saisieMdpOKAdminAndModCV () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpOKAdminAndModCV () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -190,7 +190,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void saisieMdpOKAdminAndMod () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpOKAdminAndMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -239,7 +239,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void saisiePseudoOKMDPVide () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisiePseudoOKMDPVide () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -287,7 +287,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void saisieMdpNonModNonAdmin () throws CoupleUtilisateurMDPInconnuException { /*Un utilisateur basique se connecte avec un  couple login/mdp valide */
+    public void saisieMdpNonModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un utilisateur basique se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -336,7 +336,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpModNonAdmin () throws CoupleUtilisateurMDPInconnuException {/*Un moderateur se connecte avec un  couple login/mdp valide */
+    public void saisieMdpModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException {/*Un moderateur se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -385,7 +385,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpAdminNonMod () throws CoupleUtilisateurMDPInconnuException { /*Un admin (non moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpAdminNonMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un admin (non moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -434,7 +434,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void saisieMdpKO() throws CoupleUtilisateurMDPInconnuException { /*Un utilisateurse connecte avec un  couple login/mdp invalide */
+    public void saisieMdpKO() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /*Un utilisateurse connecte avec un  couple login/mdp invalide */
         long l = 1;
         CoupleUtilisateurMDPInconnuException e= new CoupleUtilisateurMDPInconnuException();
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -490,7 +490,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurOK () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         p2=fabriqueMock.creerMockPersonne();
@@ -579,7 +579,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*Un admin ajoute un utilisateur déjà existant */
+    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException { /*Un admin ajoute un utilisateur déjà existant */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -658,7 +658,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void ajouterUtilisateurChampVide () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurChampVide () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -735,7 +735,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void ajouterUtilisateurChampVidePseudo () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurChampVidePseudo () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -816,7 +816,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException { /* un admin se connecte puis quitte l'appli */
+    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /* un admin se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -872,7 +872,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void modQuitter () throws CoupleUtilisateurMDPInconnuException { /* un moderateur se connecte puis quitte l'appli */
+    public void modQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /* un moderateur se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -928,7 +928,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException { /* un utilisateur basique se connecte puis quitte l'appli */
+    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException { /* un utilisateur basique se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -986,7 +986,7 @@ public class TestAPI extends ApplicationTest {
 
     }
     @Test
-    public void demandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant que moderateur */
+    public void demandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException, InformationManquanteException { /* un utilisateur fait une demande d'inscription en tant que moderateur */
 
 
         expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",MODERATEUR)).andReturn(1L);
@@ -1031,7 +1031,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void demandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'admin */
+    public void demandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException, InformationManquanteException { /* un utilisateur fait une demande d'inscription en tant qu'admin */
 
 
         expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",ADMIN)).andReturn(1L);
@@ -1068,7 +1068,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void demandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
+    public void demandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException, InformationManquanteException { /* un utilisateur fait une demande d'inscription en tant qu'utlisateur basique */
 
         expect(basiquesOffLineService.posterDemandeInscription("Yohan","123",BASIQUE)).andReturn(1L);
         EasyMock.expectLastCall();
@@ -1125,7 +1125,7 @@ public class TestAPI extends ApplicationTest {
 
     }
     @Test
-    public void supprimerUser() throws CoupleUtilisateurMDPInconnuException {
+    public void supprimerUser() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException {
         p =fabriqueMock.creerMockPersonne();
         p2= fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -1233,7 +1233,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void traiterDemandeAdminEtModAccept () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void traiterDemandeAdminEtModAccept () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException {
         p =fabriqueMock.creerMockPersonne();
         p2=fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
@@ -1343,7 +1343,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException {
         p =fabriqueMock.creerMockPersonne();
 
         p2=fabriqueMock.creerMockPersonne();
@@ -1454,7 +1454,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void traiterDemandeAdminEtModRefus () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void traiterDemandeAdminEtModRefus () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException {
         p =fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
         InscriptionPotentielle i2=fabriqueMock.creerInscri();
@@ -1535,7 +1535,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void traiterDemandeAdminKOModOKRefus () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException {
+    public void traiterDemandeAdminKOModOKRefus () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException {
         p =fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
         InscriptionPotentielle i2=fabriqueMock.creerInscri();
@@ -1617,7 +1617,7 @@ public class TestAPI extends ApplicationTest {
 
     //affichage liste
     @Test
-    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
+    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1684,7 +1684,7 @@ public class TestAPI extends ApplicationTest {
 
     //affichage des topics d'un theme
     @Test
-    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
+    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1760,7 +1760,7 @@ public class TestAPI extends ApplicationTest {
 
 
     @Test
-    public void affihcerCreationTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
+    public void affihcerCreationTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1840,7 +1840,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException {
+    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1933,7 +1933,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException, ThemeInexistantException, TopicInexistantException {
+    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2042,7 +2042,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException,ThemeInexistantException, TopicInexistantException {
+    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, ThemeInexistantException, TopicInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2167,7 +2167,7 @@ public class TestAPI extends ApplicationTest {
     }
 
     @Test
-    public void creerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException {
+    public void creerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();

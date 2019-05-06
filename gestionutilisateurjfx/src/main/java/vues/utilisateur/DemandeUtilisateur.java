@@ -3,6 +3,7 @@ package vues.utilisateur;
 import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.InformationManquanteException;
 import facade.erreurs.UtilisateurDejaExistantException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,7 +76,7 @@ public class DemandeUtilisateur implements Sujet {
     }
 
 
-    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) throws UtilisateurDejaExistantException {
+    public void enregistrerNouvelUtilisateur(ActionEvent actionEvent) throws UtilisateurDejaExistantException, InformationManquanteException {
 
         String mot = motDePasse.getText();
 
