@@ -2,6 +2,7 @@ package vues.connexion;
 
 import controleur.Controleur;
 import controleur.erreurs.MotDePasseIncorrectJFXException;
+import facade.erreurs.IndividuNonConnecteException;
 import facade.erreurs.InformationManquanteException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +62,7 @@ public class MotDePasseVue  {
     }
 
 
-    public void validerMotDePasse(ActionEvent actionEvent) throws InformationManquanteException {
+    public void validerMotDePasse(ActionEvent actionEvent) throws InformationManquanteException, IndividuNonConnecteException {
 
 
         String mot = this.motDePasse.getText();

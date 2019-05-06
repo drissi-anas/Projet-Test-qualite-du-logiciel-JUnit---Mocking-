@@ -3,6 +3,7 @@ package vues.admin;
 import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.ActionImpossibleException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -111,7 +112,7 @@ public class TraiterDemandes implements Sujet {
 
     }
 
-    public void refuser(ActionEvent actionEvent) {
+    public void refuser(ActionEvent actionEvent) throws ActionImpossibleException {
         InscriptionPotentielle inscriptionPotentielle = listeDemandes.getSelectionModel().getSelectedItem();
         if (Objects.isNull(inscriptionPotentielle)) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Vous devez sélectionner une demande");

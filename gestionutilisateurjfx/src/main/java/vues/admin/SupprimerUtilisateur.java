@@ -3,6 +3,7 @@ package vues.admin;
 import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
+import facade.erreurs.IndividuNonConnecteException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,7 +88,7 @@ public class SupprimerUtilisateur implements Sujet {
         System.out.println();
     }
 
-    public void supprimer(ActionEvent actionEvent) {
+    public void supprimer(ActionEvent actionEvent) throws IndividuNonConnecteException {
         Personne utilisateur = listeUtilisateurs.getSelectionModel().getSelectedItem();
         if (Objects.isNull(utilisateur)) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Vous devez sélectionner un utilisateur");

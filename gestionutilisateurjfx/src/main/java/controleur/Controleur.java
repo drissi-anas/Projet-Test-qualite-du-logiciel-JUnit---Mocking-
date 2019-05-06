@@ -73,7 +73,7 @@ public class Controleur implements Observateur {
     }
 
 
-    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException, InformationManquanteException {
+    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException, InformationManquanteException, IndividuNonConnecteException {
         try {
             identifiant = this.connexionService.connexion(nom,text);
 
@@ -111,7 +111,7 @@ public class Controleur implements Observateur {
 
 
 
-    public void enregistrerNouvelUtilisateur(String pseudo, String mot, String role) throws UtilisateurDejaExistantJFXException, RoleDejaAttribueException, InformationManquanteException {
+    public void enregistrerNouvelUtilisateur(String pseudo, String mot, String role) throws UtilisateurDejaExistantJFXException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         try {
             Personne p = this.adminService.creerUtilisateur(this.identifiant.getIdentifiant(),pseudo,mot);
             this.adminService.associerRoleUtilisateur(identifiant.getIdentifiant(),p.getIdentifiant(),role);
@@ -153,12 +153,12 @@ public class Controleur implements Observateur {
         this.maFenetre.goToConnexion();
     }
 
-    public Collection<Personne> getUtilisateurs() {
+    public Collection<Personne> getUtilisateurs() throws IndividuNonConnecteException {
         return this.adminService.getListeUtilisateur(identifiant.getIdentifiant());
 
     }
 
-    public void supprimerUtilisateur(Personne utilisateur) {
+    public void supprimerUtilisateur(Personne utilisateur) throws IndividuNonConnecteException {
         if (utilisateur.getIdentifiant() == this.identifiant.getIdentifiant()) {
             this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.ERREUR_SUPPRESSION,"On ne peut pas se supprimer du SI"));
         }
@@ -177,7 +177,7 @@ public class Controleur implements Observateur {
     }
 
 
-    public void refuserDemandes(InscriptionPotentielle inscriptionPotentielle) {
+    public void refuserDemandes(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException {
         this.adminService.refuserInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
         this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_REFUS,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été refusée"));
