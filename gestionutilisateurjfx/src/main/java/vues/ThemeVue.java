@@ -24,6 +24,8 @@ import java.util.Objects;
 public class ThemeVue implements Sujet {
 
     @FXML
+    private Button supprimertopic;
+    @FXML
     private Button choisirTopics;
     @FXML
     private Button creerTopic;
@@ -116,5 +118,11 @@ public class ThemeVue implements Sujet {
 
     }
 
+    public void checkVisibility(){
 
+    }
+
+    public void supprimerTopic(ActionEvent actionEvent) {
+
+    }
 }

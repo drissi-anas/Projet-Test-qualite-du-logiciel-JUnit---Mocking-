@@ -2730,7 +2730,7 @@ public class TestAPI extends ApplicationTest {
      * @throws ThemeInexistantException
      * @throws TopicInexistantException
      *
-     * Test la suppression d'un message par un moderateur
+     * un moderateur supprime son propre message
      */
     @Test
     public void supprimerMessageTopicMod() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ThemeInexistantException, TopicInexistantException, ActionImpossibleException {
@@ -2938,6 +2938,12 @@ public class TestAPI extends ApplicationTest {
         expect(m1.getText()).andReturn("3 euros !");
 
         //Supprime le message séléctionné
+
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
         expect(p.getIdentifiant()).andReturn(1L);
         forumService.supprimerMessage(m1, 1L);
         expect(m1.getTopic()).andReturn(topic);
@@ -3133,6 +3139,10 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
 
     }
+
+
+
+
 
 
 
