@@ -236,10 +236,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) {
+    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException{
 
+        boolean isAdmin=false;
+        boolean isModerateur = false;
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==identifiantUtilisateur){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)){
+                        isAdmin=true;
+                    }
+                    if(s.equals(MODERATEUR)){
+                        isModerateur=true;
+                    }
 
-        for (Personne p : connexionService.getListeUtilisateurs()) {
+                }
+            }
+
+        }
             InscriptionPotentielle inscriptionPotentielle = null;
             for (InscriptionPotentielle i : listeDemandesNonTRaitees) {
 
@@ -247,13 +261,32 @@ public class AdminServiceImpl implements AdminService {
                     inscriptionPotentielle = i;
                 }
             }
+
+
+            if(inscriptionPotentielle.getRoleDemande().equals(ADMIN)){
+                if(!isAdmin){
+                    throw new ActionImpossibleException();
+                }
+            }
+
+            if(inscriptionPotentielle.getRoleDemande().equals(MODERATEUR)){
+                if(!isAdmin && !isModerateur ){
+                    throw new ActionImpossibleException();
+                }
+            }
+            if(inscriptionPotentielle.getRoleDemande().equals(BASIQUE)){
+                if(!isAdmin && !isModerateur ){
+                    throw new ActionImpossibleException();
+                }
+            }
+
             Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
             connexionService.getListeUtilisateurs().add(personne);
             listeDemandesNonTRaitees.remove(inscriptionPotentielle);
 
         }
 
-    }
+
 
 
 

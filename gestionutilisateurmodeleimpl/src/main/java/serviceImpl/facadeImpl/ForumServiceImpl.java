@@ -5,11 +5,13 @@ import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import modele.forum.*;
+import serviceImpl.forumImpl.MessageImpl;
 import serviceImpl.forumImpl.ThemeImpl;
 import serviceImpl.forumImpl.TopicImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class ForumServiceImpl implements ForumService {
 
@@ -22,19 +24,15 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public Collection<Theme> getListeTheme() {
-
         return listeThemes;
-
     }
 
     @Override
     public Collection<Topic> getListeTopicPourUnTheme(Theme theme) throws ThemeInexistantException {
-
         for (Theme t:listeThemes) {
             if(t.equals(theme)){
                 return t.getListeTopics();
             }
-
         }
         throw new ThemeInexistantException();
     }
@@ -47,24 +45,19 @@ public class ForumServiceImpl implements ForumService {
                 return t;
             }
         }
-
         throw new ThemeInexistantException();
     }
 
 
-
+// a faire
     @Override
     public Collection<Message> getListeMessagePourUnTopic(Topic topic) {
         return null;
     }
 
-    // je crois qu'on doit supprimer celle la
-    @Override
-    public Topic recupererTopic(String nomTopic) {
-        return null;
-    }
 
-    //Faut ajouter erreur topic inexistant
+
+
     @Override
     public Topic recupererTopic(String nomTopic, String nomTheme) throws TopicInexistantException {
 
@@ -98,9 +91,11 @@ public class ForumServiceImpl implements ForumService {
         }
     }
 
+    // A faire
     @Override
-    public Message creerMessage(Topic topic, String string) {
-        return null;
+    public Message creerMessage(String auteur,Topic topic, String texte) {
+        Date date= new Date();
+        return new MessageImpl(auteur,texte,date,topic);
     }
 
     @Override
@@ -114,7 +109,7 @@ public class ForumServiceImpl implements ForumService {
         return null;
     }
 
-    /*@Override
+    /*--@Override
     public Topic creerTopic(String nomTopic, Theme theme, Message Message, String auteur) throws NomTopicDejaExistantException {
 
         Topic topic=null;

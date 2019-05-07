@@ -170,7 +170,7 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) {
+    public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException {
         this.adminService.validerInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
         this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_ACCEPTATION,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été validée"));
@@ -217,7 +217,7 @@ public class Controleur implements Observateur {
     public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException, TopicInexistantException {
         Theme t = forumService.recupererTheme(nomDuTheme);
         Topic topic = forumService.recupererTopic(nomDuTopic,nomDuTheme);
-        Message m= forumService.creerMessage(topic,texteMessage);
+        Message m= forumService.creerMessage(identifiant.getNom(),topic,texteMessage);
         this.forumService.ajouterMessage(topic,t,m);
         gototopic(topic);
     }
@@ -227,7 +227,7 @@ public class Controleur implements Observateur {
         Topic nouveauTopic = null;
         try {
             nouveauTopic = forumService.creerTopic(nomDuTopic,theme,identifiant.getNom());
-            Message m1=forumService.creerMessage(nouveauTopic,messageDuTopicText);
+            Message m1=forumService.creerMessage(identifiant.getNom(),nouveauTopic,messageDuTopicText);
             forumService.ajouterMessage(nouveauTopic,theme,m1);
             gototopic(nouveauTopic);
         } catch (NomTopicDejaExistantException e) {

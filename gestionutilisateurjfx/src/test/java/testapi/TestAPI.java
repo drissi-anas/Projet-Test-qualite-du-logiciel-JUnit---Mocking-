@@ -1300,7 +1300,7 @@ public class TestAPI extends ApplicationTest {
      * Un Admin/Moderateur accepte une demande d'inscription pour un utilisateur basique et affiche liste mise à jour
      */
     @Test
-    public void traiterDemandeAdminEtModAccept () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException {
+    public void traiterDemandeAdminEtModAccept () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p =fabriqueMock.creerMockPersonne();
         p2=fabriqueMock.creerMockPersonne();
         InscriptionPotentielle i= fabriqueMock.creerInscri();
@@ -1418,7 +1418,7 @@ public class TestAPI extends ApplicationTest {
      * Un Modérateur accepte une demande d'inscription d'un utilisateur basique. Mise à jour de la liste des demandes non traitees.
      */
     @Test
-    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException {
+    public void traiterDemandeKOAdminOKMod () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p =fabriqueMock.creerMockPersonne();
 
         p2=fabriqueMock.creerMockPersonne();
@@ -2111,7 +2111,7 @@ public class TestAPI extends ApplicationTest {
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(p.getNom()).andReturn("Yohan");
         expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
-        expect(forumService.creerMessage(topic1,"Que faire contre le pollen ?")).andReturn(message);
+        expect(forumService.creerMessage("Yohan",topic1,"Que faire contre le pollen ?")).andReturn(message);
         forumService.ajouterMessage(topic1,t,message);
         expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
         expect(topic1.getNom()).andReturn("Allergie");
@@ -2235,7 +2235,7 @@ public class TestAPI extends ApplicationTest {
         //valider message
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(forumService.recupererTopic("Maladie","Santé")).andReturn(topic);
-        expect(forumService.creerMessage(topic,"3 euros !")).andReturn(m1);
+        expect(forumService.creerMessage("Yohan",topic,"3 euros !")).andReturn(m1);
         forumService.ajouterMessage(topic,t,m1);
         expect(topic.getNom()).andReturn("Maladie");
         expect(topic.getTheme()).andReturn(t);

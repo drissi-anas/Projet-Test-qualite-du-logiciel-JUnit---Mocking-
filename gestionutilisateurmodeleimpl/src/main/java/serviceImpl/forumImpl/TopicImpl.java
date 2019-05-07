@@ -14,7 +14,7 @@ public class TopicImpl implements Topic {
     private static long compteur;
     private long identifiant;
     private Theme theme;
-    Collection<Message>listeMessages;
+    private Collection<Message>listeMessages;
 
 
     public TopicImpl(String createur, String nom, Theme theme, Collection<Message> listeMessages) {

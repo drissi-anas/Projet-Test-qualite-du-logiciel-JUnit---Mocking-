@@ -90,7 +90,7 @@ public class TraiterDemandes implements Sujet {
         System.out.println();
     }
 
-    public void accepter(ActionEvent actionEvent) {
+    public void accepter(ActionEvent actionEvent) throws ActionImpossibleException {
         InscriptionPotentielle inscriptionPotentielle = listeDemandes.getSelectionModel().getSelectedItem();
         if (Objects.isNull(inscriptionPotentielle)) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Vous devez sélectionner une demande");

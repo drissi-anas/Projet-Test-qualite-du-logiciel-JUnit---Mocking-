@@ -1,15 +1,10 @@
 package testInterfaces;
 
-import facade.AdminService;
-import facade.BasiquesOffLineService;
-import facade.ConnexionService;
-import facade.FabriqueFacade;
+import facade.*;
 import facade.erreurs.*;
 import modele.forum.Message;
 import modele.forum.Topic;
-import modele.inscription.InscriptionPotentielle;
 import modele.personnes.Personne;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +18,7 @@ public abstract class  TestFacadeAll {
     AdminService adminService;
     BasiquesOffLineService basiquesOffLineService;
     ConnexionService connexionService;
+    ForumService forumService;
     FabriqueFacade fabriqueFacade;
     Personne personne;
     Message message;
@@ -42,6 +38,8 @@ public abstract class  TestFacadeAll {
         basiquesOffLineService = fabriqueFacade.getBasiquesOffLineService();
         connexionService = fabriqueFacade.getConnexionService();
         adminService = fabriqueFacade.getAdminService(connexionService);
+        forumService = fabriqueFacade.getForumService();
+
     }
     /**
      *     -------------------------------------------------------   Test de l'interface AdminService   -------------------------------------------------------
@@ -75,7 +73,6 @@ public abstract class  TestFacadeAll {
         connexionService.deconnexion(p.getIdentifiant());
         adminService.creerUtilisateur(p.getIdentifiant(),"aaa", "bbb");
     }
-
     @Test(expected =InformationManquanteException.class)
     public void creerUtilisateurKO_NomNull() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
         Personne p = connexionService.connexion("admin","admin");
@@ -220,8 +217,6 @@ public abstract class  TestFacadeAll {
         }
         adminService.associerRoleUtilisateur(p.getIdentifiant(), p2.getIdentifiant(),MODERATEUR);
     }
-
-
     /**
      * Quand un ADMIN veut associer ADMIN à un utilisateur.
      */
@@ -467,64 +462,116 @@ public abstract class  TestFacadeAll {
     @Test
     public void changerMotDePasseUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
         Personne p = connexionService.connexion("admin", "admin");
-        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur","utilisateur2");
         adminService.changerMotDePasseUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),"123456");
         Assert.assertTrue(true);
     }
     @Test(expected = InformationManquanteException.class)
     public void changerMotDePasseKOMdpNull() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
         Personne p = connexionService.connexion("admin", "admin");
-        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur","utilisateur2");
         adminService.changerMotDePasseUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),null);
     }
+    @Test(expected = InformationManquanteException.class)
+    public void changerMotDePasseKOMdpVide() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
+        Personne p = connexionService.connexion("admin", "admin");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur","utilisateur2");
+        adminService.changerMotDePasseUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),"");
+    }
+
 
     @Test
     public void supprimerUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
         Personne p = connexionService.connexion("admin", "admin");
-        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2", "utilisateur2");
+        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur", "utilisateur2");
         adminService.supprimerUtilisateur(p.getIdentifiant(),p2.getIdentifiant());
+        Assert.assertTrue(true);
+    }
+    @Test
+    public void supprimerUtilisateurTest_Basique_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+        Personne p = connexionService.connexion("admin", "admin");
+        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1234",BASIQUE);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
+        adminService.validerInscription(p.getIdentifiant(),posteDemande);
+        adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
+        Assert.assertTrue(true);
+    }
+    @Test
+    public void supprimerUtilisateurTest_Moderateur_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+        Personne p = connexionService.connexion("admin", "admin");
+        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1642",MODERATEUR);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
+        adminService.validerInscription(p.getIdentifiant(),posteDemande);
+        adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
+        Assert.assertTrue(true);
+    }
+    @Test
+    public void supprimerUtilisateurTest_Admin_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+        Personne p = connexionService.connexion("admin", "admin");
+        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","util1234",ADMIN);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
+        adminService.validerInscription(p.getIdentifiant(),posteDemande);
+        adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
     }
 
 
-    /**
      @Test
-     public void validerInscriptionTestOK() throws CoupleUtilisateurMDPInconnuException {
-     try {
-     Personne p = connexionService.connexion("admin", "admin");
-     long admin = basiquesOffLineService.posterDemandeInscription("admin","admin123",ADMIN);
-     adminService.validerInscription(p.getIdentifiant(), admin);
-     Assert.assertTrue(true);
-     } catch (UtilisateurDejaExistantException e){
-     Assert.fail();
-     } catch (RoleDejaAttribueException e){
-     Assert.fail();
-     }
-     }
-
-
-     @Test(expected = UtilisateurDejaExistantException.class)
-     public void validerInscriptionTestKOUtilisateurDejaExistant() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException {
-     Personne p = connexionService.connexion("admin", "admin");
-     Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur", "utilisateur");
-     try {
-     adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
-     } catch (UtilisateurDejaExistantException e) {
-     e.printStackTrace();
-     }
-     adminService.validerInscription(p.getIdentifiant(), p2.getIdentifiant());
-     }
-
-     **/
-    @Test(expected = RoleDejaAttribueException.class)
-    public void validerInscriptionTestKORoleDejaAttribueException() throws RoleDejaAttribueException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException {
+    public void validerInscriptionTestOK_Admin() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+            Personne p = connexionService.connexion("admin", "admin");
+            long demande = basiquesOffLineService.posterDemandeInscription("anas","admin123",ADMIN);
+            adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+            adminService.validerInscription(p.getIdentifiant(), demande);
+            Assert.assertTrue(true);
+    }
+    @Test
+    public void validerInscriptionTestOK_Basique() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+            Personne p = connexionService.connexion("admin", "admin");
+            long demande = basiquesOffLineService.posterDemandeInscription("anas","123",BASIQUE);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+            adminService.validerInscription(p.getIdentifiant(), demande);
+            Assert.assertTrue(true);
+    }
+    @Test
+    public void validerInscriptionTestOK_Moderateur() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
         Personne p = connexionService.connexion("admin", "admin");
-        Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(), "utilisateur2", "utilisateur2");
-            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
-            adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",MODERATEUR);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+        adminService.validerInscription(p.getIdentifiant(), demande);
+        Assert.assertTrue(true);
+    }
+    @Test (expected = ActionImpossibleException.class)
+    public void validerInscriptionTestKO_Moderateur_ADMIN() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+        Personne p = connexionService.connexion("moderateur1", "moderateur1");
+        long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",ADMIN);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+        adminService.validerInscription(p.getIdentifiant(), demande);
+    }
+
+    @Test (expected = ActionImpossibleException.class)
+    public void validerInscriptionTestKO_Basique_ADMIN() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+        Personne p = connexionService.connexion("basique", "basique");
+        long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",ADMIN);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+        adminService.validerInscription(p.getIdentifiant(), demande);
     }
 
 
+    @Test (expected = ActionImpossibleException.class)
+    public void validerInscriptionTestKO_Basique_MODERATEUR() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+        Personne p = connexionService.connexion("basique", "basique");
+        long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",MODERATEUR);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+        adminService.validerInscription(p.getIdentifiant(), demande);
+    }
+
+    @Test (expected = ActionImpossibleException.class)
+    public void validerInscriptionTestKO_Basique_BASIQUE() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+        Personne p = connexionService.connexion("basique", "basique");
+        long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",BASIQUE);
+        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
+        adminService.validerInscription(p.getIdentifiant(), demande);
+    }
 
     @Test
     public void getListeDesDemandesNonTraiteesADMIN () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException {
@@ -720,107 +767,206 @@ public abstract class  TestFacadeAll {
         Assert.assertTrue(true);
     }
 
+
+    // reste  a tester : getUserById et GetListeDemandeNonTraites
+
     /**
      *     -------------------------------------------------------   Test de l'interface BasiquesOffLineService    -------------------------------------------------------
      */
 
 
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoNullRoleNullMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,null,null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoVideMDPVideRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoNullMDPVideRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"",null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoVideMDPNullRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("",null,"");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoVideMDPVideRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","",null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoNullMDPVideRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoNullMDPNullRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,null,"");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKOPseudoVideMDPNullRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("",null,null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_PseudoNullRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"mdp123",null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_PseudoVideRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","mdp123","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_PseudoNullRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"mdp123","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_PseudoVideRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","mdp123",null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_MDPNullRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo",null,null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_MDPVideRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_MDPNullRoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo",null,"");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_MDPVideRoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","",null);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_RoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","mdp123","");
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionKO_RoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","mdp123",null);
+    }
+
+
+
+
     @Test
     public void posterDemandeInscriptionBasiqueTestOK() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur",BASIQUE);
+        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur123",BASIQUE);
+    }
+
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionBasiqueKO_PseudoVideMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","",BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKORoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur",null);
+    public void posterDemandeInscriptionBasiqueKO_PseudoNullMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,null,BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKORoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur","");
+    public void posterDemandeInscriptionBasiqueKO_PseudoNullMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"",BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKOPseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription(null,"utilisateur",BASIQUE);
+    public void posterDemandeInscriptionBasiqueKO_PseudoVideMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("",null,BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKOPseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("","utilisateur",BASIQUE);
+    public void posterDemandeInscriptionBasiqueKO_PseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","mpd123",BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKOMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("utilisateur",null,BASIQUE);
+    public void posterDemandeInscriptionBasiqueKO_PseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"mdp123",BASIQUE);
     }
     @Test(expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionBasiqueKOMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("utilisateur","",BASIQUE);
+    public void posterDemandeInscriptionBasiqueKO_MdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo",null,BASIQUE);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionBasiqueKO_MdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","",BASIQUE);
     }
 
 
+    @Test
+    public void posterDemandeInscriptionAdminTest_OK() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur123",ADMIN);
+    }
+
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoVideMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","",ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoNullMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,null,ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoNullMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"",ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoVideMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("",null,ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","mpd123",ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_PseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"mdp123",ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_MdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo",null,ADMIN);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionAdminKO_MdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","",ADMIN);
+    }
 
 
     @Test
     public void posterDemandeInscriptionModerateurTestOK() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("moderateur","moderateur",MODERATEUR);
-        Assert.assertTrue(true);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKORoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("moderateur","moderateur",null);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKORoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("moderateur","moderateur","");
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKOPseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription(null,"moderateur",MODERATEUR);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKOPseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("","moderateur",MODERATEUR);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKOMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("moderateur",null,MODERATEUR);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionModerateurKOMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("moderateur","",MODERATEUR);
+        basiquesOffLineService.posterDemandeInscription("utilisateur","utilisateur123",MODERATEUR);
     }
 
-
-
-    @Test
-    public void posterDemandeInscriptionAdminTestOK() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("admin","admin",ADMIN);
-        Assert.assertTrue(true);
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoVideMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","",MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoNullMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,null,MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoNullMdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"",MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoVideMdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("",null,MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("","mpd123",MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_PseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription(null,"mdp123",MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_MdpNull() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo",null,MODERATEUR);
+    }
+    @Test(expected = InformationManquanteException.class)
+    public void posterDemandeInscriptionModerateurKO_MdpVide() throws UtilisateurDejaExistantException, InformationManquanteException {
+        basiquesOffLineService.posterDemandeInscription("pseudo","",MODERATEUR);
     }
 
-
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKORoleNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("admin","admin",null);
-    }
-
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKORoleVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("admin","admin","");
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKOPseudoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription(null,"admin",null);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKOPseudoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("","admin","");
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKOMdpoNull() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("admin",null,null);
-    }
-    @Test (expected = InformationManquanteException.class)
-    public void posterDemandeInscriptionAdminKOMdpoVide() throws UtilisateurDejaExistantException, InformationManquanteException {
-        basiquesOffLineService.posterDemandeInscription("admin","",null);
-    }
 
     /**
      *     -------------------------------------------------------   Test de l'interface Personne    -------------------------------------------------------
@@ -866,7 +1012,7 @@ public abstract class  TestFacadeAll {
     public void addRoleModerateurOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException {
         try {
             Personne p = connexionService.connexion("admin","admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur234");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"anas","moderateur234");
             adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
             connexionService.deconnexion(p.getIdentifiant());
             connexionService.connexion(p2.getNom(),p2.getMdp());
@@ -885,7 +1031,7 @@ public abstract class  TestFacadeAll {
     @Test(expected = RoleDejaAttribueException.class)
     public void addRoleModerateurKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException, RoleDejaAttribueException {
             Personne p = connexionService.connexion("admin","admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur234");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"anas","moderateur234");
             adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
             connexionService.deconnexion(p.getIdentifiant());
             connexionService.connexion(p2.getNom(),p2.getMdp());
@@ -900,7 +1046,7 @@ public abstract class  TestFacadeAll {
     public void addRoleBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException {
         try {
             Personne p = connexionService.connexion("admin","admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur132");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"anas","moderateur132");
             adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
             connexionService.deconnexion(p.getIdentifiant());
             connexionService.connexion(p2.getNom(),p2.getMdp());
@@ -913,7 +1059,7 @@ public abstract class  TestFacadeAll {
     public void addRoleBasiqueKORoleDejaAttribue() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, RoleDejaAttribueException, ActionImpossibleException, IndividuNonConnecteException {
 
             Personne p = connexionService.connexion("admin","admin");
-            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur345");
+            Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"anas","moderateur345");
             adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
             connexionService.deconnexion(p.getIdentifiant());
             connexionService.connexion(p2.getNom(),p2.getMdp());
