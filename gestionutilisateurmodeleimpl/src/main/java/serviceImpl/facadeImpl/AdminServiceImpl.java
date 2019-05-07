@@ -14,27 +14,18 @@ import java.util.Collection;
 public class AdminServiceImpl implements AdminService {
 
     private ConnexionService connexionService;
+    private BasiquesOffLineService basiqueOffLineService;
 
 
-    @Override
-    public void setListeDemandesNonTRaitees(Collection<InscriptionPotentielle> listeDemandes, long identifiant) {
-        for (InscriptionPotentielle i:listeDemandes) {
 
-            if(i.getIdentifiant()==identifiant){
-                listeDemandesNonTRaitees.add(i);
-            }
-
-        }
-        }
-
-    public AdminServiceImpl(ConnexionService connexionService){
+    public AdminServiceImpl(ConnexionService connexionService, BasiquesOffLineService basiqueOffLineService){
         this.connexionService=connexionService;
-
+        this.basiqueOffLineService=basiqueOffLineService;
     }
 
 
 
-    Collection<InscriptionPotentielle>listeDemandesNonTRaitees = new ArrayList<>();
+   // Collection<InscriptionPotentielle>listeDemandesNonTRaitees = new ArrayList<>();
 
 
     @Override
@@ -255,7 +246,7 @@ public class AdminServiceImpl implements AdminService {
 
         }
             InscriptionPotentielle inscriptionPotentielle = null;
-            for (InscriptionPotentielle i : listeDemandesNonTRaitees) {
+            for (InscriptionPotentielle i : basiqueOffLineService.getListeDemandes()) {
 
                 if (i.getIdentifiant() == identifiantDemande) {
                     inscriptionPotentielle = i;
@@ -284,7 +275,7 @@ public class AdminServiceImpl implements AdminService {
             personne.addRole(inscriptionPotentielle.getRoleDemande());
             connexionService.getListeUtilisateurs().add(personne);
 
-            listeDemandesNonTRaitees.remove(inscriptionPotentielle);
+            basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
 
         }
 
@@ -301,9 +292,9 @@ public class AdminServiceImpl implements AdminService {
         for (Personne p:connexionService.getListeUtilisateurs()) {
             if(p.getIdentifiant()==identifiantUtilisateur){
                 for(String s:p.getRoles()){
-                    if(s.equals("ADMINISTRATEUR")){
+                    if(s.equals(ADMIN)){
                         isAdmin=true;
-                    }else if(s.equals("MODERATEUR")){
+                    }else if(s.equals(MODERATEUR)){
                         isModerateur=true;
                     }
                 }
@@ -312,17 +303,17 @@ public class AdminServiceImpl implements AdminService {
         Collection<InscriptionPotentielle> listeARetourner=new ArrayList<>();
 
         if(isAdmin){
-            return listeDemandesNonTRaitees;
+            return basiqueOffLineService.getListeDemandes();
         }else if(isModerateur){
 
-            for (InscriptionPotentielle i:listeDemandesNonTRaitees){
+            for (InscriptionPotentielle i:basiqueOffLineService.getListeDemandes()){
 
-                if(!i.getRoleDemande().equals("ADMINISTRATEUR")){
+                if(!i.getRoleDemande().equals(ADMIN)){
                     listeARetourner.add(i);
                 }
 
             }
-            return listeDemandesNonTRaitees;
+            return basiqueOffLineService.getListeDemandes();
 
         }
 
@@ -354,7 +345,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         InscriptionPotentielle inscriptionPotentielle = null;
-        for(InscriptionPotentielle i: listeDemandesNonTRaitees){
+        for(InscriptionPotentielle i: basiqueOffLineService.getListeDemandes()){
 
             if(i.getIdentifiant()==identifiantDemande){
                 inscriptionPotentielle=i;
@@ -378,7 +369,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        listeDemandesNonTRaitees.remove(inscriptionPotentielle);
+        basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
     }
 
 

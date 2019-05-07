@@ -50,10 +50,11 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
     }
 
     @Override
-    public AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException {
+    public AdminService getAdminService(ConnexionService connexionService, BasiquesOffLineService basiquesOffLineService) throws RoleDejaAttribueException {
+        return new AdminServiceImpl(connexionService,basiquesOffLineService);
 
-        return new AdminServiceImpl(connexionService);
     }
+
 
     @Override
     public ForumService getForumService(ConnexionService connexionService) {

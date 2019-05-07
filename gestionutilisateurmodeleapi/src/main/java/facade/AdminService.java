@@ -11,9 +11,6 @@ import java.util.Collection;
 public interface AdminService {
 
 
-
-    void setListeDemandesNonTRaitees(Collection<InscriptionPotentielle> listeDemandes, long identifiant);
-
     Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException,InformationManquanteException;
 
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException;

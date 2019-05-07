@@ -22,18 +22,8 @@ public class ForumServiceImpl implements ForumService {
     
     public ForumServiceImpl(Collection<Theme> listeThemes, ConnexionService connexionService) {
         this.connexionService=connexionService;
-
-        Theme t = new ThemeImpl("Sante");
         this.listeThemes = listeThemes;
-        listeThemes.add(t);
-        Date date = new Date();
-        Collection<Message>listeMessages=new ArrayList<>();
-        Topic topic = new TopicImpl("Ilyas","Allergie",t,listeMessages);
-        Message message= new MessageImpl("Ilyas","TEST",date,topic);
-        Message message1= new MessageImpl("Anas","TEST2",date,topic);
-        topic.getListeMessages().add(message);
-        topic.getListeMessages().add(message1);
-        t.getListeTopics().add(topic);
+
     }
 
     Collection<Theme>listeThemes;
@@ -140,6 +130,16 @@ public class ForumServiceImpl implements ForumService {
         }
         Theme theme = new ThemeImpl(nomTheme);
         listeThemes.add(theme);
+    }
+
+    @Override
+    public Theme creerThemeBis(String nomTheme) throws InformationManquanteException {
+        if(nomTheme==null || nomTheme.equals("") ){
+            throw new InformationManquanteException();
+        }
+        Theme theme = new ThemeImpl(nomTheme);
+        listeThemes.add(theme);
+        return theme;
     }
 
     @Override

@@ -38,7 +38,7 @@ public abstract class  TestFacadeAll {
 
         basiquesOffLineService = fabriqueFacade.getBasiquesOffLineService();
         connexionService = fabriqueFacade.getConnexionService();
-        adminService = fabriqueFacade.getAdminService(connexionService);
+        adminService = fabriqueFacade.getAdminService(connexionService,basiquesOffLineService);
         forumService = fabriqueFacade.getForumService(connexionService);
 
     }
@@ -503,28 +503,25 @@ public abstract class  TestFacadeAll {
         Assert.assertTrue(true);
     }
     @Test
-    public void supprimerUtilisateurTest_Basique_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+    public void supprimerUtilisateurTest_Basique_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
         Personne p = connexionService.connexion("admin", "admin");
         long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1234",BASIQUE);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         adminService.validerInscription(p.getIdentifiant(),posteDemande);
         adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
     }
     @Test
-    public void supprimerUtilisateurTest_Moderateur_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+    public void supprimerUtilisateurTest_Moderateur_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
         Personne p = connexionService.connexion("admin", "admin");
         long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1642",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         adminService.validerInscription(p.getIdentifiant(),posteDemande);
         adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
     }
     @Test
-    public void supprimerUtilisateurTest_Admin_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
+    public void supprimerUtilisateurTest_Admin_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
         Personne p = connexionService.connexion("admin", "admin");
         long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","util1234",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         adminService.validerInscription(p.getIdentifiant(),posteDemande);
         adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
@@ -532,26 +529,23 @@ public abstract class  TestFacadeAll {
 
 
      @Test
-    public void validerInscriptionTestOK_Admin() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+    public void validerInscriptionTestOK_Admin() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException, RoleDejaAttribueException {
             Personne p = connexionService.connexion("admin", "admin");
             long demande = basiquesOffLineService.posterDemandeInscription("anas","admin123",ADMIN);
-            adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
             adminService.validerInscription(p.getIdentifiant(), demande);
             Assert.assertTrue(true);
     }
     @Test
-    public void validerInscriptionTestOK_Basique() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+    public void validerInscriptionTestOK_Basique() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException, RoleDejaAttribueException {
             Personne p = connexionService.connexion("admin", "admin");
             long demande = basiquesOffLineService.posterDemandeInscription("anas","123",BASIQUE);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
             adminService.validerInscription(p.getIdentifiant(), demande);
             Assert.assertTrue(true);
     }
     @Test
-    public void validerInscriptionTestOK_Moderateur() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException {
+    public void validerInscriptionTestOK_Moderateur() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException, ActionImpossibleException, RoleDejaAttribueException {
         Personne p = connexionService.connexion("admin", "admin");
         long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
         adminService.validerInscription(p.getIdentifiant(), demande);
         Assert.assertTrue(true);
     }
@@ -562,7 +556,6 @@ public abstract class  TestFacadeAll {
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
         long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
         adminService.validerInscription(p2.getIdentifiant(), demande);
     }
 
@@ -573,7 +566,6 @@ public abstract class  TestFacadeAll {
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
         long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
         adminService.validerInscription(p2.getIdentifiant(), demande);
     }
 
@@ -585,7 +577,6 @@ public abstract class  TestFacadeAll {
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
         long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
         adminService.validerInscription(p2.getIdentifiant(), demande);
     }
 
@@ -596,7 +587,6 @@ public abstract class  TestFacadeAll {
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
         long demande = basiquesOffLineService.posterDemandeInscription("anas","13579",BASIQUE);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),demande);
         adminService.validerInscription(p2.getIdentifiant(), demande);
     }
 
@@ -631,7 +621,6 @@ public abstract class  TestFacadeAll {
     public void refuserInscriptionTestAdminBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util2","ccccc",BASIQUE);
         Personne p = connexionService.connexion("admin", "admin");
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         adminService.refuserInscription(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
     }
@@ -639,7 +628,6 @@ public abstract class  TestFacadeAll {
     @Test
     public void refuserInscriptionTestAdminModerateurOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util2","ccccc",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         adminService.refuserInscription(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
@@ -647,7 +635,6 @@ public abstract class  TestFacadeAll {
     @Test
     public void refuserInscriptionTestAdminAdminOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util2","ccccc",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         adminService.refuserInscription(p.getIdentifiant(),posteDemande);
         Assert.assertTrue(true);
@@ -656,7 +643,6 @@ public abstract class  TestFacadeAll {
     @Test
     public void refuserInscriptionModerateurTestBasiqueOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException, RoleDejaAttribueException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",BASIQUE);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
@@ -668,7 +654,6 @@ public abstract class  TestFacadeAll {
     @Test
     public void refuserInscriptionModerateurTestModerateurOK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException, RoleDejaAttribueException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
@@ -680,7 +665,6 @@ public abstract class  TestFacadeAll {
     @Test (expected = ActionImpossibleException.class)
     public void refuserInscriptionModerateurTestAdminKO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException, RoleDejaAttribueException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
@@ -691,7 +675,6 @@ public abstract class  TestFacadeAll {
     @Test (expected = ActionImpossibleException.class)
     public void refuserInscriptionBasiqueTestAdminKO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, RoleDejaAttribueException, IndividuNonConnecteException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",ADMIN);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
@@ -702,7 +685,6 @@ public abstract class  TestFacadeAll {
     @Test (expected = ActionImpossibleException.class)
     public void refuserInscriptionBasiqueTestModerateurKO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException, RoleDejaAttribueException {
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",MODERATEUR);
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
@@ -717,7 +699,6 @@ public abstract class  TestFacadeAll {
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         long posteDemande = basiquesOffLineService.posterDemandeInscription("util1","ccccc",BASIQUE);
         connexionService.connexion("basique","basique");
-        adminService.setListeDemandesNonTRaitees(basiquesOffLineService.getListeDemandes(),posteDemande);
         adminService.refuserInscription(p2.getIdentifiant(),posteDemande);
     }
 
@@ -1167,24 +1148,26 @@ public abstract class  TestFacadeAll {
      * Ajouter une exception à la méthode ajouterMessage() dans l'interface Topic.java
      */
     @Test
-    public void test_OK_getListeTopicPourUnTheme() throws ThemeInexistantException {
+    public void test_OK_getListeTopicPourUnTheme() throws InformationManquanteException {
        try {
-           Theme theme = forumService.recupererTheme("Sante");
+           Theme theme = forumService.creerThemeBis("Sante");
            forumService.getListeTopicPourUnTheme(theme);
            Assert.assertTrue(true);
        } catch (ThemeInexistantException e){
            Assert.fail();
        }
     }
+
     @Test (expected = ThemeInexistantException.class)
-    public void test_KO_getListeTopicPourUnTheme() throws ThemeInexistantException {
-            Theme theme = forumService.recupererTheme("Foot");
-            forumService.getListeTopicPourUnTheme(theme);
+    public void test_KO_getListeTopicPourUnTheme() throws ThemeInexistantException, InformationManquanteException {
+            Theme theme1 = forumService.recupererTheme("Foot");
+            forumService.getListeTopicPourUnTheme(theme1);
     }
 
     @Test
-    public void test_OK_recupererTheme(){
+    public void test_OK_recupererTheme() throws InformationManquanteException {
         try {
+            Theme theme = forumService.creerThemeBis("Sante");
             forumService.recupererTheme("Sante");
             Assert.assertTrue(true);
         }catch (ThemeInexistantException e){
@@ -1200,37 +1183,41 @@ public abstract class  TestFacadeAll {
 
 
     @Test
-    public void test_OK_getListeMessagePourUnTopic() throws TopicInexistantException, ThemeInexistantException {
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
-        forumService.getListeMessagePourUnTopic(allergie);
+    public void test_OK_getListeMessagePourUnTopic() throws TopicInexistantException, ThemeInexistantException, InformationManquanteException, NomTopicDejaExistantException {
+        Theme theme = forumService.creerThemeBis("Sante");
+        Topic topic = forumService.creerTopic("Allergie",theme,"Anas");
+        Message message =forumService.creerMessage("Anas",topic,"je suis allergique mais je ne sais pas a quoi");
+        forumService.ajouterMessage(topic,theme,message);
+        forumService.getListeMessagePourUnTopic(topic);
         Assert.assertTrue(true);
 
     }
+
     @Test(expected = TopicInexistantException.class)
-    public void test_KO_getListeMessagePourUnTopic_TopicInexistant() throws TopicInexistantException, ThemeInexistantException {
+    public void test_KO_getListeMessagePourUnTopic_TopicInexistant() throws TopicInexistantException, ThemeInexistantException, InformationManquanteException {
+        Theme sante = forumService.creerThemeBis("Sante");
         Topic foot = forumService.recupererTopic("Foot","Sante");
         forumService.getListeMessagePourUnTopic(foot);
     }
 
-    @Test(expected = ThemeInexistantException.class)
-    public void test_KO_getListeMessagePourUnTopic_ThemeInexistant() throws TopicInexistantException, ThemeInexistantException {
-        Topic foot = forumService.recupererTopic("Allergie","Sport");
-        forumService.getListeMessagePourUnTopic(foot);
-    }
-
     @Test
-    public void recupererTopic_OK() throws ThemeInexistantException {
+    public void recupererTopic_OK() throws ThemeInexistantException, InformationManquanteException, NomTopicDejaExistantException {
         try {
+            Theme theme = forumService.creerThemeBis("Sante");
+            Topic topic = forumService.creerTopic("Allergie",theme,"Ilyas");
             forumService.recupererTopic("Allergie", "Sante");
             Assert.assertTrue(true);
         } catch (TopicInexistantException e) {
             Assert.fail();
         }
     }
+
     @Test (expected = TopicInexistantException.class)
-    public void recupererTopic_KO_TopicInexistant() throws ThemeInexistantException, TopicInexistantException {
-            forumService.recupererTopic("Foot", "Sante");
+    public void recupererTopic_KO_TopicInexistant() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException {
+        Theme sante = forumService.creerThemeBis("Sante");
+        forumService.recupererTopic("Foot", "Sante");
     }
+
     @Test (expected = ThemeInexistantException.class)
     public void recupererTopic_KO_ThemeInexistant() throws ThemeInexistantException, TopicInexistantException {
         forumService.recupererTopic("Foot", "sport");
@@ -1239,101 +1226,115 @@ public abstract class  TestFacadeAll {
 
 
     @Test
-    public void ajouterMessage_test_OK() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void ajouterMessage_test_OK() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
             Personne p = connexionService.connexion("admin","admin");
-            Theme sante = forumService.recupererTheme("Sante");
-            Topic allergie = forumService.recupererTopic("Allergie","Sante");
+            Theme sante = forumService.creerThemeBis("Sante");
+            Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
             Message message = forumService.creerMessage(p.getNom(),allergie,"nouveau message");
             forumService.ajouterMessage(allergie,sante,message);
+
             Assert.assertTrue(true);
     }
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void ajouterMessage_test_KO_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p.getNom(),allergie,null);
         forumService.ajouterMessage(allergie,sante,message);
     }
+
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void ajouterMessage_test_KO_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p.getNom(),allergie,"");
         forumService.ajouterMessage(allergie,sante,message);
     }
-
+////
 
     @Test
-    public void ajouterMessage_test_OK_Moderateur() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void ajouterMessage_test_OK_Moderateur() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
-        Theme sante = forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p2.getNom(),allergie,"nouveau message");
         forumService.ajouterMessage(allergie,sante,message);
         Assert.assertTrue(true);
     }
 
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_Moderateur_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, UtilisateurDejaExistantException {
+    public void ajouterMessage_test_KO_Moderateur_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, UtilisateurDejaExistantException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p2.getNom(),allergie,null);
         forumService.ajouterMessage(allergie,sante,message);
     }
 
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_Moderateur_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void ajouterMessage_test_KO_Moderateur_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p2.getNom(),allergie,"");
         forumService.ajouterMessage(allergie,sante,message);
     }
-
+/////
 
     @Test
-    public void ajouterMessage_test_OK_Basique() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, UtilisateurDejaExistantException {
+    public void ajouterMessage_test_OK_Basique() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, UtilisateurDejaExistantException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Theme sante = forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+
         Message message = forumService.creerMessage(p2.getNom(),allergie,"nouveau message");
         forumService.ajouterMessage(allergie,sante,message);
         Assert.assertTrue(true);
     }
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_Basique_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void ajouterMessage_test_KO_Basique_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p2.getNom(),allergie,null);
         forumService.ajouterMessage(allergie,sante,message);
     }
     @Test (expected = InformationManquanteException.class)
-    public void ajouterMessage_test_KO_Basique_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void ajouterMessage_test_KO_Basique_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Theme sante=forumService.recupererTheme("Sante");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p2.getNom(),allergie,"");
         forumService.ajouterMessage(allergie,sante,message);
     }
@@ -1341,85 +1342,108 @@ public abstract class  TestFacadeAll {
 
 
     @Test
-    public void creerMessage_test_OK_Admin() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void creerMessage_test_OK_Admin() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p.getNom(),allergie,"new message");
         Assert.assertTrue(true);
     }
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Admin_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void creerMessage_test_KO_Admin_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p.getNom(),allergie,"");
     }
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Admin_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException {
+    public void creerMessage_test_KO_Admin_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p.getNom(),allergie,null);
     }
 
 
     @Test
-    public void creerMessage_test_OK_Moderateur() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_OK_Moderateur() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p2.getNom(),allergie,"new message");
         Assert.assertTrue(true);
     }
 
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Moderateur_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_KO_Moderateur_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
         connexionService.connexion("moderateur","moderateur");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p2.getNom(),allergie,"");
     }
+
+
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Moderateur_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_KO_Moderateur_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"moderateur","moderateur");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("moderateur","moderateur");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p2.getNom(),allergie,null);
     }
 
 
-
     @Test
-    public void creerMessage_test_OK_Basique() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_OK_Basique() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+
+
         forumService.creerMessage(p2.getNom(),allergie,"new message");
         Assert.assertTrue(true);
     }
 
+/////
+
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Basique_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_KO_Basique_MessageVide() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         forumService.creerMessage(p2.getNom(),allergie,"");
     }
+
+
     @Test (expected = InformationManquanteException.class)
-    public void creerMessage_test_KO_Basique_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException {
+    public void creerMessage_test_KO_Basique_MessageNull() throws ThemeInexistantException, TopicInexistantException, InformationManquanteException, CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, IndividuNonConnecteException, ActionImpossibleException, RoleDejaAttribueException, NomTopicDejaExistantException {
         Personne p = connexionService.connexion("admin","admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
-        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+
         forumService.creerMessage(p2.getNom(),allergie,null);
     }
 
@@ -1441,17 +1465,18 @@ public abstract class  TestFacadeAll {
 
     @Test
     public void creerTopic_OK() throws ThemeInexistantException, NomTopicDejaExistantException, InformationManquanteException {
-        Theme sante =forumService.recupererTheme("Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
         forumService.creerTopic("Cancer",sante,"Ilyas");
     }
     @Test (expected = InformationManquanteException.class)
     public void creerTopic_K0_NomTopicNull() throws ThemeInexistantException, NomTopicDejaExistantException, InformationManquanteException {
-        Theme sante =forumService.recupererTheme("Sante");
+        Theme sante = forumService.creerThemeBis("Sante");
         forumService.creerTopic(null,sante,"Ilyas");
     }
     @Test (expected = InformationManquanteException.class)
     public void creerTopic_K0_NomTopicVide() throws ThemeInexistantException, NomTopicDejaExistantException, InformationManquanteException {
-        Theme sante =forumService.recupererTheme("Sante");
+
+        Theme sante = forumService.creerThemeBis("Sante");
         forumService.creerTopic("",sante,"Ilyas");
     }
 

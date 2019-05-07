@@ -14,7 +14,7 @@ public interface FabriqueFacade {
     BasiquesOffLineService getBasiquesOffLineService();
     ConnexionService getConnexionService();
 
-    AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException;
+    AdminService getAdminService(ConnexionService connexionService,BasiquesOffLineService basiquesOffLineService) throws RoleDejaAttribueException;
 
     ForumService getForumService(ConnexionService connexionService);
 
