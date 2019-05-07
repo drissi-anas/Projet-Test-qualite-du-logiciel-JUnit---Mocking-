@@ -31,14 +31,8 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
 
         Personne personne = new PersonneImpl("admin", "admin");
         personne.addRole(ADMIN);
-        Personne personne2 = new PersonneImpl("moderateur1", "moderateur1");
-        personne2.addRole(MODERATEUR);
-        Personne personne3 = new PersonneImpl("basique", "basique");
-        personne2.addRole(BASIQUE);
 
-        listeUtilisateurs.add(personne3);
         listeUtilisateurs.add(personne);
-        listeUtilisateurs.add(personne2);
 
     }
 

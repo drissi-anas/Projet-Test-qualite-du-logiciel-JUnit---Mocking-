@@ -32,7 +32,7 @@ public interface AdminService {
 
     void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException;
 
-    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
+    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException, RoleDejaAttribueException;
 
 
     /**

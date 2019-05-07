@@ -236,7 +236,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException{
+    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException, RoleDejaAttribueException {
 
         boolean isAdmin=false;
         boolean isModerateur = false;
@@ -281,7 +281,9 @@ public class AdminServiceImpl implements AdminService {
             }
 
             Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
+            personne.addRole(inscriptionPotentielle.getRoleDemande());
             connexionService.getListeUtilisateurs().add(personne);
+
             listeDemandesNonTRaitees.remove(inscriptionPotentielle);
 
         }

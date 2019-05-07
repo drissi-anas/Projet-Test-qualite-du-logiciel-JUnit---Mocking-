@@ -2,10 +2,7 @@ package serviceImpl.facadeImpl;
 
 import facade.ConnexionService;
 import facade.ForumService;
-import facade.erreurs.ActionImpossibleException;
-import facade.erreurs.NomTopicDejaExistantException;
-import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantException;
+import facade.erreurs.*;
 import modele.forum.*;
 import modele.personnes.Personne;
 import serviceImpl.forumImpl.MessageImpl;
@@ -128,19 +125,28 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public Message creerMessage(String auteur,Topic topic, String texte) {
+    public Message creerMessage(String auteur,Topic topic, String texte) throws InformationManquanteException {
+        if(texte==null || texte.equals("") ){
+            throw new InformationManquanteException();
+        }
         Date date= new Date();
         return new MessageImpl(auteur,texte,date,topic);
     }
 
     @Override
-    public void creerTheme(String nomTheme) {
+    public void creerTheme(String nomTheme) throws InformationManquanteException {
+        if(nomTheme==null || nomTheme.equals("") ){
+            throw new InformationManquanteException();
+        }
         Theme theme = new ThemeImpl(nomTheme);
         listeThemes.add(theme);
     }
 
     @Override
-    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException {
+    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException, InformationManquanteException {
+        if(nomTopic==null || nomTopic.equals("") ){
+            throw new InformationManquanteException();
+        }
         Topic topic=null;
         for (Theme t:listeThemes) {
             if(t.getNom().equals(theme.getNom())){
