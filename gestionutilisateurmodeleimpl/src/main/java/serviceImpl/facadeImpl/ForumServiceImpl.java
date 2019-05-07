@@ -1,15 +1,14 @@
 package serviceImpl.facadeImpl;
 
 import facade.ForumService;
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import modele.forum.*;
 import serviceImpl.forumImpl.MessageImpl;
 import serviceImpl.forumImpl.ThemeImpl;
-import serviceImpl.forumImpl.TopicImpl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -107,6 +106,11 @@ public class ForumServiceImpl implements ForumService {
     @Override
     public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException {
         return null;
+    }
+
+    @Override
+    public void supprimerMessage(Message m, long identifiant) throws ActionImpossibleException {
+
     }
 
     /*--@Override

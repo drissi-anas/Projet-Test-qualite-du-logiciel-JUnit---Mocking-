@@ -1,14 +1,13 @@
 package facade;
 
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
-import modele.personnes.Personne;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -34,8 +33,7 @@ public interface ForumService {
 
     Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException;
 
-
-
+    void supprimerMessage(Message m, long identifiant) throws  ActionImpossibleException;
 
 
     // Donc celle on va surement la supp mais gardons la pour le moment
