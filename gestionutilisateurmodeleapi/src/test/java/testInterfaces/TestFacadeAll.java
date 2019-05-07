@@ -3,6 +3,7 @@ package testInterfaces;
 import facade.*;
 import facade.erreurs.*;
 import modele.forum.Message;
+import modele.forum.Theme;
 import modele.forum.Topic;
 import modele.personnes.Personne;
 import org.junit.Assert;
@@ -38,7 +39,7 @@ public abstract class  TestFacadeAll {
         basiquesOffLineService = fabriqueFacade.getBasiquesOffLineService();
         connexionService = fabriqueFacade.getConnexionService();
         adminService = fabriqueFacade.getAdminService(connexionService);
-        forumService = fabriqueFacade.getForumService();
+        forumService = fabriqueFacade.getForumService(connexionService);
 
     }
     /**
@@ -1120,15 +1121,114 @@ public abstract class  TestFacadeAll {
      * Ajouter une exception à la méthode ajouterMessage() dans l'interface Topic.java
      */
     @Test
-    public void ajouterMessage_Test_KO(){
+    public void test_OK_getListeTopicPourUnTheme() throws ThemeInexistantException {
+       try {
+           Theme theme = forumService.recupererTheme("Sante");
+           forumService.getListeTopicPourUnTheme(theme);
+           Assert.assertTrue(true);
+       } catch (ThemeInexistantException e){
+           Assert.fail();
+       }
+    }
+    @Test (expected = ThemeInexistantException.class)
+    public void test_KO_getListeTopicPourUnTheme() throws ThemeInexistantException {
+            Theme theme = forumService.recupererTheme("Foot");
+            forumService.getListeTopicPourUnTheme(theme);
+    }
+
+    @Test
+    public void test_OK_recupererTheme(){
+        try {
+            forumService.recupererTheme("Sante");
+            Assert.assertTrue(true);
+        }catch (ThemeInexistantException e){
+            Assert.fail();
+        }
 
     }
 
+    @Test(expected = ThemeInexistantException.class)
+    public void test_KO_recupererTheme() throws ThemeInexistantException {
+        forumService.recupererTheme("Foot");
+    }
 
 
+    @Test
+    public void test_OK_getListeMessagePourUnTopic() throws TopicInexistantException, ThemeInexistantException {
+        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        forumService.getListeMessagePourUnTopic(allergie);
+        Assert.assertTrue(true);
 
+    }
+    @Test(expected = TopicInexistantException.class)
+    public void test_KO_getListeMessagePourUnTopic_TopicInexistant() throws TopicInexistantException, ThemeInexistantException {
+        Topic foot = forumService.recupererTopic("Foot","Sante");
+        forumService.getListeMessagePourUnTopic(foot);
+    }
 
+    @Test(expected = ThemeInexistantException.class)
+    public void test_KO_getListeMessagePourUnTopic_ThemeInexistant() throws TopicInexistantException, ThemeInexistantException {
+        Topic foot = forumService.recupererTopic("Allergie","Sport");
+        forumService.getListeMessagePourUnTopic(foot);
+    }
+
+    @Test
+    public void recupererTopic_OK() throws ThemeInexistantException {
+        try {
+            forumService.recupererTopic("Allergie", "Sante");
+            Assert.assertTrue(true);
+        } catch (TopicInexistantException e) {
+            Assert.fail();
+        }
+    }
+    @Test (expected = TopicInexistantException.class)
+    public void recupererTopic_KO_TopicInexistant() throws ThemeInexistantException, TopicInexistantException {
+            forumService.recupererTopic("Foot", "Sante");
+    }
+    @Test (expected = ThemeInexistantException.class)
+    public void recupererTopic_KO_ThemeInexistant() throws ThemeInexistantException, TopicInexistantException {
+        forumService.recupererTopic("Foot", "sport");
+    }
+
+    @Test
+    public void ajouterMessage_test_OK() throws ThemeInexistantException, TopicInexistantException {
+            Theme sante=forumService.recupererTheme("Sante");
+            Topic allergie = forumService.recupererTopic("Allergie","Sante");
+            Message message = forumService.creerMessage("Anas",allergie,"nouveau message");
+            forumService.ajouterMessage(allergie,sante,message);
+            Assert.assertTrue(true);
+    }
+
+    /**
+     * Cas null, pour ajouterMessage
+     */
+
+    @Test
+    public void creerMessage_test_OK() throws ThemeInexistantException, TopicInexistantException {
+        Topic allergie = forumService.recupererTopic("Allergie","Sante");
+        forumService.creerMessage("Anas",allergie,"new message");
+        Assert.assertTrue(true);
+    }
+
+    /**
+     * Cas vide,null, pour creerMessage
+     */
+
+    @Test
+    public void creerTheme_OK() {
+        forumService.creerTheme("Sport");
+    }
+
+    /**
+     * Cas vide,null, pour creerTheme
+     */
+
+    @Test
+    public void creerTopic_OK() throws ThemeInexistantException, NomTopicDejaExistantException {
+        Theme sante =forumService.recupererTheme("Sante");
+        forumService.creerTopic("Cancer",sante,"Ilyas");
+    }
+    /**
+     * Cas vide,null
+     */
 }
-
-
-

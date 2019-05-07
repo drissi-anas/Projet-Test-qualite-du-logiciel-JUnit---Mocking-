@@ -16,7 +16,7 @@ public interface FabriqueFacade {
 
     AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException;
 
-    ForumService getForumService();
+    ForumService getForumService(ConnexionService connexionService);
 
 
 }

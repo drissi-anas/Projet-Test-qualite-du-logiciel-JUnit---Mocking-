@@ -1,10 +1,13 @@
 package serviceImpl.facadeImpl;
 
+import facade.ConnexionService;
 import facade.ForumService;
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import modele.forum.*;
+import modele.personnes.Personne;
 import serviceImpl.forumImpl.MessageImpl;
 import serviceImpl.forumImpl.ThemeImpl;
 import serviceImpl.forumImpl.TopicImpl;
@@ -13,11 +16,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import static facade.AdminService.ADMIN;
+import static facade.AdminService.MODERATEUR;
+
 public class ForumServiceImpl implements ForumService {
 
+    private ConnexionService connexionService;
     
-    public ForumServiceImpl(Collection<Theme> listeThemes) {
+    public ForumServiceImpl(Collection<Theme> listeThemes, ConnexionService connexionService) {
+        this.connexionService=connexionService;
+
+        Theme t = new ThemeImpl("Sante");
         this.listeThemes = listeThemes;
+        listeThemes.add(t);
+        Date date = new Date();
+        Collection<Message>listeMessages=new ArrayList<>();
+        Topic topic = new TopicImpl("Ilyas","Allergie",t,listeMessages);
+        Message message= new MessageImpl("Ilyas","TEST",date,topic);
+        Message message1= new MessageImpl("Anas","TEST2",date,topic);
+        topic.getListeMessages().add(message);
+        topic.getListeMessages().add(message1);
+        t.getListeTopics().add(topic);
     }
 
     Collection<Theme>listeThemes;
@@ -49,17 +68,34 @@ public class ForumServiceImpl implements ForumService {
     }
 
 
-// a faire
     @Override
-    public Collection<Message> getListeMessagePourUnTopic(Topic topic) {
-        return null;
+    public Collection<Message> getListeMessagePourUnTopic(Topic topic) throws TopicInexistantException {
+
+        for (Theme t:listeThemes) {
+            if(t.equals(topic.getTheme())){
+                return topic.getListeMessages();
+            }
+        }
+        throw new TopicInexistantException();
+
     }
 
 
 
 
     @Override
-    public Topic recupererTopic(String nomTopic, String nomTheme) throws TopicInexistantException {
+    public Topic recupererTopic(String nomTopic, String nomTheme) throws TopicInexistantException,ThemeInexistantException {
+
+        boolean themeExistant= false;
+        for (Theme t:listeThemes) {
+            if(t.getNom().equals(nomTheme)){
+                themeExistant=true;
+            }
+        }
+
+        if(!themeExistant){
+            throw new ThemeInexistantException();
+        }
 
         for (Theme t:listeThemes) {
             if(t.getNom().equals(nomTheme)){
@@ -91,7 +127,6 @@ public class ForumServiceImpl implements ForumService {
         }
     }
 
-    // A faire
     @Override
     public Message creerMessage(String auteur,Topic topic, String texte) {
         Date date= new Date();
@@ -106,22 +141,57 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException {
-        return null;
-    }
-
-    /*--@Override
-    public Topic creerTopic(String nomTopic, Theme theme, Message Message, String auteur) throws NomTopicDejaExistantException {
-
         Topic topic=null;
         for (Theme t:listeThemes) {
             if(t.getNom().equals(theme.getNom())){
                 Collection<Message>listeMessages=new ArrayList<>();
-                listeMessages.add(Message);
-                 topic = new TopicImpl(auteur,nomTopic,theme,listeMessages);
+                topic = new TopicImpl(auteur,nomTopic,theme,listeMessages);
                 t.ajouterTopic(topic);
 
             }
         }
         return topic;
-    }*/
+    }
+
+    @Override
+    public void supprimerMessage(Message m, long identifiant) throws ActionImpossibleException {
+        Topic topic = m.getTopic();
+        String auteur = m.getAuteur();
+        String personneQuiVeutSupprimer=null;
+
+        for (Personne p:connexionService.getListeUtilisateurs()) {
+            if(p.getIdentifiant()==identifiant){
+                personneQuiVeutSupprimer=p.getNom();
+            }
+
+        }
+
+        Boolean isAdmin = false;
+        Boolean isModerateur = false;
+
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==identifiant){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)){
+                        isAdmin=true;
+                    }
+                    if(s.equals(MODERATEUR)){
+                        isModerateur=true;
+                    }
+                }
+            }
+        }
+
+        if(auteur.equals(personneQuiVeutSupprimer)){
+            topic.getListeMessages().remove(m);
+        }else
+            if(isAdmin || isModerateur){
+                topic.getListeMessages().remove(m);
+            }else {
+                throw new ActionImpossibleException();
+            }
+
+    }
+
+
 }

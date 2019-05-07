@@ -62,9 +62,9 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
     }
 
     @Override
-    public ForumService getForumService() {
+    public ForumService getForumService(ConnexionService connexionService) {
         Collection<Theme>listeThemes=new ArrayList<>();
-        return new ForumServiceImpl(listeThemes);
+        return new ForumServiceImpl(listeThemes,connexionService);
     }
 
 

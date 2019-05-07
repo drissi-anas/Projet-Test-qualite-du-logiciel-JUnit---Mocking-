@@ -1,5 +1,6 @@
 package facade;
 
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.NomTopicDejaExistantException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
@@ -24,7 +25,7 @@ public interface ForumService {
 
     Collection<Message> getListeMessagePourUnTopic(Topic topic) throws TopicInexistantException;
 
-    Topic recupererTopic(String nomTopic, String nomTheme) throws TopicInexistantException;
+    Topic recupererTopic(String nomTopic, String nomTheme) throws TopicInexistantException, ThemeInexistantException;
 
     void ajouterMessage(Topic topic, Theme theme, Message message);
 
@@ -35,6 +36,7 @@ public interface ForumService {
     Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException;
 
 
+    void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
 
 
