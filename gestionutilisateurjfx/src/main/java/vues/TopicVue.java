@@ -1,6 +1,7 @@
 package vues;
 
 import controleur.Controleur;
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 
@@ -20,6 +21,7 @@ import modele.forum.Topic;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Created by asus on 07/04/2019.
@@ -27,6 +29,7 @@ import java.util.Collection;
 public class TopicVue {
 
 
+    public Button supprimer;
     @FXML
     private TextArea votreMessage;
     @FXML
@@ -105,5 +108,28 @@ public class TopicVue {
 
     public Node getNode() {
         return node;
+    }
+
+    public void supprimerMessage(ActionEvent actionEvent) throws TopicInexistantException {
+        Message m = (Message) listeMessage.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(m)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Vous devez sélectionner un message");
+        }
+        else {
+
+            try {
+                monControleur.supprimerMessage(m);
+            } catch (ActionImpossibleException e) {
+                Alert actionImpos = new Alert(Alert.AlertType.ERROR);
+                actionImpos.setTitle("Erreur");
+                actionImpos.setHeaderText("Action Impossible");
+                actionImpos.setContentText("Vous ne pouvez pas supprimer ce message !");
+                actionImpos.showAndWait();
+            }
+
+        }
+
+
     }
 }

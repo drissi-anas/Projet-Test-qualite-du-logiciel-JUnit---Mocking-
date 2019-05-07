@@ -96,7 +96,7 @@ public class FenetrePrincipale {
 
 
     public void gotoListeTopic(String nom) throws ThemeInexistantException {
-
+        this.listeTopic.checkVisibility();
         this.maFenetre.setCenter(this.listeTopic.getNode());
         listeTopic.majTheme(nom);
         Collection<Topic>topics=monControleur.getTopicByTheme(nom);
