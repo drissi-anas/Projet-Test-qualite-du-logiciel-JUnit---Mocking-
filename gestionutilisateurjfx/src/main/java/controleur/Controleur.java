@@ -239,7 +239,7 @@ public class Controleur implements Observateur {
         this.maFenetre.gotoCreerTopic(nomDuTheme);
 
     }
-
+//
     public Collection<Theme> getThemes() {
         return forumService.getListeTheme();
     }
