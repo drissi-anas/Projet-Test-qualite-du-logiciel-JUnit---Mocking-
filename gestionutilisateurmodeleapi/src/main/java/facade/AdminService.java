@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface AdminService {
 
 
-    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException,InformationManquanteException;
+    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException;
 
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException;
 

@@ -29,35 +29,49 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException {
-
-        if(nom==null || mdp==null || mdp.equals("") || nom.equals("")){
-            throw new InformationManquanteException();
-        }
-        for (Personne p:connexionService.getListeUtilisateurs()) {
-            if(p.getNom().equals(nom)){
+    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException {
+        for (Personne p : connexionService.getListeUtilisateurs()) {
+            if (p.getNom().equals(nom)) {
                 throw new UtilisateurDejaExistantException();
             }
         }
 
-        boolean adminOuModoConnecte =false;
+        boolean adminConnecte = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
 
-            if(p.getIdentifiant()==u){
-                adminOuModoConnecte=true;
+            if (p.getIdentifiant() == u) {
+                adminConnecte = true;
             }
         }
 
-        if(!adminOuModoConnecte){
+        if (!adminConnecte) {
             throw new IndividuNonConnecteException();
         }
 
-        Personne personne = new PersonneImpl(nom,mdp);
-        connexionService.getListeUtilisateurs().add(personne);
-        return personne;
+        boolean isAdmin=false;
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==u){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)) {
+                        isAdmin = true;
+                    }
 
-    }
+                }
+            }
+        }
 
+        if(!isAdmin){
+            throw new ActionImpossibleException();
+        }
+        if (nom == null || mdp == null || mdp.equals("") || nom.equals("")) {
+                        throw new InformationManquanteException();
+        }
+
+                    Personne personne = new PersonneImpl(nom, mdp);
+                    connexionService.getListeUtilisateurs().add(personne);
+                    return personne;
+
+                }
 
     @Override
     public void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException {
