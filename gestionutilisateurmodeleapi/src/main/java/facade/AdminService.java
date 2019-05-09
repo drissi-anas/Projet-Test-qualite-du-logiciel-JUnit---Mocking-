@@ -23,11 +23,11 @@ public interface AdminService {
 
     Personne getUserById(long identifiant, long identifiant1);
 
-    void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException;
+    void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException;
 
     void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException;
 
-    void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException;
+    void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException, ActionImpossibleException;
 
     void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException, RoleDejaAttribueException;
 
