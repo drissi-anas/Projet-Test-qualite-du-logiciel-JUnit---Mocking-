@@ -1773,7 +1773,7 @@ public abstract class  TestFacadeAll {
 
         forumService.creerMessage(p2.getNom(),allergie,"new message");
         Assert.assertTrue(true);
-    }
+    } ////
 
 /////
 
