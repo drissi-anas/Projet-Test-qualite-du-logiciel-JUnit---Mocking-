@@ -2,10 +2,7 @@ package serviceImpl.facadeImpl;
 
 import facade.ConnexionService;
 import facade.ForumService;
-import facade.erreurs.ActionImpossibleException;
-import facade.erreurs.NomTopicDejaExistantException;
-import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantException;
+import facade.erreurs.*;
 import modele.forum.*;
 import modele.personnes.Personne;
 import serviceImpl.forumImpl.MessageImpl;
@@ -25,18 +22,8 @@ public class ForumServiceImpl implements ForumService {
     
     public ForumServiceImpl(Collection<Theme> listeThemes, ConnexionService connexionService) {
         this.connexionService=connexionService;
-
-        Theme t = new ThemeImpl("Sante");
         this.listeThemes = listeThemes;
-        listeThemes.add(t);
-        Date date = new Date();
-        Collection<Message>listeMessages=new ArrayList<>();
-        Topic topic = new TopicImpl("Ilyas","Allergie",t,listeMessages);
-        Message message= new MessageImpl("Ilyas","TEST",date,topic);
-        Message message1= new MessageImpl("Anas","TEST2",date,topic);
-        topic.getListeMessages().add(message);
-        topic.getListeMessages().add(message1);
-        t.getListeTopics().add(topic);
+
     }
 
     Collection<Theme>listeThemes;
@@ -128,19 +115,38 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public Message creerMessage(String auteur,Topic topic, String texte) {
+    public Message creerMessage(String auteur,Topic topic, String texte) throws InformationManquanteException {
+        if(texte==null || texte.equals("") ){
+            throw new InformationManquanteException();
+        }
         Date date= new Date();
         return new MessageImpl(auteur,texte,date,topic);
     }
 
     @Override
-    public void creerTheme(String nomTheme) {
+    public void creerTheme(String nomTheme) throws InformationManquanteException {
+        if(nomTheme==null || nomTheme.equals("") ){
+            throw new InformationManquanteException();
+        }
         Theme theme = new ThemeImpl(nomTheme);
         listeThemes.add(theme);
     }
 
     @Override
-    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException {
+    public Theme creerThemeBis(String nomTheme) throws InformationManquanteException {
+        if(nomTheme==null || nomTheme.equals("") ){
+            throw new InformationManquanteException();
+        }
+        Theme theme = new ThemeImpl(nomTheme);
+        listeThemes.add(theme);
+        return theme;
+    }
+
+    @Override
+    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException, InformationManquanteException {
+        if(nomTopic==null || nomTopic.equals("") ){
+            throw new InformationManquanteException();
+        }
         Topic topic=null;
         for (Theme t:listeThemes) {
             if(t.getNom().equals(theme.getNom())){

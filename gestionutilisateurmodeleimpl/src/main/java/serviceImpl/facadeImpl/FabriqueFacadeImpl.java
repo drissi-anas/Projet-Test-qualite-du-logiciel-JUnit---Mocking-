@@ -31,14 +31,8 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
 
         Personne personne = new PersonneImpl("admin", "admin");
         personne.addRole(ADMIN);
-        Personne personne2 = new PersonneImpl("moderateur1", "moderateur1");
-        personne2.addRole(MODERATEUR);
-        Personne personne3 = new PersonneImpl("basique", "basique");
-        personne2.addRole(BASIQUE);
 
-        listeUtilisateurs.add(personne3);
         listeUtilisateurs.add(personne);
-        listeUtilisateurs.add(personne2);
 
     }
 
@@ -46,8 +40,8 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
 
 
     @Override
-    public BasiquesOffLineService getBasiquesOffLineService() {
-        return new BasiqueOffLineServiceImpl();
+    public BasiquesOffLineService getBasiquesOffLineService(ConnexionService connexionService) {
+        return new BasiqueOffLineServiceImpl(connexionService);
     }
 
     @Override
@@ -56,10 +50,11 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
     }
 
     @Override
-    public AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException {
+    public AdminService getAdminService(ConnexionService connexionService, BasiquesOffLineService basiquesOffLineService) throws RoleDejaAttribueException {
+        return new AdminServiceImpl(connexionService,basiquesOffLineService);
 
-        return new AdminServiceImpl(connexionService);
     }
+
 
     @Override
     public ForumService getForumService(ConnexionService connexionService) {

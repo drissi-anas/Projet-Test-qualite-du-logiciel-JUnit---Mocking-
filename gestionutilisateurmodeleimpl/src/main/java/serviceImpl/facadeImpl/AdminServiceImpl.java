@@ -14,41 +14,22 @@ import java.util.Collection;
 public class AdminServiceImpl implements AdminService {
 
     private ConnexionService connexionService;
+    private BasiquesOffLineService basiqueOffLineService;
 
 
-    @Override
-    public void setListeDemandesNonTRaitees(Collection<InscriptionPotentielle> listeDemandes, long identifiant) {
-        for (InscriptionPotentielle i:listeDemandes) {
 
-            if(i.getIdentifiant()==identifiant){
-                listeDemandesNonTRaitees.add(i);
-            }
-
-        }
-        }
-
-    public AdminServiceImpl(ConnexionService connexionService){
+    public AdminServiceImpl(ConnexionService connexionService, BasiquesOffLineService basiqueOffLineService){
         this.connexionService=connexionService;
-
+        this.basiqueOffLineService=basiqueOffLineService;
     }
 
 
 
-    Collection<InscriptionPotentielle>listeDemandesNonTRaitees = new ArrayList<>();
+    // Collection<InscriptionPotentielle>listeDemandesNonTRaitees = new ArrayList<>();
 
 
     @Override
-    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException {
-
-        if(nom==null || mdp==null || mdp.equals("") || nom.equals("")){
-            throw new InformationManquanteException();
-        }
-        for (Personne p:connexionService.getListeUtilisateurs()) {
-            if(p.getNom().equals(nom)){
-                throw new UtilisateurDejaExistantException();
-            }
-        }
-
+    public Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException {
         boolean adminOuModoConnecte =false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
 
@@ -60,6 +41,37 @@ public class AdminServiceImpl implements AdminService {
         if(!adminOuModoConnecte){
             throw new IndividuNonConnecteException();
         }
+
+
+        boolean isAdmin = false;
+
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==u){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)){
+                        isAdmin=true;
+                    }
+
+                }
+            }
+
+
+        }
+        if(!isAdmin){
+            throw new ActionImpossibleException();
+        }
+
+        if(nom==null || mdp==null || mdp.equals("") || nom.equals("")){
+            throw new InformationManquanteException();
+        }
+
+        for (Personne p:connexionService.getListeUtilisateurs()) {
+            if(p.getNom().equals(nom)){
+                throw new UtilisateurDejaExistantException();
+            }
+        }
+
+
 
         Personne personne = new PersonneImpl(nom,mdp);
         connexionService.getListeUtilisateurs().add(personne);
@@ -89,35 +101,26 @@ public class AdminServiceImpl implements AdminService {
         }
 
 
-        Boolean isAdmin = false;
-        Boolean isModerateur = false;
+        boolean isAdmin = false;
 
-            for (Personne p : connexionService.getPersonnesConnectes()) {
+
+        for (Personne p : connexionService.getPersonnesConnectes()) {
             if(p.getIdentifiant()==u){
                 for (String s:p.getRoles()) {
                     if(s.equals(ADMIN)){
                         isAdmin=true;
-                    }
-                    if(s.equals(MODERATEUR)){
-                        isModerateur=true;
                     }
 
                 }
             }
 
 
-            }
+        }
 
-        if(role.equals(ADMIN)){
-            if(!isAdmin){
-                throw new ActionImpossibleException();
-            }
+        if(!isAdmin){
+            throw new ActionImpossibleException();
         }
-        if(role.equals(MODERATEUR)){
-            if(!isAdmin && !isModerateur ){
-                throw new ActionImpossibleException();
-            }
-        }
+
 
 
 
@@ -129,25 +132,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
     }
-/**
-    @Override
-    public void supprimerClient(long u, long utilisateurConcerne) throws IndividuNonConnecteException {
-        boolean adminOuModoConnecte =false;
-        for (Personne p : personnesConnectes) {
-            if(p.getIdentifiant()==u){
-                adminOuModoConnecte=true;
-            }
-        }
-        if(!adminOuModoConnecte){
-            throw new IndividuNonConnecteException();
-        }
-        for (Personne p:listeUtilisateurs) {
-            if(p.getIdentifiant()==utilisateurConcerne){
-               listeUtilisateurs.remove(p);
-            }
-        }
-    }
-**/
+
     @Override
     public Collection<Personne> getListeUtilisateur(long idDemandeur) throws IndividuNonConnecteException {
 
@@ -165,29 +150,84 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Personne getUserById(long identifiant, long identifiant1) {
+    public Personne getUserById(long identifiant, long identifiant1) throws IndividuNonConnecteException {
+
+        boolean adminOuModoConnecte = false;
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if (p.getIdentifiant() == identifiant) {
+                adminOuModoConnecte = true;
+            }
+        }
+        if (!adminOuModoConnecte) {
+            throw new IndividuNonConnecteException();
+        }
+
+        for (Personne p:connexionService.getListeUtilisateurs()) {
+
+            if(p.getIdentifiant()==identifiant1){
+                return p;
+            }
+
+        }
+
         return null;
     }
 
 
     @Override
-    public void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException {
-        boolean adminOuModoConnecte =false;
+    public void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException {
+        boolean adminOuModoConnecte = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
-            if(p.getIdentifiant()==identifiant){
-                adminOuModoConnecte=true;
+            if (p.getIdentifiant() == identifiant) {
+                adminOuModoConnecte = true;
             }
         }
-        if(!adminOuModoConnecte){
+        if (!adminOuModoConnecte) {
             throw new IndividuNonConnecteException();
         }
-        for (Personne p:connexionService.getListeUtilisateurs()) {
-            if(p.getIdentifiant()==identifiant1){
+
+        boolean isAdmin = false;
+        boolean isModerateur = false;
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if (p.getIdentifiant() == identifiant) {
+                for (String s : p.getRoles()) {
+                    if (s.equals(ADMIN)) {
+                        isAdmin = true;
+                    }
+                    if (s.equals(MODERATEUR)) {
+                        isModerateur = true;
+                    }
+
+                }
+            }
+
+        }
+
+        if (role.equals(ADMIN)) {
+            throw new ActionImpossibleException();
+        }
+        if (role.equals(MODERATEUR)) {
+            if (!isAdmin) {
+                throw new ActionImpossibleException();
+            }
+        }
+
+        if (role.equals(BASIQUE)) {
+            if (!isAdmin && !isModerateur) {
+                throw new ActionImpossibleException();
+            }
+        }
+
+
+        for (Personne p : connexionService.getListeUtilisateurs()) {
+            if (p.getIdentifiant() == identifiant1) {
                 p.supprimerRole(role);
             }
         }
 
     }
+
+
 
     @Override
     public void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException {
@@ -214,7 +254,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException {
+    public void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException, ActionImpossibleException {
 
         boolean adminOuModoConnecte =false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
@@ -225,10 +265,33 @@ public class AdminServiceImpl implements AdminService {
         if(!adminOuModoConnecte){
             throw new IndividuNonConnecteException();
         }
+
+
+        boolean isAdmin = false;
+
+
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==identifiant){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)){
+                        isAdmin=true;
+                    }
+
+                }
+            }
+
+
+        }
+
+        if(!isAdmin){
+            throw new ActionImpossibleException();
+        }
+
+
         Personne personne=null;
         for (Personne p:connexionService.getListeUtilisateurs()) {
             if(p.getIdentifiant()==idUtilisateur){
-                 personne=p;
+                personne=p;
             }
         }
         connexionService.getListeUtilisateurs().remove(personne);
@@ -236,11 +299,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException{
+    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException {
 
         boolean isAdmin=false;
+
         boolean isModerateur = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
+
             if(p.getIdentifiant()==identifiantUtilisateur){
                 for (String s:p.getRoles()) {
                     if(s.equals(ADMIN)){
@@ -254,54 +319,58 @@ public class AdminServiceImpl implements AdminService {
             }
 
         }
-            InscriptionPotentielle inscriptionPotentielle = null;
-            for (InscriptionPotentielle i : listeDemandesNonTRaitees) {
+        InscriptionPotentielle inscriptionPotentielle = null;
+        for (InscriptionPotentielle i : basiqueOffLineService.getListeDemandes()) {
 
-                if (i.getIdentifiant() == identifiantDemande) {
-                    inscriptionPotentielle = i;
-                }
+            if (i.getIdentifiant() == identifiantDemande) {
+                inscriptionPotentielle = i;
             }
-
-
-            if(inscriptionPotentielle.getRoleDemande().equals(ADMIN)){
-                if(!isAdmin){
-                    throw new ActionImpossibleException();
-                }
-            }
-
-            if(inscriptionPotentielle.getRoleDemande().equals(MODERATEUR)){
-                if(!isAdmin && !isModerateur ){
-                    throw new ActionImpossibleException();
-                }
-            }
-            if(inscriptionPotentielle.getRoleDemande().equals(BASIQUE)){
-                if(!isAdmin && !isModerateur ){
-                    throw new ActionImpossibleException();
-                }
-            }
-
-            Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
-            connexionService.getListeUtilisateurs().add(personne);
-            listeDemandesNonTRaitees.remove(inscriptionPotentielle);
-
         }
 
 
+        if(inscriptionPotentielle.getRoleDemande().equals(ADMIN)){
+            if(!isAdmin){
+                throw new ActionImpossibleException();
+            }
+        }
+
+        if(inscriptionPotentielle.getRoleDemande().equals(MODERATEUR)){
+            if(!isAdmin && !isModerateur ){
+                throw new ActionImpossibleException();
+            }
+        }
+
+        if(inscriptionPotentielle.getRoleDemande().equals(BASIQUE)){
+            if(!isAdmin && !isModerateur ){
+                throw new ActionImpossibleException();
+            }
+        }
+
+        Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
+        try {
+            personne.addRole(inscriptionPotentielle.getRoleDemande());
+        } catch (RoleDejaAttribueException e) {
+            e.printStackTrace();
+        }
+        connexionService.getListeUtilisateurs().add(personne);
+        basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
+
+    }
 
 
 
-    //Pas sur, je sais pas quoi faire du parametre
+
     @Override
-    public Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) {
+    public Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException{
 
         boolean isAdmin= false;
         boolean isModerateur= false;
         for (Personne p:connexionService.getListeUtilisateurs()) {
             if(p.getIdentifiant()==identifiantUtilisateur){
                 for(String s:p.getRoles()){
-                    if(s.equals("ADMINISTRATEUR")){
+                    if(s.equals(ADMIN)){
                         isAdmin=true;
-                    }else if(s.equals("MODERATEUR")){
+                    }else if(s.equals(MODERATEUR)){
                         isModerateur=true;
                     }
                 }
@@ -310,25 +379,25 @@ public class AdminServiceImpl implements AdminService {
         Collection<InscriptionPotentielle> listeARetourner=new ArrayList<>();
 
         if(isAdmin){
-            return listeDemandesNonTRaitees;
+            return basiqueOffLineService.getListeDemandes();
         }else if(isModerateur){
 
-            for (InscriptionPotentielle i:listeDemandesNonTRaitees){
+            for (InscriptionPotentielle i:basiqueOffLineService.getListeDemandes()){
 
-                if(!i.getRoleDemande().equals("ADMINISTRATEUR")){
+                if(!i.getRoleDemande().equals(ADMIN)){
                     listeARetourner.add(i);
                 }
 
             }
-            return listeDemandesNonTRaitees;
+            return listeARetourner;
 
+        }else{
+            throw new ActionImpossibleException();
         }
 
-        return  null;
 
     }
 
-    //Pas sur, je sais pas quoi faire du parametre identifiantUTilisateur
     @Override
     public void refuserInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException {
 
@@ -352,7 +421,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         InscriptionPotentielle inscriptionPotentielle = null;
-        for(InscriptionPotentielle i: listeDemandesNonTRaitees){
+        for(InscriptionPotentielle i: basiqueOffLineService.getListeDemandes()){
 
             if(i.getIdentifiant()==identifiantDemande){
                 inscriptionPotentielle=i;
@@ -360,23 +429,23 @@ public class AdminServiceImpl implements AdminService {
         }
 
         if(inscriptionPotentielle.getRoleDemande().equals(ADMIN)){
-                if(!isAdmin){
-                    throw new ActionImpossibleException();
-                }
+            if(!isAdmin){
+                throw new ActionImpossibleException();
             }
+        }
 
-            if(inscriptionPotentielle.getRoleDemande().equals(MODERATEUR)){
-                if(!isAdmin && !isModerateur ){
-                    throw new ActionImpossibleException();
-                }
+        if(inscriptionPotentielle.getRoleDemande().equals(MODERATEUR)){
+            if(!isAdmin && !isModerateur ){
+                throw new ActionImpossibleException();
             }
+        }
         if(inscriptionPotentielle.getRoleDemande().equals(BASIQUE)){
             if(!isAdmin && !isModerateur ){
                 throw new ActionImpossibleException();
             }
         }
 
-        listeDemandesNonTRaitees.remove(inscriptionPotentielle);
+        basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
     }
 
 

@@ -1,9 +1,6 @@
 package facade;
 
-import facade.erreurs.ActionImpossibleException;
-import facade.erreurs.NomTopicDejaExistantException;
-import facade.erreurs.ThemeInexistantException;
-import facade.erreurs.TopicInexistantException;
+import facade.erreurs.*;
 import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
@@ -29,17 +26,18 @@ public interface ForumService {
 
     void ajouterMessage(Topic topic, Theme theme, Message message);
 
-    Message creerMessage(String auteur,Topic topic,String string);
+    Message creerMessage(String auteur,Topic topic,String string) throws InformationManquanteException;
 
-    void creerTheme(String nomTheme);
+    void creerTheme(String nomTheme) throws InformationManquanteException;
 
-    Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException;
+    Theme creerThemeBis(String nomTheme) throws InformationManquanteException;
 
+
+    Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException, InformationManquanteException;
 
     void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
     void supprimerTopic(long identifiant);
-
 
     // Donc celle on va surement la supp mais gardons la pour le moment
   //  Topic recupererTopic(String nomTopic);

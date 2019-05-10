@@ -11,10 +11,7 @@ import java.util.Collection;
 public interface AdminService {
 
 
-
-    void setListeDemandesNonTRaitees(Collection<InscriptionPotentielle> listeDemandes, long identifiant);
-
-    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException,UtilisateurDejaExistantException,InformationManquanteException;
+    Personne creerUtilisateur(long u, String nom, String mdp) throws IndividuNonConnecteException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException;
 
     void associerRoleUtilisateur(long u, long utilisateurConcerne, String role) throws IndividuNonConnecteException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException;
 
@@ -24,13 +21,13 @@ public interface AdminService {
      */
     Collection<Personne> getListeUtilisateur(long idDemandeur)throws IndividuNonConnecteException;
 
-    Personne getUserById(long identifiant, long identifiant1);
+    Personne getUserById(long identifiant, long identifiant1) throws IndividuNonConnecteException;
 
-    void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException;
+    void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException;
 
     void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException;
 
-    void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException;
+    void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException, ActionImpossibleException;
 
     void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
 
@@ -42,7 +39,7 @@ public interface AdminService {
      * @param identifiantUtilisateur
      * @return
      */
-    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur);
+    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException;
 
     void refuserInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
     String ADMIN = "ADMIN";

@@ -6,6 +6,9 @@ import facade.erreurs.InformationManquanteException;
 import modele.personnes.Personne;
 import java.util.Collection;
 
+import static facade.AdminService.ADMIN;
+import static facade.AdminService.MODERATEUR;
+
 public class ConnexionServiceImpl implements ConnexionService {
 
     Collection<Personne> listeUtilisateurs;
@@ -82,7 +85,7 @@ public class ConnexionServiceImpl implements ConnexionService {
 
         for (Personne p : listeUtilisateurs) {
             if(p.getIdentifiant()== idUtilisateur){
-                if(p.hasRole("ADMINISTRATEUR")){
+                if(p.hasRole(ADMIN)){
                     return true;
                 }
             }
@@ -96,7 +99,7 @@ public class ConnexionServiceImpl implements ConnexionService {
     public boolean estUnModerateur(long identifiant) {
         for (Personne p : listeUtilisateurs) {
             if(p.getIdentifiant()== identifiant){
-                if(p.hasRole("MODERATEUR")){
+                if(p.hasRole(MODERATEUR)){
                     return true;
                 }
             }

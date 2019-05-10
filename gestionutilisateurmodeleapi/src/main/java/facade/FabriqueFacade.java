@@ -11,10 +11,10 @@ public interface FabriqueFacade {
 
     void majListes() throws RoleDejaAttribueException;
 
-    BasiquesOffLineService getBasiquesOffLineService();
+    BasiquesOffLineService getBasiquesOffLineService(ConnexionService connexionService);
     ConnexionService getConnexionService();
 
-    AdminService getAdminService(ConnexionService connexionService) throws RoleDejaAttribueException;
+    AdminService getAdminService(ConnexionService connexionService,BasiquesOffLineService basiquesOffLineService) throws RoleDejaAttribueException;
 
     ForumService getForumService(ConnexionService connexionService);
 
