@@ -175,26 +175,26 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException {
-        boolean adminOuModoConnecte =false;
+        boolean adminOuModoConnecte = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
-            if(p.getIdentifiant()==identifiant){
-                adminOuModoConnecte=true;
+            if (p.getIdentifiant() == identifiant) {
+                adminOuModoConnecte = true;
             }
         }
-        if(!adminOuModoConnecte){
+        if (!adminOuModoConnecte) {
             throw new IndividuNonConnecteException();
         }
 
-        boolean isAdmin=false;
+        boolean isAdmin = false;
         boolean isModerateur = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
-            if(p.getIdentifiant()==identifiant){
-                for (String s:p.getRoles()) {
-                    if(s.equals(ADMIN)){
-                        isAdmin=true;
+            if (p.getIdentifiant() == identifiant) {
+                for (String s : p.getRoles()) {
+                    if (s.equals(ADMIN)) {
+                        isAdmin = true;
                     }
-                    if(s.equals(MODERATEUR)){
-                        isModerateur=true;
+                    if (s.equals(MODERATEUR)) {
+                        isModerateur = true;
                     }
 
                 }
@@ -202,35 +202,31 @@ public class AdminServiceImpl implements AdminService {
 
         }
 
-        Personne personneASupprimer = null;
-        for(Personne p: connexionService.getListeUtilisateurs()){
-
-            if(p.getIdentifiant()==identifiant1){
-                personneASupprimer=p;
-            }
+        if (role.equals(ADMIN)) {
+            throw new ActionImpossibleException();
         }
-
-
-        if(role.equals(ADMIN)){
-            if(!isAdmin){
+        if (role.equals(MODERATEUR)) {
+            if (!isAdmin) {
                 throw new ActionImpossibleException();
             }
         }
 
-        if(role.equals(MODERATEUR)){
-            if(!isAdmin && !isModerateur ){
+        if (role.equals(BASIQUE)) {
+            if (!isAdmin && !isModerateur) {
                 throw new ActionImpossibleException();
             }
         }
 
 
-        for (Personne p:connexionService.getListeUtilisateurs()) {
-            if(p.getIdentifiant()==identifiant1){
+        for (Personne p : connexionService.getListeUtilisateurs()) {
+            if (p.getIdentifiant() == identifiant1) {
                 p.supprimerRole(role);
             }
         }
 
     }
+
+
 
     @Override
     public void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException {
