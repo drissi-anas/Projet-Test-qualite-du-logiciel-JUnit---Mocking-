@@ -132,25 +132,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
     }
-    /**
-     @Override
-     public void supprimerClient(long u, long utilisateurConcerne) throws IndividuNonConnecteException {
-     boolean adminOuModoConnecte =false;
-     for (Personne p : personnesConnectes) {
-     if(p.getIdentifiant()==u){
-     adminOuModoConnecte=true;
-     }
-     }
-     if(!adminOuModoConnecte){
-     throw new IndividuNonConnecteException();
-     }
-     for (Personne p:listeUtilisateurs) {
-     if(p.getIdentifiant()==utilisateurConcerne){
-     listeUtilisateurs.remove(p);
-     }
-     }
-     }
-     **/
+
     @Override
     public Collection<Personne> getListeUtilisateur(long idDemandeur) throws IndividuNonConnecteException {
 
@@ -298,7 +280,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException, RoleDejaAttribueException {
+    public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException {
 
         boolean isAdmin=false;
         boolean isModerateur = false;
@@ -343,7 +325,11 @@ public class AdminServiceImpl implements AdminService {
         }
 
         Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
-        personne.addRole(inscriptionPotentielle.getRoleDemande());
+        try {
+            personne.addRole(inscriptionPotentielle.getRoleDemande());
+        } catch (RoleDejaAttribueException e) {
+            e.printStackTrace();
+        }
         connexionService.getListeUtilisateurs().add(personne);
         basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
 

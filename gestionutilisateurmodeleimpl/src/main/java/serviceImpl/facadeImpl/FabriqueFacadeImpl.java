@@ -40,8 +40,8 @@ public class FabriqueFacadeImpl implements FabriqueFacade {
 
 
     @Override
-    public BasiquesOffLineService getBasiquesOffLineService() {
-        return new BasiqueOffLineServiceImpl();
+    public BasiquesOffLineService getBasiquesOffLineService(ConnexionService connexionService) {
+        return new BasiqueOffLineServiceImpl(connexionService);
     }
 
     @Override
