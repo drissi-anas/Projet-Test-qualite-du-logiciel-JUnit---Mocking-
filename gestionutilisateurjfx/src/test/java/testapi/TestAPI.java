@@ -127,7 +127,7 @@ public class TestAPI extends ApplicationTest {
      * Test le champ vide pour mot de passe, affiche un message d'erreur
      */
     @Test
-    public void saisieMdpOKAdminAndModCV () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpOKAdminAndModCV () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -209,7 +209,7 @@ public class TestAPI extends ApplicationTest {
      * Test la connexion d'un Admin/Modérateur
      */
     @Test
-    public void saisieMdpOKAdminAndMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpOKAdminAndMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*Un utilisateur (admin et moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
         Collection<InscriptionPotentielle> ips = new ArrayList<>();
@@ -264,7 +264,7 @@ public class TestAPI extends ApplicationTest {
      * Test la connexion pour un utilisateur non admin et non modérateur
      */
     @Test
-    public void saisieMdpNonModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /*Un utilisateur basique se connecte avec un  couple login/mdp valide */
+    public void saisieMdpNonModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*Un utilisateur basique se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -319,7 +319,7 @@ public class TestAPI extends ApplicationTest {
      * Test la connexion d'un modérateur
      */
     @Test
-    public void saisieMdpModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException {/*Un moderateur se connecte avec un  couple login/mdp valide */
+    public void saisieMdpModNonAdmin () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {/*Un moderateur se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -374,7 +374,7 @@ public class TestAPI extends ApplicationTest {
      * Test la connexion d'un admin
      */
     @Test
-    public void saisieMdpAdminNonMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /*Un admin (non moderateur) se connecte avec un  couple login/mdp valide */
+    public void saisieMdpAdminNonMod () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*Un admin (non moderateur) se connecte avec un  couple login/mdp valide */
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
 
@@ -583,7 +583,7 @@ public class TestAPI extends ApplicationTest {
      * Test la création d'un utilisateur déjà existant
      */
     @Test
-    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException { /*Un admin ajoute un utilisateur déjà existant */
+    public void ajouterUtilisateurKO () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*Un admin ajoute un utilisateur déjà existant */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -669,7 +669,7 @@ public class TestAPI extends ApplicationTest {
      * Test la création d'un utilisateur avec des champs vides
      */
     @Test
-    public void ajouterUtilisateurChampVide () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurChampVide () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -753,7 +753,7 @@ public class TestAPI extends ApplicationTest {
      * Test la création d'un utilisateur avec des informations manquantes
      */
     @Test
-    public void ajouterUtilisateurChampVidePseudo () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException { /*un admin ajoute un nouvel utilisateur */
+    public void ajouterUtilisateurChampVidePseudo () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /*un admin ajoute un nouvel utilisateur */
 
         p =fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -837,7 +837,7 @@ public class TestAPI extends ApplicationTest {
      * Test la déconnexion d'un admin
      */
     @Test
-    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /* un admin se connecte puis quitte l'appli */
+    public void adminQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /* un admin se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -899,7 +899,7 @@ public class TestAPI extends ApplicationTest {
      * Test la déconnexion d'un modérateur
      */
     @Test
-    public void modQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /* un moderateur se connecte puis quitte l'appli */
+    public void modQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /* un moderateur se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -961,7 +961,7 @@ public class TestAPI extends ApplicationTest {
      * Test la déconnexion d'un utilisateur basic
      */
     @Test
-    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException { /* un utilisateur basique se connecte puis quitte l'appli */
+    public void basicQuitter () throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException { /* un utilisateur basique se connecte puis quitte l'appli */
         UtilisateurDejaExistantException e =new UtilisateurDejaExistantException();
 
         p =fabriqueMock.creerMockPersonne();
@@ -1184,7 +1184,7 @@ public class TestAPI extends ApplicationTest {
      * Test la suppression d'un utilisateur par un Admin/Modérateur puis affiche la liste des utilisateurs mise à jour
      */
     @Test
-    public void supprimerUser() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException {
+    public void supprimerUser() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p =fabriqueMock.creerMockPersonne();
         p2= fabriqueMock.creerMockPersonne();
         long l = 1;
@@ -1717,7 +1717,7 @@ public class TestAPI extends ApplicationTest {
      */
 
     @Test
-    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void chargerTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1798,7 +1798,7 @@ public class TestAPI extends ApplicationTest {
      */
 
     @Test
-    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void choisirTheme () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1857,7 +1857,7 @@ public class TestAPI extends ApplicationTest {
             }
         });
 
-
+//
         sleepBetweenActions();
         clickOn("#nom");
 
@@ -1895,7 +1895,7 @@ public class TestAPI extends ApplicationTest {
      *Affiche la page pour la création d'un topic
      */
     @Test
-    public void affihcerCreationTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void affihcerCreationTopic () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1917,12 +1917,24 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+
+
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
@@ -1965,7 +1977,6 @@ public class TestAPI extends ApplicationTest {
         listeTheme.getSelectionModel().selectIndices(0);
         sleepBetweenActions();
         clickOn("#choisirTheme");
-
         ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
         listTopic.getItems().add(topic);
         sleepBetweenActions();
@@ -1983,7 +1994,7 @@ public class TestAPI extends ApplicationTest {
      * Affichage des messages pour un topic choisi | User basique
      */
     @Test
-    public void afficherUnTopicUser () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void afficherUnTopicUser () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2093,7 +2104,7 @@ public class TestAPI extends ApplicationTest {
      * Affichage des messages pour un topic choisi
      */
     @Test
-    public void afficherUnTopicMod () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void afficherUnTopicMod () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2204,7 +2215,7 @@ public class TestAPI extends ApplicationTest {
      * Creéation d'un topic avec un message pour un theme choisi
      */
     @Test
-    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void creerUnTopic () throws CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2332,7 +2343,7 @@ public class TestAPI extends ApplicationTest {
      * Ajouter un message à un topic | Modérateur
      */
     @Test
-    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2476,7 +2487,7 @@ public class TestAPI extends ApplicationTest {
      * Test la création d'un theme pour utilisateur basique et affiche un message d'erreur
      */
     @Test
-    public void creerThemeUser () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void creerThemeUser () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -2555,7 +2566,7 @@ public class TestAPI extends ApplicationTest {
      * Test la création d'un thème pour un Admin et affiche la liste des thèmes mise à jour.
      */
     @Test
-    public void creerThemeAdmin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void creerThemeAdmin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Theme t1=fabriqueMock.creerThemeForum();
@@ -2668,7 +2679,7 @@ public class TestAPI extends ApplicationTest {
      * .
      */
     @Test
-    public void creerThemeModerateur () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void creerThemeModerateur () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -3641,7 +3652,7 @@ public class TestAPI extends ApplicationTest {
      */
 
     @Test
-    public void supprimerTopic_admin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void supprimerTopic_admin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -3775,7 +3786,7 @@ public class TestAPI extends ApplicationTest {
      */
 
     @Test
-    public void supprimerTopic_mod() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void supprimerTopic_mod() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -3912,7 +3923,7 @@ public class TestAPI extends ApplicationTest {
      */
 
     @Test
-    public void supprimerTopic_user_KO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void supprimerTopic_user_KO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();

@@ -35,9 +35,10 @@ public interface ForumService {
 
     Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException, InformationManquanteException;
 
-    void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
     void supprimerTopic(long identifiant);
+
+    void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
     // Donc celle on va surement la supp mais gardons la pour le moment
   //  Topic recupererTopic(String nomTopic);

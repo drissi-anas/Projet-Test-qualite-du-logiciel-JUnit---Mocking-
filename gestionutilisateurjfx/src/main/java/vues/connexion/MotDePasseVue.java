@@ -2,6 +2,7 @@ package vues.connexion;
 
 import controleur.Controleur;
 import controleur.erreurs.MotDePasseIncorrectJFXException;
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.IndividuNonConnecteException;
 import facade.erreurs.InformationManquanteException;
 import javafx.event.ActionEvent;
@@ -83,6 +84,8 @@ public class MotDePasseVue  {
                 nomInexistant.setHeaderText("Problème de connexion");
                 nomInexistant.setContentText("Mot de passe incorrect !");
                 nomInexistant.showAndWait();
+            } catch (ActionImpossibleException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -1,6 +1,7 @@
 package vues;
 
 import controleur.Controleur;
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.IndividuNonConnecteException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -124,7 +125,7 @@ public class MenuVue {
         this.supprUtilisateur.setListeUtilisateurs(monControleur.getUtilisateurs());
     }
 
-    public void chargerDemandes(MouseEvent mouseEvent) {
+    public void chargerDemandes(MouseEvent mouseEvent) throws ActionImpossibleException {
         this.traitDemandes.setListeDemandes(monControleur.getDemandes());
     }
 

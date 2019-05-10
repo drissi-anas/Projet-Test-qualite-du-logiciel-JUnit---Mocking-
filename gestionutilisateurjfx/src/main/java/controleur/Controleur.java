@@ -73,7 +73,7 @@ public class Controleur implements Observateur {
     }
 
 
-    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException, InformationManquanteException, IndividuNonConnecteException {
+    public void validerMotDePasse(String text) throws MotDePasseIncorrectJFXException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         try {
             identifiant = this.connexionService.connexion(nom,text);
 
@@ -91,6 +91,8 @@ public class Controleur implements Observateur {
             this.broadcastNotification(new UpdatesCreationImpl(AdminService.getRoles()));
             this.maFenetre.goToMenu();
         } catch (InformationManquanteException e) {
+            e.printStackTrace();
+        } catch (ActionImpossibleException e) {
             e.printStackTrace();
         }
     }
@@ -158,7 +160,7 @@ public class Controleur implements Observateur {
 
     }
 
-    public void supprimerUtilisateur(Personne utilisateur) throws IndividuNonConnecteException {
+    public void supprimerUtilisateur(Personne utilisateur) throws IndividuNonConnecteException, ActionImpossibleException {
         if (utilisateur.getIdentifiant() == this.identifiant.getIdentifiant()) {
             this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.ERREUR_SUPPRESSION,"On ne peut pas se supprimer du SI"));
         }
@@ -184,7 +186,7 @@ public class Controleur implements Observateur {
 
     }
 
-    public Collection<InscriptionPotentielle> getDemandes() {
+    public Collection<InscriptionPotentielle> getDemandes() throws ActionImpossibleException {
         return this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant());
     }
 
@@ -217,7 +219,12 @@ public class Controleur implements Observateur {
     public void ajouterMessage(String nomDuTheme, String nomDuTopic, String texteMessage) throws ThemeInexistantException, TopicInexistantException {
         Theme t = forumService.recupererTheme(nomDuTheme);
         Topic topic = forumService.recupererTopic(nomDuTopic,nomDuTheme);
-        Message m= forumService.creerMessage(identifiant.getNom(),topic,texteMessage);
+        Message m= null;
+        try {
+            m = forumService.creerMessage(identifiant.getNom(),topic,texteMessage);
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
+        }
         this.forumService.ajouterMessage(topic,t,m);
         gototopic(topic);
     }
@@ -231,6 +238,8 @@ public class Controleur implements Observateur {
             forumService.ajouterMessage(nouveauTopic,theme,m1);
             gototopic(nouveauTopic);
         } catch (NomTopicDejaExistantException e) {
+            e.printStackTrace();
+        } catch (InformationManquanteException e) {
             e.printStackTrace();
         }
     }
@@ -268,7 +277,11 @@ public class Controleur implements Observateur {
     }
 
     public void validerTheme(String text) {
-        forumService.creerTheme(text);
+        try {
+            forumService.creerTheme(text);
+        } catch (InformationManquanteException e) {
+            e.printStackTrace();
+        }
         this.maFenetre.gotoListetheme();
     }
 
