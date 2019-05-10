@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
 
+import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import modele.forum.Message;
 import modele.forum.Topic;
 
 import java.io.IOException;
@@ -119,10 +121,24 @@ public class ThemeVue implements Sujet {
     }
 
     public void checkVisibility(){
+        supprimertopic.setDisable(true);
+        if(monControleur.isAdmin() || monControleur.isModerateur()){
+            supprimertopic.setDisable(false);
+        }
 
     }
 
-    public void supprimerTopic(ActionEvent actionEvent) {
+    public void supprimerTopic(ActionEvent actionEvent) throws ThemeInexistantException {
+        Topic topic =listeTopics.getSelectionModel().getSelectedItem();
+
+        if (Objects.isNull(topic)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Vous devez sélectionner un topic");
+        }
+        else {
+            monControleur.supprimerTopic(topic);
+        }
+
+
 
     }
 }

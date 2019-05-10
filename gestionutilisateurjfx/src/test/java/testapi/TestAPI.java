@@ -505,7 +505,7 @@ public class TestAPI extends ApplicationTest {
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnAdmin(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
 
         expect(adminService.creerUtilisateur(1,"Hajar","111")).andReturn(p2);
@@ -1738,6 +1738,11 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
@@ -1815,12 +1820,25 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
@@ -1955,7 +1973,116 @@ public class TestAPI extends ApplicationTest {
         sleepBetweenActions();
 
     }
+    /**
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws TopicInexistantException
+     * @throws ThemeInexistantException
+     * @throws TopicInexistantException
+     * @throws InformationManquanteException
+     *
+     * Affichage des messages pour un topic choisi | User basique
+     */
+    @Test
+    public void afficherUnTopicUser () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Collection<Message> lesMessages=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Message message=fabriqueMock.creerMessage();
 
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,message);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().add(topic);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTopics");
+        ListView<Message> listMessage=(ListView<Message>)GuiTest.find("#listeMessage");
+        listMessage.getItems().add(message);
+        sleepBetweenActions();
+
+    }
     /**
      * @throws CoupleUtilisateurMDPInconnuException
      * @throws TopicInexistantException
@@ -1966,7 +2093,7 @@ public class TestAPI extends ApplicationTest {
      * Affichage des messages pour un topic choisi
      */
     @Test
-    public void afficherUnTopic () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
+    public void afficherUnTopicMod () throws CoupleUtilisateurMDPInconnuException, TopicInexistantException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
         p = fabriqueMock.creerMockPersonne();
         Theme t= fabriqueMock.creerThemeForum();
         Collection <Theme> lesthemes=new ArrayList<>();
@@ -1990,6 +2117,11 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
@@ -1998,6 +2130,10 @@ public class TestAPI extends ApplicationTest {
         expect(t.getNom()).andReturn("Santé");
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         expect(topic.getIdentifiant()).andReturn(1L);
         expect(topic.getIdentifiant()).andReturn(1L);
@@ -2093,12 +2229,22 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
         expect(t.getNom()).andReturn("Santé");
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
@@ -2111,6 +2257,7 @@ public class TestAPI extends ApplicationTest {
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(p.getNom()).andReturn("Yohan");
         expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
+        expect(p.getNom()).andReturn("Yohan");
         expect(forumService.creerMessage("Yohan",topic1,"Que faire contre le pollen ?")).andReturn(message);
         forumService.ajouterMessage(topic1,t,message);
         expect(forumService.getListeMessagePourUnTopic(topic1)).andReturn(lesMessages);
@@ -2182,7 +2329,7 @@ public class TestAPI extends ApplicationTest {
      * @throws TopicInexistantException
      * @throws InformationManquanteException
      *
-     * Ajouter un message à un topic
+     * Ajouter un message à un topic | Modérateur
      */
     @Test
     public void ajouterUnMessageAUnTopic () throws CoupleUtilisateurMDPInconnuException, ThemeInexistantException, TopicInexistantException, InformationManquanteException, IndividuNonConnecteException {
@@ -2210,6 +2357,11 @@ public class TestAPI extends ApplicationTest {
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
         expect(forumService.getListeTheme()).andReturn(lesthemes);
         expect(t.getIdentifiant()).andReturn(1L);
         expect(t.getIdentifiant()).andReturn(1L);
@@ -2218,6 +2370,10 @@ public class TestAPI extends ApplicationTest {
         expect(t.getNom()).andReturn("Santé");
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         expect(topic.getIdentifiant()).andReturn(1L);
         expect(topic.getIdentifiant()).andReturn(1L);
@@ -2235,6 +2391,7 @@ public class TestAPI extends ApplicationTest {
         //valider message
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(forumService.recupererTopic("Maladie","Santé")).andReturn(topic);
+        expect(p.getNom()).andReturn("Yohan");
         expect(forumService.creerMessage("Yohan",topic,"3 euros !")).andReturn(m1);
         forumService.ajouterMessage(topic,t,m1);
         expect(topic.getNom()).andReturn("Maladie");
@@ -2586,7 +2743,7 @@ public class TestAPI extends ApplicationTest {
      * @throws ThemeInexistantException
      * @throws TopicInexistantException
      *
-     * Test la suppression d'un message par un admin/moderateur
+     * Un admin/moderateur supprime son propre message
      */
     @Test
     public void supprimerMessageTopicAdminMod() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ThemeInexistantException, TopicInexistantException, ActionImpossibleException {
@@ -2649,6 +2806,8 @@ public class TestAPI extends ApplicationTest {
         expect(m1.getText()).andReturn("3 euros !");
 
         //Supprime le message séléctionné
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(p.getNom()).andReturn("Yohan");
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnAdmin(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
@@ -2753,13 +2912,13 @@ public class TestAPI extends ApplicationTest {
         expect(p.getIdentifiant()).andReturn(l);
         expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
         expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
         expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
 
@@ -2793,8 +2952,10 @@ public class TestAPI extends ApplicationTest {
         expect(m1.getText()).andReturn("3 euros !");
 
         //Supprime le message séléctionné
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(p.getNom()).andReturn("Yohan");
         expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnModerateur(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
@@ -2919,6 +3080,10 @@ public class TestAPI extends ApplicationTest {
 
         //Recupère les messages dispo pour un topic
         expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         expect(topic.getIdentifiant()).andReturn(1L);
         expect(topic.getIdentifiant()).andReturn(1L);
@@ -2940,10 +3105,7 @@ public class TestAPI extends ApplicationTest {
         //Supprime le message séléctionné
 
         expect(m1.getAuteur()).andReturn("Yohan");
-        expect(p.getIdentifiant()).andReturn(l);
-        expect(connexionService.estUnAdmin(1)).andReturn(false);
-        expect(connexionService.estUnModerateur(1)).andReturn(false);
-        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getNom()).andReturn("Yohan");
         expect(p.getIdentifiant()).andReturn(1L);
         forumService.supprimerMessage(m1, 1L);
         expect(m1.getTopic()).andReturn(topic);
@@ -3064,6 +3226,10 @@ public class TestAPI extends ApplicationTest {
 
         //Recupère les messages dispo pour un topic
         expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
         expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
         expect(topic.getIdentifiant()).andReturn(1L);
         expect(topic.getIdentifiant()).andReturn(1L);
@@ -3084,6 +3250,7 @@ public class TestAPI extends ApplicationTest {
 
         //Supprime le message séléctionné
         expect(message.getAuteur()).andReturn("Sema");
+        expect(p.getNom()).andReturn("Yohan");
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
@@ -3141,11 +3308,706 @@ public class TestAPI extends ApplicationTest {
     }
 
 
+    /**
+     * @throws InformationManquanteException
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws IndividuNonConnecteException
+     * @throws ThemeInexistantException
+     * @throws TopicInexistantException
+     *
+     * un moderateur supprime le message d'un autre utilisateur
+     */
+    @Test
+    public void supprimerMessageTopicMod_autreUser() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ThemeInexistantException, TopicInexistantException, ActionImpossibleException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Collection<Message> lesMessages=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Message message=fabriqueMock.creerMessage();
+        Message m1=fabriqueMock.creerMessage();
+        Message m2=fabriqueMock.creerMessage();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+        //Recupère les messages dispo pour un topic
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(m2.getText()).andReturn("Merci");
+        expect(m2.getText()).andReturn("Merci");
+
+
+        //Supprime le message séléctionné
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(p.getNom()).andReturn("Yohan");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(1L);
+        forumService.supprimerMessage(m2, 1L);
+        expect(m2.getTopic()).andReturn(topic);
+        expect(topic.getNom()).andReturn("Santé");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Maladie");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m1.getText()).andReturn("3 euros !");
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,message,m1,m2);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().add(topic);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTopics");
+        ListView<Message> listMessage=(ListView<Message>)GuiTest.find("#listeMessage");
+        listMessage.getItems().addAll(message,m1,m2);
+        sleepBetweenActions();
+        listMessage.getSelectionModel().selectIndices(2);
+        sleepBetweenActions();
+        clickOn("#supprimer");
+        ListView<Message> listMessage2=(ListView<Message>)GuiTest.find("#listeMessage");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listMessage2.getItems().addAll(message,m1);
+            }
+        });
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+
+    }
+
+
+    /**
+     * @throws InformationManquanteException
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws IndividuNonConnecteException
+     * @throws ThemeInexistantException
+     * @throws TopicInexistantException
+     *
+     * un admin supprime le message d'un autre utilisateur
+     */
+    @Test
+    public void supprimerMessageTopicAdmin_autreUser() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ThemeInexistantException, TopicInexistantException, ActionImpossibleException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Collection<Message> lesMessages=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Message message=fabriqueMock.creerMessage();
+        Message m1=fabriqueMock.creerMessage();
+        Message m2=fabriqueMock.creerMessage();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+        //Recupère les messages dispo pour un topic
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(m2.getText()).andReturn("Merci");
+        expect(m2.getText()).andReturn("Merci");
+
+
+        //Supprime le message séléctionné
+        expect(m2.getAuteur()).andReturn("Sema");
+        expect(p.getNom()).andReturn("Yohan");
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(p.getIdentifiant()).andReturn(1L);
+        forumService.supprimerMessage(m2, 1L);
+        expect(m2.getTopic()).andReturn(topic);
+        expect(topic.getNom()).andReturn("Santé");
+        expect(topic.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Maladie");
+        expect(forumService.getListeMessagePourUnTopic(topic)).andReturn(lesMessages);
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getAuteur()).andReturn("Sema");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(message.getText()).andReturn("Combien coute un doliprane ?");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getAuteur()).andReturn("Yohan");
+        expect(m1.getText()).andReturn("3 euros !");
+        expect(m1.getText()).andReturn("3 euros !");
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,message,m1,m2);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().add(topic);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTopics");
+        ListView<Message> listMessage=(ListView<Message>)GuiTest.find("#listeMessage");
+        listMessage.getItems().addAll(message,m1,m2);
+        sleepBetweenActions();
+        listMessage.getSelectionModel().selectIndices(2);
+        sleepBetweenActions();
+        clickOn("#supprimer");
+        ListView<Message> listMessage2=(ListView<Message>)GuiTest.find("#listeMessage");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listMessage2.getItems().addAll(message,m1);
+            }
+        });
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+
+    }
+
+
+
+    /**
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws UtilisateurDejaExistantException
+     * @throws RoleDejaAttribueException
+     * @throws ThemeInexistantException
+     * @throws InformationManquanteException
+     *
+     * Suppression d'un topic par un admin
+     */
+
+    @Test
+    public void supprimerTopic_admin () throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Topic topic1= fabriqueMock.creerTopic();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getNom()).andReturn("Médicament");
+        expect(topic1.getNom()).andReturn("Médicament");
+
+        forumService.supprimerTopic(2L);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+
+        expect(topic1.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
 
 
 
 
 
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,topic1);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().addAll(topic,topic1);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(1);
+        sleepBetweenActions();
+        clickOn("#supprimertopic");
+        ListView<Topic> listtopic2=(ListView<Topic>)GuiTest.find("#listeTopics");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listtopic2.getItems().addAll(topic);
+            }
+        });
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+    }
+
+    /**
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws UtilisateurDejaExistantException
+     * @throws RoleDejaAttribueException
+     * @throws ThemeInexistantException
+     * @throws InformationManquanteException
+     *
+     * Suppression d'un topic par un modérateaur
+     */
+
+    @Test
+    public void supprimerTopic_mod() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Topic topic1= fabriqueMock.creerTopic();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        //recupere liste des themes
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+
+        //recupere liste des topics pour un thème choisi
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getNom()).andReturn("Médicament");
+        expect(topic1.getNom()).andReturn("Médicament");
+
+        //suppression d'un topic
+        forumService.supprimerTopic(2L);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+
+        expect(topic1.getTheme()).andReturn(t);
+        expect(t.getNom()).andReturn("Santé");
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+
+
+
+
+
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,topic1);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().addAll(topic,topic1);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(1);
+        sleepBetweenActions();
+        clickOn("#supprimertopic");
+        ListView<Topic> listtopic2=(ListView<Topic>)GuiTest.find("#listeTopics");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listtopic2.getItems().addAll(topic);
+            }
+        });
+        sleepBetweenActions();
+
+        sleepBetweenActions();
+    }
+    /**
+     * @throws CoupleUtilisateurMDPInconnuException
+     * @throws UtilisateurDejaExistantException
+     * @throws RoleDejaAttribueException
+     * @throws ThemeInexistantException
+     * @throws InformationManquanteException
+     *
+     * Suppression d'un topic par un user : KO
+     */
+
+    @Test
+    public void supprimerTopic_user_KO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, ThemeInexistantException, InformationManquanteException, IndividuNonConnecteException {
+        p = fabriqueMock.creerMockPersonne();
+        Theme t= fabriqueMock.creerThemeForum();
+        Collection <Theme> lesthemes=new ArrayList<>();
+        Collection<Topic> lesTopics=new ArrayList<>();
+        Topic topic = fabriqueMock.creerTopic();
+        Topic topic1= fabriqueMock.creerTopic();
+
+        long l = 1;
+        Collection<InscriptionPotentielle> ips = new ArrayList<>();
+        Collection<Personne> personnes = new ArrayList<>();
+        controleur = new Controleur(connexionService, adminService, basiquesOffLineService, stage,forumService);
+        expect(connexionService.estUnUtilisateurConnu("Yohan")).andReturn(true);
+        expect(connexionService.connexion("Yohan", "123")).andReturn(p);
+        expect(adminService.getListeUtilisateur(1)).andReturn(personnes);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(adminService.getListeDesDemandesNonTraitees(1)).andReturn(ips);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        //recupere liste des themes
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+
+        expect(forumService.getListeTheme()).andReturn(lesthemes);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getIdentifiant()).andReturn(1L);
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+        expect(t.getNom()).andReturn("Santé");
+
+
+        //recupere liste des topics pour un thème choisi
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnAdmin(1)).andReturn(false);
+        expect(p.getIdentifiant()).andReturn(l);
+        expect(connexionService.estUnModerateur(1)).andReturn(true);
+        expect(p.getIdentifiant()).andReturn(l);
+
+
+        expect(forumService.recupererTheme("Santé")).andReturn(t);
+        expect(forumService.getListeTopicPourUnTheme(t)).andReturn(lesTopics);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getIdentifiant()).andReturn(1L);
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic.getNom()).andReturn("Maladie");
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getIdentifiant()).andReturn(2L);
+        expect(topic1.getNom()).andReturn("Médicament");
+        expect(topic1.getNom()).andReturn("Médicament");
+
+        EasyMock.replay(adminService,basiquesOffLineService,connexionService,p,forumService,t,topic,topic1);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controleur.run();
+            }
+        });
+
+
+        sleepBetweenActions();
+        clickOn("#nom");
+
+        write("Yohan");
+        sleepBetweenActions();
+        clickOn("#boutonValider");
+        sleepBetweenActions();
+        clickOn("#motDePasse");
+
+        write("123");
+        sleepBetweenActions();
+        clickOn("#boutonValidermdp");
+        sleepBetweenActions();
+        clickOn("#chargerListe");
+        ListView <Theme> listeTheme = (ListView<Theme>) GuiTest.find("#listeTheme");
+        listeTheme.getItems().add(t);
+        sleepBetweenActions();
+        listeTheme.getSelectionModel().selectIndices(0);
+        sleepBetweenActions();
+        clickOn("#choisirTheme");
+
+        ListView<Topic> listTopic=(ListView<Topic>)GuiTest.find("#listeTopics");
+        listTopic.getItems().addAll(topic,topic1);
+        sleepBetweenActions();
+        listTopic.getSelectionModel().selectIndices(1);
+        sleepBetweenActions();
+        clickOn("#supprimertopic");
+        sleepBetweenActions();
+    }
 
     @After
     public void tearDown () throws Exception {

@@ -131,6 +131,6 @@ public class MenuVue {
     //charger liste des themes
     public void chargerlisteThemes(ActionEvent event) {
         monControleur.gotoListeThemes();
-        this.listeThemes.setListeThemes(monControleur.getThemes());
+       // this.listeThemes.setListeThemes(monControleur.getThemes());
     }
 }

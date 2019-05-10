@@ -274,7 +274,7 @@ public class Controleur implements Observateur {
 
     public void supprimerMessage(Message m) throws TopicInexistantException, ActionImpossibleException {
        String nom = m.getAuteur();
-        if(this.identifiant.equals(nom)){
+        if(this.identifiant.getNom().equals(nom)){
 
                 forumService.supprimerMessage(m,identifiant.getIdentifiant());
                 this.maFenetre.gotoTopic(m.getTopic());
@@ -289,5 +289,10 @@ public class Controleur implements Observateur {
 
 
 
+    }
+
+    public void supprimerTopic(Topic topic) throws ThemeInexistantException {
+        forumService.supprimerTopic(topic.getIdentifiant());
+        this.maFenetre.gotoListeTopic(topic.getTheme().getNom());
     }
 }

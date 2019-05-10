@@ -193,5 +193,10 @@ public class ForumServiceImpl implements ForumService {
 
     }
 
+    @Override
+    public void supprimerTopic(long identifiant) {
+
+    }
+
 
 }

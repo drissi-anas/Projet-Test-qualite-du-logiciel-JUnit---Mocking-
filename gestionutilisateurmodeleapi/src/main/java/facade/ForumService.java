@@ -38,6 +38,7 @@ public interface ForumService {
 
     void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
+    void supprimerTopic(long identifiant);
 
 
     // Donc celle on va surement la supp mais gardons la pour le moment
