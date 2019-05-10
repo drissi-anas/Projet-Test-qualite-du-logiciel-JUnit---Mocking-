@@ -150,7 +150,26 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Personne getUserById(long identifiant, long identifiant1) {
+    public Personne getUserById(long identifiant, long identifiant1) throws IndividuNonConnecteException {
+
+        boolean adminOuModoConnecte = false;
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if (p.getIdentifiant() == identifiant) {
+                adminOuModoConnecte = true;
+            }
+        }
+        if (!adminOuModoConnecte) {
+            throw new IndividuNonConnecteException();
+        }
+
+        for (Personne p:connexionService.getListeUtilisateurs()) {
+
+            if(p.getIdentifiant()==identifiant1){
+                return p;
+            }
+
+        }
+
         return null;
     }
 
@@ -283,8 +302,10 @@ public class AdminServiceImpl implements AdminService {
     public void validerInscription(long identifiantUtilisateur, long identifiantDemande) throws ActionImpossibleException {
 
         boolean isAdmin=false;
+
         boolean isModerateur = false;
         for (Personne p : connexionService.getPersonnesConnectes()) {
+
             if(p.getIdentifiant()==identifiantUtilisateur){
                 for (String s:p.getRoles()) {
                     if(s.equals(ADMIN)){
@@ -318,6 +339,7 @@ public class AdminServiceImpl implements AdminService {
                 throw new ActionImpossibleException();
             }
         }
+
         if(inscriptionPotentielle.getRoleDemande().equals(BASIQUE)){
             if(!isAdmin && !isModerateur ){
                 throw new ActionImpossibleException();
@@ -339,7 +361,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) {
+    public Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException{
 
         boolean isAdmin= false;
         boolean isModerateur= false;
@@ -367,11 +389,12 @@ public class AdminServiceImpl implements AdminService {
                 }
 
             }
-            return basiqueOffLineService.getListeDemandes();
+            return listeARetourner;
 
+        }else{
+            throw new ActionImpossibleException();
         }
 
-        return  null;
 
     }
 

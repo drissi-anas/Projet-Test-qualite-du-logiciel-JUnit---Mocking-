@@ -21,7 +21,7 @@ public interface AdminService {
      */
     Collection<Personne> getListeUtilisateur(long idDemandeur)throws IndividuNonConnecteException;
 
-    Personne getUserById(long identifiant, long identifiant1);
+    Personne getUserById(long identifiant, long identifiant1) throws IndividuNonConnecteException;
 
     void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException;
 
@@ -29,7 +29,7 @@ public interface AdminService {
 
     void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException, ActionImpossibleException;
 
-    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException, RoleDejaAttribueException;
+    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
 
 
     /**
@@ -39,7 +39,7 @@ public interface AdminService {
      * @param identifiantUtilisateur
      * @return
      */
-    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur);
+    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException;
 
     void refuserInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
     String ADMIN = "ADMIN";
