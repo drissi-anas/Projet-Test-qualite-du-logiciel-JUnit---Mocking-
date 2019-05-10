@@ -1708,18 +1708,295 @@ public abstract class  TestFacadeAll {
 
 
     @Test ()
-    public void supprimerMessage_ADMIN() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
-
+    public void supprimerMessage_ADMIN_supprimeMessageDeModerateurOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
 
         Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        connexionService.connexion("modo","modo");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p2.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+
+    }
+
+    @Test ()
+    public void supprimerMessage_ADMIN_supprimeMessageDeBasiqueOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
         connexionService.connexion("basique","basique");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p2.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+
+    }
+
+    @Test ()
+    public void supprimerMessage_ADMIN_supprimeMessageDeADMINOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"admin2","admin2");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
+        connexionService.connexion("admin2","admin2");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p2.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        forumService.supprimerMessage(message,p.getIdentifiant());
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+
+    }
+
+
+    @Test ()
+    public void supprimerMessage_ADMIN_supprimeSonMessageOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
         Theme sante = forumService.creerThemeBis("Sante");
         Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p.getNom(),allergie,"new message");
-        forumService.supprimerMessage(message,p.getIdentifiant());
-        Assert.assertTrue(!sante.getListeTopics().contains(message));
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
 
     }
+
+
+
+    @Test ()
+    public void supprimerMessage_Moderateur_suppSonMessageOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        connexionService.connexion("modo","modo");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p2.getNom(),allergie,"new message");
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+
+    }
+
+    @Test ()
+    public void supprimerMessage_MODERATEUR_supprimeMessageDeBasiqueOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        Personne p3=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p3.getIdentifiant(),BASIQUE);
+
+        connexionService.connexion("basique","basique");
+        connexionService.connexion("modo","modo");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p3.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+    }
+
+    @Test ()
+    public void supprimerMessage_MODERATEUR_supprimeMessageDeModerateurOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        Personne p3=adminService.creerUtilisateur(p.getIdentifiant(),"modo2","modo2");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p3.getIdentifiant(),MODERATEUR);
+
+        connexionService.connexion("modo","modo");
+        connexionService.connexion("modo2","modo2");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p3.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+    }
+
+    @Test ()
+    public void supprimerMessage_MODERATEUR_supprimeMessageDeAdminOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+
+        connexionService.connexion("modo","modo");
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p.getNom(),allergie,"new message");
+
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+    }
+
+
+    @Test ()
+    public void supprimerMessage_Basique_suppSonMessageOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        connexionService.connexion("basique","basique");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p2.getNom(),allergie,"new message");
+        forumService.ajouterMessage(allergie,sante,message);
+        try {
+            forumService.supprimerMessage(message,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!allergie.getListeMessages().contains(message));
+
+
+    }
+
+
+    @Test (expected = ActionImpossibleException.class)
+    public void supprimerMessage_Basique_suppMessageDeAdmin() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p.getNom(),allergie,"new message");
+        forumService.ajouterMessage(allergie,sante,message);
+        forumService.supprimerMessage(message,p2.getIdentifiant());
+
+    }
+
+
+    @Test (expected = ActionImpossibleException.class)
+    public void supprimerMessage_Basique_suppMessageDeModerateur() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        Personne p3=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p3.getIdentifiant(),MODERATEUR);
+
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        Message message = forumService.creerMessage(p3.getNom(),allergie,"new message");
+        forumService.ajouterMessage(allergie,sante,message);
+        forumService.supprimerMessage(message,p2.getIdentifiant());
+
+    }
+
+    @Test ()
+    public void supprimerTopic_AdminOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        try {
+            forumService.supprimerTopic(allergie,p.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!sante.getListeTopics().contains(allergie));
+
+
+    }
+
+    @Test ()
+    public void supprimerTopic_ModerateurOK() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException, ActionImpossibleException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"modo","modo");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),MODERATEUR);
+        connexionService.connexion("modo","modo");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        try {
+            forumService.supprimerTopic(allergie,p2.getIdentifiant());
+        } catch (ActionImpossibleException e) {
+            Assert.fail();
+        }
+        Assert.assertTrue(!sante.getListeTopics().contains(allergie));
+
+
+    }
+
+    @Test (expected = ActionImpossibleException.class)
+    public void supprimerTopic_BasiqueKO() throws InformationManquanteException, CoupleUtilisateurMDPInconnuException, IndividuNonConnecteException, ActionImpossibleException, UtilisateurDejaExistantException, RoleDejaAttribueException, NomTopicDejaExistantException {
+
+        Personne p= connexionService.connexion("admin","admin");
+        Personne p2=adminService.creerUtilisateur(p.getIdentifiant(),"basique","basique");
+        adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
+        connexionService.connexion("basique","basique");
+        Theme sante = forumService.creerThemeBis("Sante");
+        Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
+        forumService.supprimerTopic(allergie,p2.getIdentifiant());
+        Assert.assertTrue(!sante.getListeTopics().contains(allergie));
+
+
+    }
+
 
 
 }

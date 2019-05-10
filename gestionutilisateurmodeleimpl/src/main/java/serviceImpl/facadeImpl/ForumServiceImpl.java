@@ -159,6 +159,8 @@ public class ForumServiceImpl implements ForumService {
         return topic;
     }
 
+
+
     @Override
     public void supprimerMessage(Message m, long identifiant) throws ActionImpossibleException {
         Topic topic = m.getTopic();
@@ -200,9 +202,39 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public void supprimerTopic(long identifiant) {
+    public void supprimerTopic(Topic topic, long identifiantIdentifiantUtilisateur) throws ActionImpossibleException {
+        Theme theme= topic.getTheme();
+
+        Boolean isAdmin = false;
+        Boolean isModerateur = false;
+
+        for (Personne p : connexionService.getPersonnesConnectes()) {
+            if(p.getIdentifiant()==identifiantIdentifiantUtilisateur){
+                for (String s:p.getRoles()) {
+                    if(s.equals(ADMIN)){
+                        isAdmin=true;
+                    }
+                    if(s.equals(MODERATEUR)){
+                        isModerateur=true;
+                    }
+                }
+            }
+        }
+
+
+        if(isAdmin || isModerateur){
+            theme.getListeTopics().remove(topic);
+        }else {
+            throw new ActionImpossibleException();
+        }
 
     }
+
+
+
+
+
+
 
 
 }

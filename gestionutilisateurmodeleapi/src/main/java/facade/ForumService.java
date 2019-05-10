@@ -4,9 +4,7 @@ import facade.erreurs.*;
 import modele.forum.Message;
 import modele.forum.Theme;
 import modele.forum.Topic;
-import modele.personnes.Personne;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -36,10 +34,9 @@ public interface ForumService {
     Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException, InformationManquanteException;
 
 
-    void supprimerTopic(long identifiant);
+    void supprimerTopic(Topic topic, long identifiantIdentifiantUtilisateur) throws ActionImpossibleException;
 
     void supprimerMessage(Message m,long identifiant) throws ActionImpossibleException;
 
-    // Donc celle on va surement la supp mais gardons la pour le moment
-  //  Topic recupererTopic(String nomTopic);
+
 }

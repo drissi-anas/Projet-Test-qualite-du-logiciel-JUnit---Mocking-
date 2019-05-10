@@ -304,8 +304,10 @@ public class Controleur implements Observateur {
 
     }
 
-    public void supprimerTopic(Topic topic) throws ThemeInexistantException {
-        forumService.supprimerTopic(topic.getIdentifiant());
+    public void supprimerTopic(Topic topic) throws ThemeInexistantException, ActionImpossibleException {
+        forumService.supprimerTopic(topic,identifiant.getIdentifiant());
         this.maFenetre.gotoListeTopic(topic.getTheme().getNom());
     }
+
+
 }

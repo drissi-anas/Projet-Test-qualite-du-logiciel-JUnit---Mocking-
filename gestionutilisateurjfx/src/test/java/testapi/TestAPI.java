@@ -3706,7 +3706,7 @@ public class TestAPI extends ApplicationTest {
         expect(topic1.getNom()).andReturn("Médicament");
         expect(topic1.getNom()).andReturn("Médicament");
 
-        forumService.supprimerTopic(2L);
+        forumService.supprimerTopic(2L, identifiant.getIdentifiant());
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnAdmin(1)).andReturn(true);
         expect(p.getIdentifiant()).andReturn(l);
@@ -3844,7 +3844,7 @@ public class TestAPI extends ApplicationTest {
         expect(topic1.getNom()).andReturn("Médicament");
 
         //suppression d'un topic
-        forumService.supprimerTopic(2L);
+        forumService.supprimerTopic(2L, identifiant.getIdentifiant());
         expect(p.getIdentifiant()).andReturn(l);
         expect(connexionService.estUnAdmin(1)).andReturn(false);
         expect(p.getIdentifiant()).andReturn(l);
