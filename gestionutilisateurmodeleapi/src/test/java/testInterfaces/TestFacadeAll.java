@@ -53,8 +53,8 @@ public abstract class  TestFacadeAll {
     public void creerUtilisateurTestOK() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException {
         try {
             Personne p = connexionService.connexion("admin","admin");
-            adminService.creerUtilisateur( p.getIdentifiant(), "aaa", "bbb");
-            Assert.assertTrue(connexionService.getPersonnesConnectes().contains(p));
+            Personne p2 =adminService.creerUtilisateur( p.getIdentifiant(), "aaa", "bbb");
+            Assert.assertTrue(connexionService.getListeUtilisateurs().contains(p2));
         } catch (UtilisateurDejaExistantException e) {
             Assert.fail();
         } catch(IndividuNonConnecteException e1){
@@ -438,6 +438,7 @@ public abstract class  TestFacadeAll {
             Assert.fail();
         }
     }
+
     @Test (expected = IndividuNonConnecteException.class)
     public void getListeUtilisateurKO() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException {
         Personne p = connexionService.connexion("admin", "admin");
@@ -460,7 +461,7 @@ public abstract class  TestFacadeAll {
 
 
     @Test
-    public void supprimerRoleUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, ActionImpossibleException {
+    public void supprimerRoleUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException {
         try{
             Personne p = connexionService.connexion("admin", "admin");
             Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur2","utilisateur2");
@@ -468,6 +469,8 @@ public abstract class  TestFacadeAll {
             adminService.supprimerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),BASIQUE);
             Assert.assertTrue(!p2.getRoles().contains(BASIQUE));
         } catch (IndividuNonConnecteException e){
+            Assert.fail();
+        } catch (ActionImpossibleException e) {
             Assert.fail();
         }
     }
@@ -505,55 +508,17 @@ public abstract class  TestFacadeAll {
     public void supprimerUtilisateurTest() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, IndividuNonConnecteException {
         Personne p = connexionService.connexion("admin", "admin");
         Personne p2 = adminService.creerUtilisateur(p.getIdentifiant(),"utilisateur", "utilisateur2");
-
         try {
             adminService.supprimerUtilisateur(p.getIdentifiant(),p2.getIdentifiant());
+            Assert.assertTrue(!connexionService.getListeUtilisateurs().contains(p2));
+
         } catch (IndividuNonConnecteException e) {
             Assert.fail();
         }
-        Assert.assertTrue(!connexionService.getListeUtilisateurs().contains(p2));
     }
 
-/* C'est pas bon sa
-    @Test
-    public void supprimerUtilisateurTest_Basique_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, RoleDejaAttribueException {
-        Personne p = connexionService.connexion("admin", "admin");
-        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1234",BASIQUE);
-        adminService.validerInscription(p.getIdentifiant(),posteDemande);
-        try {
-            adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
-        } catch (IndividuNonConnecteException e) {
-            Assert.fail();
-        }
-        Assert.assertTrue(!connexionService.getListeUtilisateurs().contains(p));
-    }
 
-    @Test
-    public void supprimerUtilisateurTest_Moderateur_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, RoleDejaAttribueException {
-        Personne p = connexionService.connexion("admin", "admin");
-        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","1642",MODERATEUR);
-        adminService.validerInscription(p.getIdentifiant(),posteDemande);
-        try {
-            adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
-        } catch (IndividuNonConnecteException e) {
-            Assert.fail();
-        }
-        Assert.assertTrue(true);
-    }
 
-    @Test
-    public void supprimerUtilisateurTest_Admin_Version2() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, RoleDejaAttribueException {
-        Personne p = connexionService.connexion("admin", "admin");
-        long posteDemande = basiquesOffLineService.posterDemandeInscription("utilisateur","util1234",ADMIN);
-        adminService.validerInscription(p.getIdentifiant(),posteDemande);
-        try {
-            adminService.supprimerUtilisateur(p.getIdentifiant(),posteDemande);
-        } catch (IndividuNonConnecteException e) {
-            Assert.fail();
-        }
-        Assert.assertTrue(true);
-    }
-  */
 
     @Test(expected = ActionImpossibleException.class)
     public void supprimerUtilisateurKO_NOAdmin() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, InformationManquanteException, ActionImpossibleException, RoleDejaAttribueException, IndividuNonConnecteException {
@@ -572,12 +537,19 @@ public abstract class  TestFacadeAll {
         long demande = basiquesOffLineService.posterDemandeInscription("anas","admin123",ADMIN);
         try {
             adminService.validerInscription(p.getIdentifiant(), demande);
+            Personne newInscris = null;
+            for(Personne pers : connexionService.getListeUtilisateurs()){
+                if(pers.getNom().equals("anas")){
+                    newInscris=pers;
+                }
+            }
+            Assert.assertTrue(newInscris!=null&&newInscris.getRoles().contains(ADMIN));
         } catch (ActionImpossibleException e) {
             Assert.fail();
         } catch (RoleDejaAttribueException e) {
             Assert.fail();
         }
-        Assert.assertTrue(connexionService.getListeUtilisateurs().contains(p)&&p.getRoles().contains(ADMIN));
+
     }
     @Test
     public void validerInscriptionTestOK_Basique() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException{
@@ -586,11 +558,13 @@ public abstract class  TestFacadeAll {
 
         try {
             adminService.validerInscription(p.getIdentifiant(), demande);
-            Collection<String> listePseudoUtilisateursInscris = new ArrayList<>();
+            Personne newInscris = null;
             for(Personne pers : connexionService.getListeUtilisateurs()){
-                listePseudoUtilisateursInscris.add(pers.getNom());
+                if(pers.getNom().equals("anas")){
+                    newInscris=pers;
+                }
             }
-            Assert.assertTrue(listePseudoUtilisateursInscris.contains("anas"));
+            Assert.assertTrue(newInscris!=null&&newInscris.getRoles().contains(BASIQUE));
         } catch (ActionImpossibleException e) {
             Assert.fail();
         } catch (RoleDejaAttribueException e) {
@@ -599,6 +573,8 @@ public abstract class  TestFacadeAll {
 
     }
 
+
+
     @Test
     public void validerInscriptionTestOK_Moderateur() throws CoupleUtilisateurMDPInconnuException, InformationManquanteException, UtilisateurDejaExistantException{
         Personne p = connexionService.connexion("admin", "admin");
@@ -606,17 +582,19 @@ public abstract class  TestFacadeAll {
 
         try {
             adminService.validerInscription(p.getIdentifiant(), demande);
-            Collection<String> listePseudoUtilisateursInscris = new ArrayList<>();
+            Personne newInscris = null;
             for(Personne pers : connexionService.getListeUtilisateurs()){
-                listePseudoUtilisateursInscris.add(pers.getNom());
+                if(pers.getNom().equals("anas")){
+                    newInscris=pers;
+                }
             }
-
-            Assert.assertTrue(listePseudoUtilisateursInscris.contains("anas"));
+            Assert.assertTrue(newInscris!=null&&newInscris.getRoles().contains(MODERATEUR));
         } catch (ActionImpossibleException e) {
             Assert.fail();
         } catch (RoleDejaAttribueException e) {
             Assert.fail();
         }
+
 
     }
 
@@ -857,6 +835,7 @@ public abstract class  TestFacadeAll {
             Assert.fail();
         }
     }
+
     @Test(expected = CoupleUtilisateurMDPInconnuException.class)
     public void connexionTestKOCoupleUtilisateurMDPInconnu() throws UtilisateurDejaExistantException, RoleDejaAttribueException, InformationManquanteException, IndividuNonConnecteException, CoupleUtilisateurMDPInconnuException, ActionImpossibleException {
 
@@ -906,7 +885,7 @@ public abstract class  TestFacadeAll {
         connexionService.connexion(p2.getNom(), p2.getMdp());
         adminService.associerRoleUtilisateur(p.getIdentifiant(),p2.getIdentifiant(),ADMIN);
         boolean resultat=connexionService.estUnAdmin(p2.getIdentifiant());
-        Assert.assertTrue(true);
+        Assert.assertTrue(resultat);
     }
 
 
@@ -1448,7 +1427,6 @@ public abstract class  TestFacadeAll {
         Topic allergie = forumService.creerTopic("Allergie",sante,"Ilyas");
         Message message = forumService.creerMessage(p.getNom(),allergie,"nouveau message");
         forumService.ajouterMessage(allergie,sante,message);
-
         Assert.assertTrue(allergie.getListeMessages().contains(message));
     }
     @Test (expected = InformationManquanteException.class)
@@ -1677,6 +1655,7 @@ public abstract class  TestFacadeAll {
             Assert.fail();
         }
     }
+
     @Test (expected = InformationManquanteException.class)
     public void creerTheme_K0_nomThemeNull() throws InformationManquanteException {
         forumService.creerTheme(null);
@@ -1698,13 +1677,14 @@ public abstract class  TestFacadeAll {
             Assert.fail();
         }
     }
+
     @Test (expected = InformationManquanteException.class)
-    public void creerTopic_K0_NomTopicNull() throws ThemeInexistantException, NomTopicDejaExistantException, InformationManquanteException {
+    public void creerTopic_K0_NomTopicNull() throws  NomTopicDejaExistantException, InformationManquanteException {
         Theme sante = forumService.creerThemeBis("Sante");
         forumService.creerTopic(null,sante,"Ilyas");
     }
     @Test (expected = InformationManquanteException.class)
-    public void creerTopic_K0_NomTopicVide() throws ThemeInexistantException, NomTopicDejaExistantException, InformationManquanteException {
+    public void creerTopic_K0_NomTopicVide() throws  NomTopicDejaExistantException, InformationManquanteException {
 
         Theme sante = forumService.creerThemeBis("Sante");
         forumService.creerTopic("",sante,"Ilyas");

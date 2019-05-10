@@ -345,7 +345,6 @@ public class AdminServiceImpl implements AdminService {
         Personne personne = new PersonneImpl(inscriptionPotentielle.getNom(), inscriptionPotentielle.getMdp());
         personne.addRole(inscriptionPotentielle.getRoleDemande());
         connexionService.getListeUtilisateurs().add(personne);
-
         basiqueOffLineService.getListeDemandes().remove(inscriptionPotentielle);
 
     }
