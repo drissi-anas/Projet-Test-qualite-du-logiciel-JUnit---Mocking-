@@ -4,6 +4,7 @@ import controleur.Controleur;
 import controleur.notifications.Notification;
 import controleur.notifications.Sujet;
 
+import facade.erreurs.ActionImpossibleException;
 import facade.erreurs.ThemeInexistantException;
 import facade.erreurs.TopicInexistantException;
 import javafx.event.ActionEvent;
@@ -128,7 +129,7 @@ public class ThemeVue implements Sujet {
 
     }
 
-    public void supprimerTopic(ActionEvent actionEvent) throws ThemeInexistantException {
+    public void supprimerTopic(ActionEvent actionEvent) throws ThemeInexistantException, ActionImpossibleException {
         Topic topic =listeTopics.getSelectionModel().getSelectedItem();
 
         if (Objects.isNull(topic)) {
