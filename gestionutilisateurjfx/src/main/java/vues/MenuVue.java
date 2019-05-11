@@ -125,7 +125,7 @@ public class MenuVue {
         this.supprUtilisateur.setListeUtilisateurs(monControleur.getUtilisateurs());
     }
 
-    public void chargerDemandes(MouseEvent mouseEvent) throws ActionImpossibleException {
+    public void chargerDemandes(MouseEvent mouseEvent) throws ActionImpossibleException, IndividuNonConnecteException {
         this.traitDemandes.setListeDemandes(monControleur.getDemandes());
     }
 

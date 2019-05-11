@@ -172,21 +172,21 @@ public class Controleur implements Observateur {
         }
     }
 
-    public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException {
+    public void accepterDemande(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException, IndividuNonConnecteException {
         this.adminService.validerInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
         this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_ACCEPTATION,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été validée"));
     }
 
 
-    public void refuserDemandes(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException {
+    public void refuserDemandes(InscriptionPotentielle inscriptionPotentielle) throws ActionImpossibleException, IndividuNonConnecteException {
         this.adminService.refuserInscription(identifiant.getIdentifiant(),inscriptionPotentielle.getIdentifiant());
         this.broadcastNotification(Notification.creerUpdateDemandes(this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant())));
         this.broadcastNotification(Notification.creerNotification(Notification.TypeNotification.CONFIRMATION_REFUS,"La demande "+inscriptionPotentielle.getIdentifiant() + " concernant "+inscriptionPotentielle.getNom()+ " a été refusée"));
 
     }
 
-    public Collection<InscriptionPotentielle> getDemandes() throws ActionImpossibleException {
+    public Collection<InscriptionPotentielle> getDemandes() throws ActionImpossibleException, IndividuNonConnecteException {
         return this.adminService.getListeDesDemandesNonTraitees(identifiant.getIdentifiant());
     }
 

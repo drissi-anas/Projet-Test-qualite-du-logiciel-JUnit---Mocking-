@@ -25,11 +25,11 @@ public interface AdminService {
 
     void supprimerRoleUtilisateur(long identifiant, long identifiant1, String role) throws IndividuNonConnecteException, ActionImpossibleException;
 
-    void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException;
+    void changerMotDePasseUtilisateur(long identifiant, long identifiant1, String mdp) throws InformationManquanteException, IndividuNonConnecteException, ActionImpossibleException;
 
     void supprimerUtilisateur(long identifiant, long idUtilisateur) throws IndividuNonConnecteException, ActionImpossibleException;
 
-    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
+    void validerInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException, IndividuNonConnecteException;
 
 
     /**
@@ -39,9 +39,9 @@ public interface AdminService {
      * @param identifiantUtilisateur
      * @return
      */
-    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException;
+    Collection<InscriptionPotentielle> getListeDesDemandesNonTraitees(long identifiantUtilisateur) throws ActionImpossibleException, IndividuNonConnecteException;
 
-    void refuserInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException;
+    void refuserInscription(long identifiantUtilisateur,long identifiantDemande) throws ActionImpossibleException, IndividuNonConnecteException;
     String ADMIN = "ADMIN";
     String MODERATEUR = "MODERATEUR";
     String BASIQUE = "BASIQUE";
