@@ -134,16 +134,19 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public Theme creerThemeBis(String nomTheme) throws InformationManquanteException {
+
+
         if(nomTheme==null || nomTheme.equals("") ){
             throw new InformationManquanteException();
         }
         Theme theme = new ThemeImpl(nomTheme);
         listeThemes.add(theme);
         return theme;
+
     }
 
     @Override
-    public Topic creerTopic(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException, InformationManquanteException {
+    public Topic creerEtAjouterTopicATheme(String nomTopic, Theme theme, String auteur) throws NomTopicDejaExistantException, InformationManquanteException {
         if(nomTopic==null || nomTopic.equals("") ){
             throw new InformationManquanteException();
         }

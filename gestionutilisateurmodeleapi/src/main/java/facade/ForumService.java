@@ -31,7 +31,7 @@ public interface ForumService {
     Theme creerThemeBis(String nomTheme) throws InformationManquanteException;
 
 
-    Topic creerTopic(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException, InformationManquanteException;
+    Topic creerEtAjouterTopicATheme(String nomTopic, Theme theme, String auteur)throws NomTopicDejaExistantException, InformationManquanteException;
 
 
     void supprimerTopic(Topic topic, long identifiantIdentifiantUtilisateur) throws ActionImpossibleException;

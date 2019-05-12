@@ -12,7 +12,6 @@ import facade.BasiquesOffLineService;
 import facade.ConnexionService;
 import facade.ForumService;
 import facade.erreurs.*;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import modele.forum.Message;
 import modele.forum.Theme;
@@ -233,7 +232,7 @@ public class Controleur implements Observateur {
         Theme theme = forumService.recupererTheme(themeDuTopic);
         Topic nouveauTopic = null;
         try {
-            nouveauTopic = forumService.creerTopic(nomDuTopic,theme,identifiant.getNom());
+            nouveauTopic = forumService.creerEtAjouterTopicATheme(nomDuTopic,theme,identifiant.getNom());
             Message m1=forumService.creerMessage(identifiant.getNom(),nouveauTopic,messageDuTopicText);
             forumService.ajouterMessage(nouveauTopic,theme,m1);
             gototopic(nouveauTopic);

@@ -2267,7 +2267,7 @@ public class TestAPI extends ApplicationTest {
 
         expect(forumService.recupererTheme("Santé")).andReturn(t);
         expect(p.getNom()).andReturn("Yohan");
-        expect(forumService.creerTopic("Allergie",t,"Yohan")).andReturn(topic1);
+        expect(forumService.creerEtAjouterTopicATheme("Allergie",t,"Yohan")).andReturn(topic1);
         expect(p.getNom()).andReturn("Yohan");
         expect(forumService.creerMessage("Yohan",topic1,"Que faire contre le pollen ?")).andReturn(message);
         forumService.ajouterMessage(topic1,t,message);
