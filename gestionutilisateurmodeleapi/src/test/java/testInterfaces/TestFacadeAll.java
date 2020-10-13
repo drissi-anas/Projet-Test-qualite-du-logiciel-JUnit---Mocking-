@@ -140,11 +140,9 @@ public abstract class  TestFacadeAll {
     }
 
 
-    /*******
-
-     /**
+    /**
      * Quand un ADMIN veut associer BASIQUE à un utilisateur.
-     */
+     **/
     @Test
     public void  admin_associerRoleUtilisateurBasique_OK() throws CoupleUtilisateurMDPInconnuException, UtilisateurDejaExistantException, ActionImpossibleException {
         try {
